@@ -101,6 +101,14 @@ class MarkdownTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function actual_numbers_used_have_no_effect_on_ordered_list() {
+    $this->assertTransformed(
+      '<ol><li>One</li><li>Two</li><li>Three</li></ol>',
+      "1. One\n1. Two\n1. Three"
+    );
+  }
+
+  #[@test]
   public function ordered_list_triggered_by_accident() {
     $this->assertTransformed(
       '<ol><li>What a great season.</li></ol>',
