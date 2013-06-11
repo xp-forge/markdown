@@ -101,6 +101,22 @@ class MarkdownTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function ordered_list_triggered_by_accident() {
+    $this->assertTransformed(
+      '<ol><li>What a great season.</li></ol>',
+      '1986. What a great season.'
+    );
+  }
+
+  #[@test]
+  public function backslash_escaping_for_above_accident() {
+    $this->assertTransformed(
+      '1986. What a great season.',
+      '1986\. What a great season.'
+    );
+  }
+
+  #[@test]
   public function code() {
     $this->assertTransformed(
       'Use the <code>printf()</code> function',
