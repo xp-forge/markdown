@@ -30,15 +30,15 @@ class Markdown extends \lang\Object {
       }
     });
 
+    // Links and images: [A link](http://example.com), [A link](http://example.com "Title"),
+    // [Google][goog] reference-style link, [Google][] implicit name,and finally [Google] [1] 
+    // numeric references (-> spaces allowed!). Images almost identical except for leading
+    // exclamation mark, e.g. ![An image](http://example.com/image.jpg)
     $parseLink= function($line, $o, $target, $newInstance) {
       $title= null;
       $s= strpos($line, ']', $o + 1);
       $text= substr($line, $o + 1, $s - $o - 1);
       $o= $s + 1;
-
-      // [A link](http://example.com), [A link](http://example.com "Title"),
-      // [Google][goog] reference-style link, [Google][] implicit name,
-      // and finally [Google] [1] numeric references (-> spaces allowed!)
       $w= 0;
       if ('(' === $line{$o}) {
         $s= strpos($line, ')', $o + 1);
@@ -46,7 +46,7 @@ class Markdown extends \lang\Object {
         $o= $s + 1;
       } else if ('[' === $line{$o} || $w= (' ' === $line{$o} && '[' === $line{$o + 1})) {
         $s= strpos($line, ']', $o + $w + 1);
-        if ($s - $o - $w <= 1) {
+        if ($s - $o - $w <= 1) {    // []
           $url= '@'.strtolower($text);
         } else {
           $url= '@'.strtolower(substr($line, $o + $w + 1, $s - $o - $w - 1));
@@ -62,6 +62,7 @@ class Markdown extends \lang\Object {
       });
     });
     $this->addHandler('!', function($line, $o, $target) use($parseLink) {
+      if ('[' !== $line{$o + 1}) return -1;
       $o++;
       return $parseLink($line, $o, $target, function($url, $text, $title) {
         return new Image($url, $text, $title);
@@ -69,6 +70,21 @@ class Markdown extends \lang\Object {
     });
   }
 
+  /**
+   * Adds a handler to parse starting with a given character
+   *
+   * The handler is a closure of the following form:
+   * ```php
+   * $handler= function($line, $o, $target) {
+   *   $s= strpos($line, $line{$o}, $o + 1);
+   *   $target->add(new Code(substr($line, $o + 1, $s - $o - 1)));
+   *   return $s + 1;
+   * };
+   * ```
+   * 
+   * @param var $arg Either a single character or an array of alternative characters
+   * @param var $handler The closure
+   */
   public function addHandler($arg, $handler) {
     foreach ((array)$arg as $char) {
       $this->handler[$char]= $handler;
@@ -76,6 +92,12 @@ class Markdown extends \lang\Object {
     }
   }
 
+  /**
+   * Transform a given input and returns the output
+   *
+   * @param  string $in markdown
+   * @return string markup
+   */
   public function transform($in) {
     static $def= array('(' => '()', '"' => '"', "'" => "'");
 
