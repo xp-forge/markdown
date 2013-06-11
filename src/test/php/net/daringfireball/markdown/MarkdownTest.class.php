@@ -89,14 +89,14 @@ class MarkdownTest extends \unittest\TestCase {
     $this->assertTransformed('<em>Hello</em>', $input);
   }
 
-  #[@test]
-  public function emphasized_first_word() {
-    $this->assertTransformed('<em>Hello</em> World', '*Hello* World');
+  #[@test, @values(array('*Hello* World', '_Hello_ World'))]
+  public function emphasized_first_word($input) {
+    $this->assertTransformed('<em>Hello</em> World', $input);
   }
 
-  #[@test]
-  public function emphasized_second_word() {
-    $this->assertTransformed('Hello <em>World</em>', 'Hello *World*');
+  #[@test, @values(array('Hello *World*', 'Hello _World_'))]
+  public function emphasized_second_word($input) {
+    $this->assertTransformed('Hello <em>World</em>', $input);
   }
 
   #[@test]
@@ -109,14 +109,14 @@ class MarkdownTest extends \unittest\TestCase {
     $this->assertTransformed('<strong>Hello</strong>', $input);
   }
 
-  #[@test]
-  public function strong_first_word() {
-    $this->assertTransformed('<strong>Hello</strong> World', '**Hello** World');
+  #[@test, @values(array('**Hello** World', '__Hello__ World'))]
+  public function strong_first_word($input) {
+    $this->assertTransformed('<strong>Hello</strong> World', $input);
   }
 
-  #[@test]
-  public function strong_second_word() {
-    $this->assertTransformed('Hello <strong>World</strong>', 'Hello **World**');
+  #[@test, @values(array('Hello **World**', 'Hello __World__'))]
+  public function strong_second_word($input) {
+    $this->assertTransformed('Hello <strong>World</strong>', $input);
   }
 
   #[@test]

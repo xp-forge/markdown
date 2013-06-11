@@ -102,7 +102,7 @@ class Markdown extends \lang\Object {
           $target->add(new Link($url, $text, $title));
         }
 
-        $p= strcspn($line, '*&[]`', $o);
+        $p= strcspn($line, '*_&[]`', $o);
         $target->add(new Text($t.substr($line, $o, $p)));
         $o+= $p;
 
