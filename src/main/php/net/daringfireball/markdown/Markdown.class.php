@@ -4,89 +4,78 @@
  * @see  http://daringfireball.net/projects/markdown/basics
  */
 class Markdown extends \lang\Object {
+  protected $handler= array();
+  protected $span= '';
 
-  protected function tokenize($line, $target) {
-    $o= 0;
-    $l= strlen($line);
-    $safe= 0;
-    while ($o < $l) {
-      $t= '';
-      if ('&' === $line{$o}) {    // Escape standalone ampersands, leave entities as-is
-        if (false !== ($s= strpos($line, ';', $o + 1))) {
-          $target->add(new Entity(substr($line, $o, $s - $o + 1)));
-          $o= $s + 1;
-        } else {
-          $t= '&';
-          $o++;
-        }
-      } else if (('*' === $line{$o} && '*' === $line{$o + 1}) || ('_' === $line{$o} && '_' === $line{$o + 1})) {
+  public function __construct() {
+    $this->addHandler('&', function($line, $o, $target) {
+      if (false === ($s= strpos($line, ';', $o + 1))) return -1;
+      $target->add(new Entity(substr($line, $o, $s - $o + 1)));
+      return $s + 1;
+    });
+    $this->addHandler('`', function($line, $o, $target) {
+      $s= strpos($line, $line{$o}, $o + 1);
+      $target->add(new Code(substr($line, $o + 1, $s - $o - 1)));
+      return $s + 1;
+    });
+    $this->addHandler(array('*', '_'), function($line, $o, $target) {
+      if ($line{$o} === $line{$o + 1}) {
         $s= strpos($line, $line{$o}.$line{$o + 1}, $o + 1);
         $target->add(new Bold(substr($line, $o + 2, $s - $o - 2)));
-        $o= $s + 2;
-      } else if ('*' === $line{$o} || '_' == $line{$o}) {
+        return $s + 2;
+      } else {
         $s= strpos($line, $line{$o}, $o + 1);
         $target->add(new Italic(substr($line, $o + 1, $s - $o - 1)));
-        $o= $s + 1;
-      } else if ('`' == $line{$o}) {
-        $s= strpos($line, $line{$o}, $o + 1);
-        $target->add(new Code(substr($line, $o + 1, $s - $o - 1)));
-        $o= $s + 1;
-      } else if ('[' === $line{$o}) {
-        $title= null;
-        $s= strpos($line, ']', $o + 1);
-        $text= substr($line, $o + 1, $s - $o - 1);
-        $o= $s + 1;
-
-        // [A link](http://example.com), [A link](http://example.com "Title"),
-        // [Google][goog] reference-style link, [Google][] implicit name,
-        // and finally [Google] [1] numeric references (-> spaces allowed!)
-        $w= 0;
-        if ('(' === $line{$o}) {
-          $s= strpos($line, ')', $o + 1);
-          sscanf(substr($line, $o + 1, $s - $o - 1), '%[^" )] "%[^")]"', $url, $title);
-          $o= $s + 1;
-        } else if ('[' === $line{$o} || $w= (' ' === $line{$o} && '[' === $line{$o + 1})) {
-          $s= strpos($line, ']', $o + $w + 1);
-          if ($s - $o - $w <= 1) {
-            $url= '@'.strtolower($text);
-          } else {
-            $url= '@'.strtolower(substr($line, $o + $w + 1, $s - $o - $w - 1));
-          }
-          $o= $s + 1;
-        }
-        $target->add(new Link($url, $text, $title));
-      } else if ('!' === $line{$o} && '[' === $line{$o + 1}) {
-        $o++;
-        $title= null;
-        $s= strpos($line, ']', $o + 1);
-        $text= substr($line, $o + 1, $s - $o - 1);
-        $o= $s + 1;
-
-        $w= 0;
-        if ('(' === $line{$o}) {
-          $s= strpos($line, ')', $o + 1);
-          sscanf(substr($line, $o + 1, $s - $o - 1), '%[^" )] "%[^")]"', $url, $title);
-          $o= $s + 1;
-        } else if ('[' === $line{$o} || $w= (' ' === $line{$o} && '[' === $line{$o + 1})) {
-          $s= strpos($line, ']', $o + $w + 1);
-          if ($s - $o - $w <= 1) {
-            $url= '@'.strtolower($text);
-          } else {
-            $url= '@'.strtolower(substr($line, $o + $w + 1, $s - $o - $w - 1));
-          }
-          $o= $s + 1;
-        }
-        $target->add(new Image($url, $text, $title));
+        return $s + 1;
       }
+    });
 
-      $p= strcspn($line, '*_&[]`', $o);
-      $target->add(new Text($t.substr($line, $o, $p)));
-      $o+= $p;
+    $parseLink= function($line, $o, $target, $newInstance) {
+      $title= null;
+      $s= strpos($line, ']', $o + 1);
+      $text= substr($line, $o + 1, $s - $o - 1);
+      $o= $s + 1;
 
-      if ($safe++ > 10) throw new \lang\IllegalStateException('Endless loop detected');
+      // [A link](http://example.com), [A link](http://example.com "Title"),
+      // [Google][goog] reference-style link, [Google][] implicit name,
+      // and finally [Google] [1] numeric references (-> spaces allowed!)
+      $w= 0;
+      if ('(' === $line{$o}) {
+        $s= strpos($line, ')', $o + 1);
+        sscanf(substr($line, $o + 1, $s - $o - 1), '%[^" )] "%[^")]"', $url, $title);
+        $o= $s + 1;
+      } else if ('[' === $line{$o} || $w= (' ' === $line{$o} && '[' === $line{$o + 1})) {
+        $s= strpos($line, ']', $o + $w + 1);
+        if ($s - $o - $w <= 1) {
+          $url= '@'.strtolower($text);
+        } else {
+          $url= '@'.strtolower(substr($line, $o + $w + 1, $s - $o - $w - 1));
+        }
+        $o= $s + 1;
+      }
+      $target->add($newInstance($url, $text, $title));
+      return $o;
+    };
+    $this->addHandler('[', function($line, $o, $target) use($parseLink) {
+      return $parseLink($line, $o, $target, function($url, $text, $title) {
+        return new Link($url, $text, $title);
+      });
+    });
+    $this->addHandler('!', function($line, $o, $target) use($parseLink) {
+      $o++;
+      return $parseLink($line, $o, $target, function($url, $text, $title) {
+        return new Image($url, $text, $title);
+      });
+    });
+  }
+
+  public function addHandler($arg, $handler) {
+    foreach ((array)$arg as $char) {
+      $this->handler[$char]= $handler;
+      $this->span.= $char;
     }
   }
-  
+
   public function transform($in) {
     static $def= array('(' => '()', '"' => '"', "'" => "'");
 
@@ -132,7 +121,26 @@ class Markdown extends \lang\Object {
       }
 
       // Tokenize line
-      $this->tokenize($line, $target);
+      $o= 0;
+      $l= strlen($line);
+      $safe= 0;
+      while ($o < $l) {
+        $t= '';
+        if (isset($this->handler[$line{$o}])) {
+          $r= $this->handler[$line{$o}]($line, $o, $target);
+          if (-1 === $r) {
+            $t= $line{$o};    // Push back
+            $o++;
+          } else {
+            $o= $r;           // Forward
+          }
+        }
+        $p= strcspn($line, $this->span, $o);
+        $target->add(new Text($t.substr($line, $o, $p)));
+        $o+= $p;
+
+        if ($safe++ > 10) throw new \lang\IllegalStateException('Endless loop detected');
+      }
     }
     // \util\cmd\Console::writeLine('@-> ', $tokens, ' & ', $definitions);
 
