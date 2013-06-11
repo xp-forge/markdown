@@ -222,6 +222,25 @@ class MarkdownTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function link_in_square_brackets() {
+    $this->assertTransformed(
+      '<a href="http://example.com">http://example.com</a>',
+      '<http://example.com>'
+    );
+  }
+
+  #[@test]
+  public function email_in_square_brackets() {
+    $this->assertTransformed(
+      '<a href="&#x6D;&#x61;i&#x6C;&#x74;&#x6F;:&#x61;&#x64;&#x64;&#x72;&#x65;'.
+      '&#x73;&#x73;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;'.
+      '&#x6f;&#x6d;">&#x61;&#x64;&#x64;&#x72;&#x65;&#x73;&#x73;&#x40;&#x65;&#x78;'.
+      '&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a>',
+      '<address@example.com>'
+    );
+  }
+
+  #[@test]
   public function image_with_title() {
     $this->assertTransformed(
       '<img src="http://example.net/image.jpg" alt="This image" title="Title"/> has a title.',
@@ -237,7 +256,7 @@ class MarkdownTest extends \unittest\TestCase {
     );
   }
 
-  #[@test, @ignore('Does not work yet')]
+  #[@test, @ignore('Does not work yet; requires nesting inside handlers')]
   public function image_inside_link() {
     $this->assertTransformed(
       '<a href="http://travis-ci.org/xp-framework/xp-framework">'.

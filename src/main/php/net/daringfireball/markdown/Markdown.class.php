@@ -14,7 +14,7 @@ class Markdown extends \lang\Object {
       return $s + 1;
     });
     $this->addHandler('`', function($line, $o, $target) {
-      $s= strpos($line, $line{$o}, $o + 1);
+      $s= strpos($line, '`', $o + 1);
       $target->add(new Code(substr($line, $o + 1, $s - $o - 1)));
       return $s + 1;
     });
@@ -28,6 +28,16 @@ class Markdown extends \lang\Object {
         $target->add(new Italic(substr($line, $o + 1, $s - $o - 1)));
         return $s + 1;
       }
+    });
+    $this->addHandler('<', function($line, $o, $target) {
+      if (preg_match('#(([a-z]+://)[^ >]+)>#', $line, $m, 0, $o + 1)) {
+        $target->add(new Link($m[1]));
+      } else if (preg_match('#(([^ @]+)@[^ >]+)>#', $line, $m, 0, $o + 1)) {
+        $target->add(new Email($m[1]));
+      } else {
+        return -1;
+      }
+      return $o + strlen($m[1]) + 2;
     });
 
     // Links and images: [A link](http://example.com), [A link](http://example.com "Title"),
