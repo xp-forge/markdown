@@ -24,7 +24,7 @@ class Markdown extends \lang\Object {
       // * "*", "+" or "-" -> ul/li
       // * [0-9]"." -> ol/li
       // * [id]: http://example.com "Link"
-      $m= preg_match('/^((?P<header>#{1,6} )|(?P<ul>[+\*\-] )|(?P<ol>[0-9]+\. )|(?P<def>\[([^\]]+)\]:\s+([^ ]+)))/', $line, $tag);
+      $m= preg_match('/^((?P<header>#{1,6} )|(?P<ul>[+\*\-] )|(?P<ol>[0-9]+\. )|(?P<def>\s{0,3}\[([^\]]+)\]:\s+([^ ]+)))/', $line, $tag);
       if ($m) {
         if (isset($tag['header']) && '' !== $tag['header']) {
           $target= $target->add(new Header(substr_count($tag['header'], '#')));

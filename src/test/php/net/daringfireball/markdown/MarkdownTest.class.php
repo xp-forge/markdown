@@ -203,6 +203,16 @@ class MarkdownTest extends \unittest\TestCase {
     );
   }
 
+  #[@test, @values(array(' ', '  ', '   '))]
+  public function definitions_indented($indent) {
+    $this->assertTransformed(
+      'Traffic from <a href="http://google.com/">Google</a> is higher than from <a href="http://search.yahoo.com/">Yahoo</a>',
+      "Traffic from [Google][] is higher than from [Yahoo][]\n".
+      $indent."[google]: http://google.com/\n".
+      $indent."[yahoo]:  http://search.yahoo.com/"
+    );
+  }
+
   #[@test, @ignore('Not yet implemented')]
   public function link() {
     $this->assertTransformed(
