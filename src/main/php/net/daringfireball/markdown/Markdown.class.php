@@ -100,6 +100,28 @@ class Markdown extends \lang\Object {
             $o= $s + 1;
           }
           $target->add(new Link($url, $text, $title));
+        } else if ('!' === $line{$o} && '[' === $line{$o + 1}) {
+          $o++;
+          $title= null;
+          $s= strpos($line, ']', $o + 1);
+          $text= substr($line, $o + 1, $s - $o - 1);
+          $o= $s + 1;
+
+          $w= 0;
+          if ('(' === $line{$o}) {
+            $s= strpos($line, ')', $o + 1);
+            sscanf(substr($line, $o + 1, $s - $o - 1), '%[^" )] "%[^")]"', $url, $title);
+            $o= $s + 1;
+          } else if ('[' === $line{$o} || $w= (' ' === $line{$o} && '[' === $line{$o + 1})) {
+            $s= strpos($line, ']', $o + $w + 1);
+            if ($s - $o - $w <= 1) {
+              $url= '@'.strtolower($text);
+            } else {
+              $url= '@'.strtolower(substr($line, $o + $w + 1, $s - $o - $w - 1));
+            }
+            $o= $s + 1;
+          }
+          $target->add(new Image($url, $text, $title));
         }
 
         $p= strcspn($line, '*_&[]`', $o);

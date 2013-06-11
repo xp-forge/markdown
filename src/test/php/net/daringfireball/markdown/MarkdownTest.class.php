@@ -220,4 +220,20 @@ class MarkdownTest extends \unittest\TestCase {
       'http://example.com'
     );
   }
+
+  #[@test]
+  public function image_with_title() {
+    $this->assertTransformed(
+      '<img src="http://example.net/image.jpg" alt="This image" title="Title"/> has a title.',
+      '![This image](http://example.net/image.jpg "Title") has a title.'
+    );
+  }
+
+  #[@test]
+  public function image_without_title() {
+    $this->assertTransformed(
+      '<img src="http://example.net/image.jpg" alt="This image"/> has no title attribute.',
+      '![This image](http://example.net/image.jpg) has no title attribute.'
+    );
+  }
 }
