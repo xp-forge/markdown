@@ -18,7 +18,6 @@ class MarkdownTest extends \unittest\TestCase {
    * @throws unittest.AssertionFailedError
    */
   protected function assertTransformed($expected, $input) {
-    // \util\cmd\Console::writeLine('"', $input, '" => ', new \lang\types\Bytes(\Michelf\Markdown::defaultTransform($input)));
     $this->assertEquals($expected, $this->fixture->transform($input));
   }
 
