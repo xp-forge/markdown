@@ -114,7 +114,8 @@ class Markdown extends \lang\Object {
   public function transform($in) {
     static $def= array('(' => '()', '"' => '"', "'" => "'");
 
-    // * "#" -> h1, "##" -> h2, ... etc.
+    // * Atx-style headers "#" -> h1, "##" -> h2, ... etc.
+    // * Setext-style headers are "underlined"
     // * "*", "+" or "-" -> ul/li
     // * [0-9]"." -> ol/li
     // * [id]: http://example.com "Link"
@@ -141,6 +142,7 @@ class Markdown extends \lang\Object {
       if ($m) {
         if (isset($tag['header']) && '' !== $tag['header']) {
           $target= $target->add(new Header(substr_count($tag['header'], '#')));
+          $line= rtrim($line, ' #');
         } else if (isset($tag['ul']) && '' !== $tag['ul']) {
           $list || $list= $target->add(new Listing('ul'));
           $target= $list->add(new ListItem());

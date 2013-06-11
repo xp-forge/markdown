@@ -31,6 +31,11 @@ class MarkdownTest extends \unittest\TestCase {
     $this->assertTransformed(htmlspecialchars($value), $value);
   }
 
+  #[@test]
+  public function escaping() {
+    $this->assertTransformed('4 &lt; 5', '4 < 5');
+  }
+
   #[@test, @values(array('AT&amp;T', '&quot;'))]
   public function htmlentities_are_left_untouched($value) {
     $this->assertTransformed($value, $value);
@@ -39,6 +44,16 @@ class MarkdownTest extends \unittest\TestCase {
   #[@test]
   public function first_level_header() {
     $this->assertTransformed('<h1>A First Level Header</h1>', '# A First Level Header');
+  }
+
+  #[@test]
+  public function first_level_header_closed() {
+    $this->assertTransformed('<h1>A First Level Header</h1>', '# A First Level Header #');
+  }
+
+  #[@test]
+  public function first_level_header_closed_with_non_matching_hashes() {
+    $this->assertTransformed('<h1>A First Level Header</h1>', '# A First Level Header #####');
   }
 
   #[@test]
