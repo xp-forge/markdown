@@ -42,6 +42,15 @@ class MarkdownTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function first_level_header_with_underline() {
+    $this->assertTransformed(
+      '<h1>A First Level Header</h1>', 
+      "A First Level Header\n".
+      "===================="
+    );
+  }
+
+  #[@test]
   public function second_level_header() {
     $this->assertTransformed('<h2>A Second Level Header</h2>', '## A Second Level Header');
   }

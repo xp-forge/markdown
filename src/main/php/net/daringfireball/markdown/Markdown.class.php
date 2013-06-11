@@ -114,6 +114,17 @@ class Markdown extends \lang\Object {
   public function transform($in) {
     static $def= array('(' => '()', '"' => '"', "'" => "'");
 
+    // * "#" -> h1, "##" -> h2, ... etc.
+    // * "*", "+" or "-" -> ul/li
+    // * [0-9]"." -> ol/li
+    // * [id]: http://example.com "Link"
+    $begin= '/^('.
+      '(?P<header>#{1,6} )|'.
+      '(?P<h1>={3,})|'.
+      '(?P<ul>[+\*\-] )|'.
+      '(?P<ol>[0-9]+\. )|'.
+      '(?P<def>\s{0,3}\[([^\]]+)\]:\s+([^ ]+))'.
+    ')/';
     $lines= new \text\StringTokenizer($in, "\n");
 
     $tokens= new ParseTree();
@@ -126,11 +137,7 @@ class Markdown extends \lang\Object {
       // TODO: Rulers
 
       // Check what line begins with:
-      // * "#" -> h1, "##" -> h2, ... etc.
-      // * "*", "+" or "-" -> ul/li
-      // * [0-9]"." -> ol/li
-      // * [id]: http://example.com "Link"
-      $m= preg_match('/^((?P<header>#{1,6} )|(?P<ul>[+\*\-] )|(?P<ol>[0-9]+\. )|(?P<def>\s{0,3}\[([^\]]+)\]:\s+([^ ]+)))/', $line, $tag);
+      $m= preg_match($begin, $line, $tag);
       if ($m) {
         if (isset($tag['header']) && '' !== $tag['header']) {
           $target= $target->add(new Header(substr_count($tag['header'], '#')));
@@ -140,6 +147,11 @@ class Markdown extends \lang\Object {
         } else if (isset($tag['ol']) && '' !== $tag['ol']) {
           $list || $list= $target->add(new Listing('ol'));
           $target= $list->add(new ListItem());
+        } else if (isset($tag['h1']) && '' !== $tag['h1']) {
+          $end= $tokens->size()- 1;
+          $last= $tokens->get($end);
+          $tokens->set($end, new Header(1))->add($last);
+          continue;
         } else if (isset($tag['def']) && '' !== $tag['def']) {
           $title= trim(substr($line, strlen($tag[0])));
           if ('' !== $title && 0 === strcspn($title, '(\'"')) {
@@ -147,7 +159,7 @@ class Markdown extends \lang\Object {
           } else {
             $title= null;
           }
-          $definitions[strtolower($tag[6])]= new Link($tag[7], null, $title);
+          $definitions[strtolower($tag[7])]= new Link($tag[8], null, $title);
           continue;
         }
         $line= substr($line, strlen($tag[0]));
