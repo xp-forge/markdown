@@ -103,9 +103,9 @@ class MarkdownTest extends \unittest\TestCase {
     $this->assertTransformed('un<em>frigging</em>believable', 'un*frigging*believable');
   }
 
-  #[@test, @ignore('Not yet implemented')]
+  #[@test]
   public function literal_asterisks() {
-    $this->assertTransformed('literal asterisks', '\*literal asterisks\*');
+    $this->assertTransformed('*literal asterisks*', '\*literal asterisks\*');
   }
 
   #[@test, @values(array('**Hello**', '__Hello__'))]

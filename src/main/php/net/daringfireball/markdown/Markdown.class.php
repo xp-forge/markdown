@@ -5,8 +5,11 @@
  */
 class Markdown extends \lang\Object {
   protected $handler= array();
-  protected $span= '';
+  protected $span= '\\';
 
+  /**
+   * Initializes default handlers
+   */
   public function __construct() {
     $this->addHandler('&', function($line, $o, $target) {
       if (false === ($s= strpos($line, ';', $o + 1))) return -1;
@@ -19,11 +22,11 @@ class Markdown extends \lang\Object {
       return $s + 1;
     });
     $this->addHandler(array('*', '_'), function($line, $o, $target) {
-      if ($line{$o} === $line{$o + 1}) {
+      if ($line{$o} === $line{$o + 1}) {    // Strong: **Word**
         $s= strpos($line, $line{$o}.$line{$o + 1}, $o + 1);
         $target->add(new Bold(substr($line, $o + 2, $s - $o - 2)));
         return $s + 2;
-      } else {
+      } else {                              // Emphasis: *Word*
         $s= strpos($line, $line{$o}, $o + 1);
         $target->add(new Italic(substr($line, $o + 1, $s - $o - 1)));
         return $s + 1;
@@ -158,7 +161,10 @@ class Markdown extends \lang\Object {
       $safe= 0;
       while ($o < $l) {
         $t= '';
-        if (isset($this->handler[$line{$o}])) {
+        if ('\\' === $line{$o}) {
+          $t= $line{$o + 1};
+          $o+= 2;             // Skip escape, don't tokenize next character
+        } else if (isset($this->handler[$line{$o}])) {
           $r= $this->handler[$line{$o}]($line, $o, $target);
           if (-1 === $r) {
             $t= $line{$o};    // Push back
