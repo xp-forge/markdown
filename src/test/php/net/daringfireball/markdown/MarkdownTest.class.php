@@ -236,4 +236,14 @@ class MarkdownTest extends \unittest\TestCase {
       '![This image](http://example.net/image.jpg) has no title attribute.'
     );
   }
+
+  #[@test, @ignore('Does not work yet')]
+  public function image_inside_link() {
+    $this->assertTransformed(
+      '<a href="http://travis-ci.org/xp-framework/xp-framework">'.
+      '<img src="https://secure.travis-ci.org/xp-framework/xp-framework.png" alt="Build Status"/>'.
+      '</a>',
+      '[![Build Status](https://secure.travis-ci.org/xp-framework/xp-framework.png)](http://travis-ci.org/xp-framework/xp-framework)'
+    );
+  }
 }
