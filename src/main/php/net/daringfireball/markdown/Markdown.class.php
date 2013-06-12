@@ -141,23 +141,29 @@ class Markdown extends \lang\Object {
     while ($lines->hasMoreTokens()) {
       $line= $lines->nextToken();
 
+      // An empty line by itself ends the last element and starts a new paragraph.
+      if ('' === $line) {
+        $target= $tokens->add(new Paragraph());
+        continue;
+      }
+
       // Check what line begins with
       $m= preg_match($begin, $line, $tag);
       if ($m) {
         if (isset($tag['header']) && '' !== $tag['header']) {
-          $target= $target->add(new Header(substr_count($tag['header'], '#')));
+          $target= $tokens->append(new Header(substr_count($tag['header'], '#')));
           $line= rtrim($line, ' #');
         } else if (isset($tag['ul']) && '' !== $tag['ul']) {
-          $list || $list= $target->add(new Listing('ul'));
+          $list || $list= $tokens->append(new Listing('ul'));
           $target= $list->add(new ListItem());
         } else if (isset($tag['ol']) && '' !== $tag['ol']) {
-          $list || $list= $target->add(new Listing('ol'));
+          $list || $list= $tokens->append(new Listing('ol'));
           $target= $list->add(new ListItem());
         } else if (isset($tag['blockquote']) && '' !== $tag['blockquote']) {
-          $quot || $quot= $target->add(new BlockQuote());
+          $quot || $quot= $tokens->append(new BlockQuote());
           $target= $quot;
         } else if (isset($tag['hr']) && '' !== $tag['hr']) {
-          $target->add(new Rule());
+          $tokens->append(new Rule());
           continue;
         } else if (isset($tag['underline']) && '' !== $tag['underline']) {
           $end= $target->size()- 1;
@@ -175,8 +181,6 @@ class Markdown extends \lang\Object {
           continue;
         }
         $line= substr($line, strlen($tag[0]));
-      } else {
-        $target= $tokens;
       }
 
       // Tokenize line
