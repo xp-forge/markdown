@@ -307,6 +307,14 @@ class MarkdownTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function url_with_parenthesis() {
+    $this->assertTransformed(
+      'There\'s an <a href="http://en.memory-alpha.org/wiki/Darmok_(episode)">episode</a> of Star Trek: The Next Generation',
+      'There\'s an [episode](http://en.memory-alpha.org/wiki/Darmok_(episode)) of Star Trek: The Next Generation'
+    );
+  }
+
+  #[@test]
   public function email_in_square_brackets() {
     $this->assertTransformed(
       '<a href="&#x6D;&#x61;i&#x6C;&#x74;&#x6F;:&#x61;&#x64;&#x64;&#x72;&#x65;'.

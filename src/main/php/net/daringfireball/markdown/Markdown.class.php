@@ -54,9 +54,11 @@ class Markdown extends \lang\Object {
       $o= $s + 1;
       $w= 0;
       if ('(' === $line{$o}) {
-        $s= strpos($line, ')', $o + 1);
-        sscanf(substr($line, $o + 1, $s - $o - 1), '%[^" )] "%[^")]"', $url, $title);
-        $o= $s + 1;
+        for ($b= 1, $s= $o, $e= 1; $b && (($s+= $e) < strlen($line)); $s++, $e= strcspn($line, '()', $s)) {
+          if ('(' === $line{$s}) $b++; else if (')' === $line{$s}) $b--;
+        }
+        sscanf(substr($line, $o + 1, $s - $o - 2), '%[^" ] "%[^")]"', $url, $title);
+        $o= $s;
       } else if ('[' === $line{$o} || $w= (' ' === $line{$o} && '[' === $line{$o + 1})) {
         $s= strpos($line, ']', $o + $w + 1);
         if ($s - $o - $w <= 1) {    // []
