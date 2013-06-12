@@ -155,6 +155,14 @@ class MarkdownTest extends \unittest\TestCase {
     $this->assertTransformed('Hello <em>World</em>', $input);
   }
 
+  #[@test, @values(array(
+  #  'Use one marker for *emphasizing words*.',
+  #  'Use one marker for _emphasizing words_.',
+  #)]
+  public function emphasis_for_multiple_words($input) {
+    $this->assertTransformed('Use one marker for <em>emphasizing words</em>.', $input);
+  }
+
   #[@test]
   public function emphasis_can_be_used_in_the_middle_of_a_word() {
     $this->assertTransformed('un<em>frigging</em>believable', 'un*frigging*believable');
@@ -178,6 +186,14 @@ class MarkdownTest extends \unittest\TestCase {
   #[@test, @values(array('Hello **World**', 'Hello __World__'))]
   public function strong_second_word($input) {
     $this->assertTransformed('Hello <strong>World</strong>', $input);
+  }
+
+  #[@test, @values(array(
+  #  'Use two markers for **strong emphasis**.',
+  #  'Use two markers for __strong emphasis__.',
+  #)]
+  public function strong_for_multiple_words($input) {
+    $this->assertTransformed('Use two markers for <strong>strong emphasis</strong>.', $input);
   }
 
   #[@test]
