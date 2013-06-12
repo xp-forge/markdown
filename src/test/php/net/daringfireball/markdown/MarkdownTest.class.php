@@ -359,4 +359,13 @@ class MarkdownTest extends \unittest\TestCase {
     );
   }
 
+  #[@test, @ignore('Not clear what the output should be')]
+  public function blockquote_with_two_lines() {
+    $this->assertTransformed(
+      '<blockquote>Quoting 1Quoting 2</blockquote>',
+      "> Quoting 1\n".
+      "> Quoting 2\n"
+    );
+  }
+
 }
