@@ -2,6 +2,7 @@
 
 /**
  * @see  http://daringfireball.net/projects/markdown/basics
+ * @see  https://github.com/markdown/markdown.github.com/wiki/Implementations
  */
 class Markdown extends \lang\Object {
   protected $handler= array();
@@ -135,12 +136,10 @@ class Markdown extends \lang\Object {
 
     $tokens= new ParseTree();
     $definitions= array();
-    $target= $tokens;
+    $target= $tokens->add(new Paragraph());
     $list= $quot= null;
     while ($lines->hasMoreTokens()) {
       $line= $lines->nextToken();
-
-      // TODO: Rulers
 
       // Check what line begins with
       $m= preg_match($begin, $line, $tag);
