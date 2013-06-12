@@ -125,6 +125,7 @@ class Markdown extends \lang\Object {
     $begin= '/^('.
       '(?P<header>#{1,6} )|'.
       '(?P<underline>(={3,}|-{3,}))|'.
+      '(?P<hr>(\* ?){3,}$)|'.
       '(?P<ul>[+\*\-] )|'.
       '(?P<ol>[0-9]+\. )|'.
       '(?P<blockquote>\> )|'.
@@ -156,6 +157,9 @@ class Markdown extends \lang\Object {
         } else if (isset($tag['blockquote']) && '' !== $tag['blockquote']) {
           $quot || $quot= $target->add(new BlockQuote());
           $target= $quot;
+        } else if (isset($tag['hr']) && '' !== $tag['hr']) {
+          $target->add(new Rule());
+          continue;
         } else if (isset($tag['underline']) && '' !== $tag['underline']) {
           $end= $target->size()- 1;
           $last= $target->get($end);
@@ -168,7 +172,7 @@ class Markdown extends \lang\Object {
           } else {
             $title= null;
           }
-          $definitions[strtolower($tag[9])]= new Link($tag[10], null, $title);
+          $definitions[strtolower($tag[11])]= new Link($tag[12], null, $title);
           continue;
         }
         $line= substr($line, strlen($tag[0]));

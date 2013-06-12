@@ -359,6 +359,11 @@ class MarkdownTest extends \unittest\TestCase {
     );
   }
 
+  #[@test, @values(array('* * *', '***', '*****'))]
+  public function hr($input) {
+    $this->assertTransformed('<hr/>', $input);
+  }
+
   #[@test, @ignore('Not clear what the output should be')]
   public function blockquote_with_two_lines() {
     $this->assertTransformed(
