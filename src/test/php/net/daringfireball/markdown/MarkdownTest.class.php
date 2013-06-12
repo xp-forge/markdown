@@ -342,4 +342,13 @@ class MarkdownTest extends \unittest\TestCase {
       '[![Build Status](https://secure.travis-ci.org/xp-framework/xp-framework.png)](http://travis-ci.org/xp-framework/xp-framework)'
     );
   }
+
+  #[@test]
+  public function blockquote() {
+    $this->assertTransformed(
+      '<blockquote>Quoting</blockquote>',
+      '> Quoting'
+    );
+  }
+
 }

@@ -117,6 +117,7 @@ class Markdown extends \lang\Object {
     // * Atx-style headers "#" -> h1, "##" -> h2, ... etc.
     // * Setext-style headers are "underlined"
     // * "*", "+" or "-" -> ul/li
+    // * ">" or "> >" -> block quoting
     // * [0-9]"." -> ol/li
     // * [id]: http://example.com "Link"
     $begin= '/^('.
@@ -124,6 +125,7 @@ class Markdown extends \lang\Object {
       '(?P<underline>(={3,}|-{3,}))|'.
       '(?P<ul>[+\*\-] )|'.
       '(?P<ol>[0-9]+\. )|'.
+      '(?P<blockquote>\> )|'.
       '(?P<def>\s{0,3}\[([^\]]+)\]:\s+([^ ]+))'.
     ')/';
     $lines= new \text\StringTokenizer($in, "\n");
@@ -131,7 +133,7 @@ class Markdown extends \lang\Object {
     $tokens= new ParseTree();
     $definitions= array();
     $target= $tokens;
-    $list= null;
+    $list= $quot= null;
     while ($lines->hasMoreTokens()) {
       $line= $lines->nextToken();
 
@@ -149,6 +151,9 @@ class Markdown extends \lang\Object {
         } else if (isset($tag['ol']) && '' !== $tag['ol']) {
           $list || $list= $target->add(new Listing('ol'));
           $target= $list->add(new ListItem());
+        } else if (isset($tag['blockquote']) && '' !== $tag['blockquote']) {
+          $quot || $quot= $target->add(new BlockQuote());
+          $target= $quot;
         } else if (isset($tag['underline']) && '' !== $tag['underline']) {
           $end= $target->size()- 1;
           $last= $target->get($end);
@@ -161,7 +166,7 @@ class Markdown extends \lang\Object {
           } else {
             $title= null;
           }
-          $definitions[strtolower($tag[8])]= new Link($tag[9], null, $title);
+          $definitions[strtolower($tag[9])]= new Link($tag[10], null, $title);
           continue;
         }
         $line= substr($line, strlen($tag[0]));
