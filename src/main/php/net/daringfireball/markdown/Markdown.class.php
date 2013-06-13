@@ -163,7 +163,7 @@ class Markdown extends \lang\Object {
           $quot || $quot= $tokens->append(new BlockQuote());
           $target= $quot;
         } else if (isset($tag['hr']) && '' !== $tag['hr']) {
-          $tokens->append(new Rule());
+          $tokens->append(new Ruler());
           continue;
         } else if (isset($tag['underline']) && '' !== $tag['underline']) {
           $end= $target->size()- 1;
