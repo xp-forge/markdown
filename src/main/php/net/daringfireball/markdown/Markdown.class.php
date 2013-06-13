@@ -13,31 +13,25 @@ class Markdown extends \lang\Object {
    */
   public function __construct() {
     $this->addHandler('&', function($line, $target) {
-      if (-1 === ($s= $line->next(';'))) return -1;
+      if (-1 === ($s= $line->next(';'))) return false;
       $target->add(new Entity($line->slice($s)));
-      return $line->pos();
     });
     $this->addHandler('`', function($line, $target) {
       if ($line->matches('`` ')) {
         $s= $line->next(array(' ``', '``'));  // Be forgiving about incorrect closing
         $target->add(new Code($line->slice($s, +3)));
-        return $line->pos();
       } else if ($line->matches('``')) {
         $target->add(new Code($line->until('``')));
-        return $line->pos();
       } else {
         $target->add(new Code($line->until('`')));
-        return $line->pos();
       }
     });
     $this->addHandler(array('*', '_'), function($line, $target) {
       $c= $line->chr();
       if ($line->matches($c.$c)) {            // Strong: **Word**
         $target->add(new Bold($line->until($c.$c)));
-        return $line->pos();
       } else {                                // Emphasis: *Word*
         $target->add(new Italic($line->until($c)));
-        return $line->pos();
       }
     });
     $this->addHandler('<', function($line, $target) {
@@ -46,9 +40,9 @@ class Markdown extends \lang\Object {
       } else if (preg_match('#<(([^ @]+)@[^ >]+)>#', $line, $m, 0, $line->pos())) {
         $target->add(new Email($m[1]));
       } else {
-        return -1;
+        return false;
       }
-      return $line->forward(strlen($m[0]));
+      $line->forward(strlen($m[0]));
     });
 
     // Links and images: [A link](http://example.com), [A link](http://example.com "Title"),
@@ -70,7 +64,6 @@ class Markdown extends \lang\Object {
         }
       }
       $target->add($newInstance($url, $text, $title));
-      return $line->pos();
     };
     $this->addHandler('[', function($line, $target) use($parseLink) {
       return $parseLink($line, $target, function($url, $text, $title) {
@@ -91,10 +84,8 @@ class Markdown extends \lang\Object {
    *
    * The handler is a closure of the following form:
    * ```php
-   * $handler= function($line, $o, $target) {
-   *   $s= strpos($line, $line{$o}, $o + 1);
-   *   $target->add(new Code(substr($line, $o + 1, $s - $o - 1)));
-   *   return $s + 1;
+   * $handler= function($line, $target) {
+   *   $target->add(new Code($line->until('`')));
    * };
    * ```
    * 
@@ -185,27 +176,28 @@ class Markdown extends \lang\Object {
 
       // Tokenize line
       $o= 0;
-      $l= strlen($line);
+      $s= strlen($line);
       $safe= 0;
-      while ($o < $l) {
+      while ($o < $s) {
         $t= '';
         if ('\\' === $line{$o}) {
           $t= $line{$o + 1};
           $o+= 2;             // Skip escape, don't tokenize next character
         } else if (isset($this->handler[$line{$o}])) {
-          $r= $this->handler[$line{$o}](new Line($line, $o), $target);
-          if (-1 === $r) {
+          $l= new Line($line, $o);
+          $r= $this->handler[$line{$o}]($l, $target);
+          if (false === $r) {
             $t= $line{$o};    // Push back
             $o++;
           } else {
-            $o= $r;           // Forward
+            $o= $l->pos();    // Forward
           }
         }
         $p= strcspn($line, $this->span, $o);
         $target->add(new Text($t.substr($line, $o, $p)));
         $o+= $p;
 
-        if ($safe++ > 10) throw new \lang\IllegalStateException('Endless loop detected');
+        if ($safe++ > 100) throw new \lang\IllegalStateException('Endless loop detected');
       }
     }
     // \util\cmd\Console::writeLine('@-> ', $tokens, ' & ', $definitions);
