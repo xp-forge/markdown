@@ -171,12 +171,14 @@ class Markdown extends \lang\Object {
           $definitions[strtolower($tag[11])]= new Link($tag[12], null, $title);
           continue;
         }
-        $line= substr($line, strlen($tag[0]));
+        $offset= strlen($tag[0]);
+      } else {
+        $offset= 0;
       }
 
       // Tokenize line
       $safe= 0;
-      $l= new Line($line);
+      $l= new Line($line, $offset);
       while ($l->pos() < $l->length()) {
         $t= '';
         $c= $l->chr();
