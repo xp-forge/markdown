@@ -5,12 +5,51 @@ class Line extends \lang\Object implements \ArrayAccess {
   protected $pos;
   protected $length;
 
+  /**
+   * Creates a new Line instance
+   *
+   * @param string $buffer
+   * @param int $pos The initial offset
+   */
   public function __construct($buffer, $pos= 0) {
     $this->buffer= $buffer;
     $this->pos= $pos;
     $this->length= strlen($buffer);
   }
 
+  /**
+   * Returns current position inside Line
+   *
+   * @return int
+   */
+  public function pos() {
+    return $this->pos;
+  }
+
+  /**
+   * Returns the buffer's length
+   *
+   * @return int
+   */
+  public function length() {
+    return $this->length;
+  }
+
+  /**
+   * Returns the character at the current position
+   *
+   * @return string
+   */
+  public function chr() {
+    return $this->buffer[$this->pos];
+  }
+
+  /**
+   * Returns whether the Line begins with the given string at the current offset
+   *
+   * @param  string $str
+   * @return bool
+   */
   public function matches($str) {
     return '' === $str
       ? false
@@ -63,18 +102,6 @@ class Line extends \lang\Object implements \ArrayAccess {
   public function forward($offset= 1) {
     $this->pos+= $offset;
     return $this->pos;
-  }
-
-  public function chr() {
-    return $this->buffer[$this->pos];
-  }
-
-  public function pos() {
-    return $this->pos;
-  }
-
-  public function length() {
-    return $this->length;
   }
 
   public function __toString() {
