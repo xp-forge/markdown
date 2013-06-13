@@ -12,12 +12,12 @@ class Markdown extends \lang\Object {
    * Initializes default handlers
    */
   public function __construct() {
-    $this->addHandler('&', function($line, $o, $target) {
+    $this->addHandler('&', function($line, $target) {
       if (-1 === ($s= $line->next(';'))) return -1;
       $target->add(new Entity($line->slice($s)));
       return $line->pos();
     });
-    $this->addHandler('`', function($line, $o, $target) {
+    $this->addHandler('`', function($line, $target) {
       if ($line->matches('`` ')) {
         $s= $line->next(array(' ``', '``'));  // Be forgiving about incorrect closing
         $target->add(new Code($line->slice($s, +3)));
@@ -30,7 +30,7 @@ class Markdown extends \lang\Object {
         return $line->pos();
       }
     });
-    $this->addHandler(array('*', '_'), function($line, $o, $target) {
+    $this->addHandler(array('*', '_'), function($line, $target) {
       $c= $line->chr();
       if ($line->matches($c.$c)) {            // Strong: **Word**
         $target->add(new Bold($line->until($c.$c)));
@@ -40,7 +40,7 @@ class Markdown extends \lang\Object {
         return $line->pos();
       }
     });
-    $this->addHandler('<', function($line, $o, $target) {
+    $this->addHandler('<', function($line, $target) {
       if (preg_match('#<(([a-z]+://)[^ >]+)>#', $line, $m, 0, $line->pos())) {
         $target->add(new Link($m[1]));
       } else if (preg_match('#<(([^ @]+)@[^ >]+)>#', $line, $m, 0, $line->pos())) {
@@ -55,7 +55,7 @@ class Markdown extends \lang\Object {
     // [Google][goog] reference-style link, [Google][] implicit name,and finally [Google] [1] 
     // numeric references (-> spaces allowed!). Images almost identical except for leading
     // exclamation mark, e.g. ![An image](http://example.com/image.jpg)
-    $parseLink= function($line, $o, $target, $newInstance) {
+    $parseLink= function($line, $target, $newInstance) {
       $title= null;
       $text= $line->until(']');
       $w= false;
@@ -72,15 +72,15 @@ class Markdown extends \lang\Object {
       $target->add($newInstance($url, $text, $title));
       return $line->pos();
     };
-    $this->addHandler('[', function($line, $o, $target) use($parseLink) {
-      return $parseLink($line, $o, $target, function($url, $text, $title) {
+    $this->addHandler('[', function($line, $target) use($parseLink) {
+      return $parseLink($line, $target, function($url, $text, $title) {
         return new Link($url, $text, $title);
       });
     });
-    $this->addHandler('!', function($line, $o, $target) use($parseLink) {
+    $this->addHandler('!', function($line, $target) use($parseLink) {
       if (!$line->matches('![')) return -1;
       $line->forward(1);
-      return $parseLink($line, $o, $target, function($url, $text, $title) {
+      return $parseLink($line, $target, function($url, $text, $title) {
         return new Image($url, $text, $title);
       });
     });
@@ -193,7 +193,7 @@ class Markdown extends \lang\Object {
           $t= $line{$o + 1};
           $o+= 2;             // Skip escape, don't tokenize next character
         } else if (isset($this->handler[$line{$o}])) {
-          $r= $this->handler[$line{$o}](new Line($line, $o), $o, $target);
+          $r= $this->handler[$line{$o}](new Line($line, $o), $target);
           if (-1 === $r) {
             $t= $line{$o};    // Push back
             $o++;
