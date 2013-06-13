@@ -43,6 +43,14 @@ class CodeTest extends MarkdownTest {
   }
 
   #[@test]
+  public function code_span_with_leading_space_and_no_trailing_space() {
+    $this->assertTransformed(
+      '<p>This <code>$files= [];</code> will initialize "files" to an empty array</p>',
+      'This `` $files= [];`` will initialize "files" to an empty array'
+    );
+  }
+
+  #[@test]
   public function html_inside_code_is_escaped() {
     $this->assertTransformed(
       '<p>Please don\'t use any <code>&lt;blink&gt;</code> tags</p>',
