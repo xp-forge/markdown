@@ -57,6 +57,14 @@ class Line extends \lang\Object implements \ArrayAccess {
     ;
   }
 
+  /**
+   * Returns the next slice of the string up until the position of any
+   * of the characters in the given list of delimiters; and forwards the
+   * internal pointer to the end.
+   *
+   * @param  string $delimiters
+   * @return string
+   */
   public function until($delimiters) {
     $p= strcspn($this->buffer, $delimiters, $this->pos);
     $b= substr($this->buffer, $this->pos, $p);
@@ -64,6 +72,15 @@ class Line extends \lang\Object implements \ArrayAccess {
     return $b;
   }
 
+  /**
+   * Returns the next slice of the string up until the position if the
+   * given delimiting substring, cutting of the number of characters in
+   * the delimiting substring from both ends; and forwards the internal 
+   * pointer to the end.
+   *
+   * @param  string $delimiters
+   * @return string
+   */
   public function ending($delimiter) {
     $l= strlen($delimiter);
     $s= strpos($this->buffer, $delimiter, $this->pos + $l);

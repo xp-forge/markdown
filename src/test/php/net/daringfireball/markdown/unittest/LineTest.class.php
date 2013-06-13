@@ -69,4 +69,54 @@ class LineTest extends \unittest\TestCase {
   public function does_not_match($str) {
     $this->assertFalse(create(new Line('Test'))->matches($str));
   }
+
+  #[@test]
+  public function until_a_single_character() {
+    $this->assertEquals('Hello', create(new Line('Hello!'))->until('!'));
+  }
+
+  #[@test]
+  public function until_a_list_of_characters() {
+    $this->assertEquals('Hello', create(new Line('Hello!'))->until('.,;:!?'));
+  }
+
+  #[@test]
+  public function until_a_single_character_that_does_not_occurr() {
+    $this->assertEquals('Hello', create(new Line('Hello'))->until('!'));
+  }
+
+  #[@test]
+  public function until_advances_pointer() {
+    $l= new Line('Test.');
+    $l->until('.');
+    $this->assertEquals(4, $l->pos());
+  }
+
+  #[@test, @values(array(array('Hello', 1), array('Hello World', 2), array('Hello New World', 3))]
+  public function until_used_as_tokenizer($input, $size) {
+    $l= new Line($input);
+    $tokens= array();
+    for ($i= 0; $i < $size; $i++) {
+      $tokens[]= $l->until(' ');
+      $l->forward();
+    }
+    $this->assertEquals(explode(' ', $input, $size), $tokens);
+  }
+
+  #[@test, @values('*', '_', '`')]
+  public function ending_with_a_single_character($character) {
+    $this->assertEquals('Hello', create(new Line($character.'Hello'.$character))->ending($character));
+  }
+
+  #[@test, @values('**', '__', '``')]
+  public function ending_with_two_characters($characters) {
+    $this->assertEquals('Hello', create(new Line($characters.'Hello'.$characters))->ending($characters));
+  }
+
+  #[@test]
+  public function ending_advances_pointer() {
+    $l= new Line('*Test*');
+    $l->ending('*');
+    $this->assertEquals(6, $l->pos());
+  }
 }
