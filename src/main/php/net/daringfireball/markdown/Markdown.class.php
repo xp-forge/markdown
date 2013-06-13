@@ -21,17 +21,17 @@ class Markdown extends \lang\Object {
         $s= $line->next(array(' ``', '``'));  // Be forgiving about incorrect closing
         $target->add(new Code($line->slice($s, +3)));
       } else if ($line->matches('``')) {
-        $target->add(new Code($line->until('``')));
+        $target->add(new Code($line->ending('``')));
       } else {
-        $target->add(new Code($line->until('`')));
+        $target->add(new Code($line->ending('`')));
       }
     });
     $this->addHandler(array('*', '_'), function($line, $target) {
       $c= $line->chr();
       if ($line->matches($c.$c)) {            // Strong: **Word**
-        $target->add(new Bold($line->until($c.$c)));
+        $target->add(new Bold($line->ending($c.$c)));
       } else {                                // Emphasis: *Word*
-        $target->add(new Italic($line->until($c)));
+        $target->add(new Italic($line->ending($c)));
       }
     });
     $this->addHandler('<', function($line, $target) {
@@ -51,13 +51,13 @@ class Markdown extends \lang\Object {
     // exclamation mark, e.g. ![An image](http://example.com/image.jpg)
     $parseLink= function($line, $target, $newInstance) {
       $title= null;
-      $text= $line->until(']');
+      $text= $line->ending(']');
       $w= false;
       if ($line->matches('(')) {
         sscanf($line->matching('()'), '%[^" ] "%[^")]"', $url, $title);
       } else if ($line->matches('[') || $w= $line->matches(' [')) {
         $line->forward((int)$w);
-        if ('' === ($ref= $line->until(']'))) {
+        if ('' === ($ref= $line->ending(']'))) {
           $url= '@'.strtolower($text);
         } else {
           $url= '@'.strtolower($ref);
@@ -85,7 +85,7 @@ class Markdown extends \lang\Object {
    * The handler is a closure of the following form:
    * ```php
    * $handler= function($line, $target) {
-   *   $target->add(new Code($line->until('`')));
+   *   $target->add(new Code($line->ending('`')));
    * };
    * ```
    * 
@@ -189,9 +189,7 @@ class Markdown extends \lang\Object {
             $l->forward();
           }
         }
-        $p= strcspn($l, $this->span, $l->pos());
-        $target->add(new Text($t.substr($l, $l->pos(), $p)));
-        $l->forward($p);
+        $target->add(new Text($t.$l->until($this->span)));
 
         if ($safe++ > 100) throw new \lang\IllegalStateException('Endless loop detected');
       }

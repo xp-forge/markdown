@@ -15,7 +15,14 @@ class Line extends \lang\Object implements \ArrayAccess {
     return 0 === substr_compare($this->buffer, $str, $this->pos, strlen($str));
   }
 
-  public function until($delimiter) {
+  public function until($delimiters) {
+    $p= strcspn($this->buffer, $delimiters, $this->pos);
+    $b= substr($this->buffer, $this->pos, $p);
+    $this->pos+= $p;
+    return $b;
+  }
+
+  public function ending($delimiter) {
     $l= strlen($delimiter);
     $s= strpos($this->buffer, $delimiter, $this->pos + $l);
     $b= substr($this->buffer, $this->pos + $l, $s - $this->pos - $l);
