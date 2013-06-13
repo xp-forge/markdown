@@ -175,27 +175,23 @@ class Markdown extends \lang\Object {
       }
 
       // Tokenize line
-      $o= 0;
-      $s= strlen($line);
       $safe= 0;
-      while ($o < $s) {
+      $l= new Line($line);
+      while ($l->pos() < $l->length()) {
         $t= '';
-        if ('\\' === $line{$o}) {
-          $t= $line{$o + 1};
-          $o+= 2;             // Skip escape, don't tokenize next character
-        } else if (isset($this->handler[$line{$o}])) {
-          $l= new Line($line, $o);
-          $r= $this->handler[$line{$o}]($l, $target);
-          if (false === $r) {
-            $t= $line{$o};    // Push back
-            $o++;
-          } else {
-            $o= $l->pos();    // Forward
+        $c= $l->chr();
+        if ('\\' === $c) {
+          $t= $l{$l->pos() + 1};
+          $l->forward(2);             // Skip escape, don't tokenize next character
+        } else if (isset($this->handler[$c])) {
+          if (false === $this->handler[$c]($l, $target)) {
+            $t= $c;                   // Push back
+            $l->forward();
           }
         }
-        $p= strcspn($line, $this->span, $o);
-        $target->add(new Text($t.substr($line, $o, $p)));
-        $o+= $p;
+        $p= strcspn($l, $this->span, $l->pos());
+        $target->add(new Text($t.substr($l, $l->pos(), $p)));
+        $l->forward($p);
 
         if ($safe++ > 100) throw new \lang\IllegalStateException('Endless loop detected');
       }

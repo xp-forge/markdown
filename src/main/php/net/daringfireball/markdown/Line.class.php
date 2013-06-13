@@ -3,10 +3,12 @@
 class Line extends \lang\Object implements \ArrayAccess {
   protected $buffer;
   protected $pos;
+  protected $length;
 
   public function __construct($buffer, $pos= 0) {
     $this->buffer= $buffer;
     $this->pos= $pos;
+    $this->length= strlen($buffer);
   }
 
   public function matches($str) {
@@ -48,7 +50,7 @@ class Line extends \lang\Object implements \ArrayAccess {
     return -1;
   }
 
-  public function forward($offset) {
+  public function forward($offset= 1) {
     $this->pos+= $offset;
     return $this->pos;
   }
@@ -59,6 +61,10 @@ class Line extends \lang\Object implements \ArrayAccess {
 
   public function pos() {
     return $this->pos;
+  }
+
+  public function length() {
+    return $this->length;
   }
 
   public function __toString() {
