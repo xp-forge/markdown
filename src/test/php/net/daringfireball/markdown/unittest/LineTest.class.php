@@ -53,4 +53,12 @@ class LineTest extends \unittest\TestCase {
     $l->forward(2);
     $this->assertEquals(3, $l->forward(1));
   }
+
+  #[@test, @values(array(0, 1, 2, 3))]
+  public function chr_returns_character_at_current_position($pos) {
+    $buffer= 'Test';
+    $l= new Line($buffer);
+    $l->forward($pos);
+    $this->assertEquals($buffer{$pos}, $l->chr());
+  }
 }
