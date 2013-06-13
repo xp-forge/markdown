@@ -171,4 +171,28 @@ class LineTest extends \unittest\TestCase {
     $l->matching('()');
     $this->assertEquals(8, $l->pos());
   }
+
+  #[@test]
+  public function slice_of_given_length() {
+    $this->assertEquals('Hello', create(new Line('Hello'))->slice(5));
+  }
+
+  #[@test]
+  public function slice_of_given_length_and_cut() {
+    $this->assertEquals('ello', create(new Line('Hello'))->slice(5, 1));
+  }
+
+  #[@test]
+  public function slice_advances_pointer() {
+    $l= new Line('Test');
+    $l->slice(2);
+    $this->assertEquals(2, $l->pos());
+  }
+
+  #[@test]
+  public function cut_affects_how_far_slice_advances_pointer() {
+    $l= new Line('Test');
+    $l->slice(3, 1);
+    $this->assertEquals(4, $l->pos());
+  }
 }

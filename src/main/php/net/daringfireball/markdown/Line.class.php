@@ -146,6 +146,14 @@ class Line extends \lang\Object implements \ArrayAccess {
     return $b;
   }
 
+  /**
+   * Returns a slice of the given length starting from the given position; 
+   * and forwards the internal pointer to the end.
+   *
+   * @param  int $length
+   * @param  int $l Cut
+   * @return string
+   */
   public function slice($length, $l= 0) {
     $b= substr($this->buffer, $this->pos + $l, $length - $l);
     $this->pos+= $length + $l;
