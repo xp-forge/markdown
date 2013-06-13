@@ -8,16 +8,6 @@ class HeadersTest extends MarkdownTest {
   }
 
   #[@test]
-  public function first_level_header_closed() {
-    $this->assertTransformed('<h1>A First Level Header</h1>', '# A First Level Header #');
-  }
-
-  #[@test]
-  public function first_level_header_closed_with_non_matching_hashes() {
-    $this->assertTransformed('<h1>A First Level Header</h1>', '# A First Level Header #####');
-  }
-
-  #[@test]
   public function second_level_header() {
     $this->assertTransformed('<h2>A Second Level Header</h2>', '## A Second Level Header');
   }
@@ -40,6 +30,16 @@ class HeadersTest extends MarkdownTest {
   #[@test]
   public function sixth_level_header() {
     $this->assertTransformed('<h6>A Sixth Level Header</h6>', '###### A Sixth Level Header');
+  }
+
+  #[@test]
+  public function first_level_header_closed() {
+    $this->assertTransformed('<h1>A First Level Header</h1>', '# A First Level Header #');
+  }
+
+  #[@test]
+  public function first_level_header_closed_with_non_matching_hashes() {
+    $this->assertTransformed('<h1>A First Level Header</h1>', '# A First Level Header #####');
   }
 
   #[@test, @ignore('Borken')]
