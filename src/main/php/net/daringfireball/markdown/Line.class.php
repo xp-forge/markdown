@@ -36,6 +36,17 @@ class Line extends \lang\Object implements \ArrayAccess {
   }
 
   /**
+   * Forward internal pointer for the current position
+   *
+   * @param  int $offset How many characters to forward
+   * @return int The new position
+   */
+  public function forward($offset= 1) {
+    $this->pos+= $offset;
+    return $this->pos;
+  }
+
+  /**
    * Returns the character at the current position
    *
    * @return string
@@ -139,11 +150,6 @@ class Line extends \lang\Object implements \ArrayAccess {
     $b= substr($this->buffer, $this->pos + $l, $length - $l);
     $this->pos+= $length + $l;
     return $b;
-  }
-
-  public function forward($offset= 1) {
-    $this->pos+= $offset;
-    return $this->pos;
   }
 
   public function __toString() {
