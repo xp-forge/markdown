@@ -18,9 +18,15 @@ class Markdown extends \lang\Object {
       return $s + 1;
     });
     $this->addHandler('`', function($line, $o, $target) {
-      $s= strpos($line, '`', $o + 1);
-      $target->add(new Code(substr($line, $o + 1, $s - $o - 1)));
-      return $s + 1;
+      if ('``' === substr($line, $o, 2)) {
+        $s= strpos($line, '``', $o + 2);  
+        $target->add(new Code(substr($line, $o + 2, $s - $o - 2)));
+        return $s + 2;
+      } else {
+        $s= strpos($line, '`', $o + 1);
+        $target->add(new Code(substr($line, $o + 1, $s - $o - 1)));
+        return $s + 1;
+      }
     });
     $this->addHandler(array('*', '_'), function($line, $o, $target) {
       if ($line{$o} === $line{$o + 1}) {    // Strong: **Word**

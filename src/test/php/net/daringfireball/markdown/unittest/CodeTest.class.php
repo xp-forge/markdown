@@ -3,10 +3,18 @@
 class CodeTest extends MarkdownTest {
 
   #[@test]
-  public function code() {
+  public function single_backtick() {
     $this->assertTransformed(
       '<p>Use the <code>printf()</code> function</p>',
       'Use the `printf()` function'
+    );
+  }
+
+  #[@test]
+  public function literal_backtick_inside_code_with_multiple_backticks() {
+    $this->assertTransformed(
+      '<p><code>There is a literal backtick (`) here.</code></p>',
+      '``There is a literal backtick (`) here.``'
     );
   }
 
