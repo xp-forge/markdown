@@ -18,7 +18,13 @@ class Markdown extends \lang\Object {
       return $s + 1;
     });
     $this->addHandler('`', function($line, $o, $target) {
-      if ('``' === substr($line, $o, 2)) {
+      if ('`` ' === substr($line, $o, 3)) {
+        if (false === ($s= strpos($line, ' ``', $o + 3))) {
+          $s= strpos($line, '``', $o + 3);  // Be forgiving about incorrect closing
+        }
+        $target->add(new Code(substr($line, $o + 3, $s - $o - 3)));
+        return $s + 3;
+      } else if ('``' === substr($line, $o, 2)) {
         $s= strpos($line, '``', $o + 2);  
         $target->add(new Code(substr($line, $o + 2, $s - $o - 2)));
         return $s + 2;

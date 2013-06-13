@@ -19,6 +19,30 @@ class CodeTest extends MarkdownTest {
   }
 
   #[@test]
+  public function single_backtick_in_a_code_span() {
+    $this->assertTransformed(
+      '<p><code>`</code></p>',
+      '`` ` ``'
+    );
+  }
+
+  #[@test]
+  public function backtick_delimited_string_in_a_code_span() {
+    $this->assertTransformed(
+      '<p><code>`foo`</code></p>',
+      '`` `foo` ``'
+    );
+  }
+
+  #[@test]
+  public function code_span_with_leading_space_and_no_trailing_space() {
+    $this->assertTransformed(
+      '<p><code>$files= [];</code></p>',
+      '`` $files= [];``'
+    );
+  }
+
+  #[@test]
   public function html_inside_code_is_escaped() {
     $this->assertTransformed(
       '<p>Please don\'t use any <code>&lt;blink&gt;</code> tags</p>',
