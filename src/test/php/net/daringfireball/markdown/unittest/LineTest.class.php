@@ -125,10 +125,11 @@ class LineTest extends \unittest\TestCase {
   #  array('((Hello))', '(Hello)', '()'),
   #  array('((Hello) World)', '(Hello) World', '()'),
   #  array('(Hello (World))', 'Hello (World)', '()'),
+  #  array('(Hello (New) (World))', 'Hello (New) (World)', '()'),
+  #  array('(Hello ((New)) (World))', 'Hello ((New)) (World)', '()'),
   #  array('[Hello]', 'Hello', '[]'),
-  #  array('[[Hello]]', '[Hello]', '[]'),
-  #  array('[[Hello] World]', '[Hello] World', '[]'),
-  #  array('[Hello [World]]', 'Hello [World]', '[]')
+  #  array('<Hello>', 'Hello', '<>'),
+  #  array('{Hello}', 'Hello', '{}'),
   #)]
   public function matching_square_braces($input, $expected, $braces) {
     $this->assertEquals($expected, create(new Line($input))->matching($braces));
