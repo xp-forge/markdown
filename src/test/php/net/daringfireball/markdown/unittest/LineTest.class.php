@@ -119,4 +119,25 @@ class LineTest extends \unittest\TestCase {
     $l->ending('*');
     $this->assertEquals(6, $l->pos());
   }
+
+  #[@test, @values(array(
+  #  array('(Hello)', 'Hello', '()'),
+  #  array('((Hello))', '(Hello)', '()'),
+  #  array('((Hello) World)', '(Hello) World', '()'),
+  #  array('(Hello (World))', 'Hello (World)', '()'),
+  #  array('[Hello]', 'Hello', '[]'),
+  #  array('[[Hello]]', '[Hello]', '[]'),
+  #  array('[[Hello] World]', '[Hello] World', '[]'),
+  #  array('[Hello [World]]', 'Hello [World]', '[]')
+  #)]
+  public function matching_square_braces($input, $expected, $braces) {
+    $this->assertEquals($expected, create(new Line($input))->matching($braces));
+  }
+
+  #[@test]
+  public function matching_advances_pointer() {
+    $l= new Line('((Test))');
+    $l->matching('()');
+    $this->assertEquals(8, $l->pos());
+  }
 }

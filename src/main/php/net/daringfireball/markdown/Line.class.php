@@ -78,6 +78,12 @@ class Line extends \lang\Object implements \ArrayAccess {
    * the delimiting substring from both ends; and forwards the internal 
    * pointer to the end.
    *
+   * ```php
+   * $text= new Line('*Hello*');
+   * $word= $text->ending('*');     // "Hello"
+   * $pos= $text->pos();            // 7
+   * ```
+   *
    * @param  string $delimiters
    * @return string
    */
@@ -89,6 +95,19 @@ class Line extends \lang\Object implements \ArrayAccess {
     return $b;
   }
 
+  /**
+   * Returns the next slice of the string with matching braces, respecting
+   * nested braces; and forwards the internal pointer to the end.
+   *
+   * ```php
+   * $text= new Line('((Hello))');
+   * $word= $text->matching('()'); // "(Hello)"
+   * $pos= $text->pos();           // 9
+   * ```
+   *
+   * @param  string $delimiters
+   * @return string
+   */
   public function matching($braces) {
     for (
       $b= 1, $s= $this->pos, $e= 1, $l= strlen($this->buffer);
