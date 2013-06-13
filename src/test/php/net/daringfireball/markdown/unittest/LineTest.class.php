@@ -59,4 +59,14 @@ class LineTest extends \unittest\TestCase {
     $buffer= 'Test';
     $this->assertEquals($buffer{$pos}, create(new Line($buffer, $pos))->chr());
   }
+
+  #[@test, @values(array('T', 'Te', 'Tes', 'Test'))]
+  public function matches($str) {
+    $this->assertTrue(create(new Line('Test'))->matches($str));
+  }
+
+  #[@test, @values(array('', 'e', 'es', 'does-not-occur', "\0"))]
+  public function does_not_match($str) {
+    $this->assertFalse(create(new Line('Test'))->matches($str));
+  }
 }

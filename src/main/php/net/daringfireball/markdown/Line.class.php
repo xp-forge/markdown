@@ -12,7 +12,10 @@ class Line extends \lang\Object implements \ArrayAccess {
   }
 
   public function matches($str) {
-    return 0 === substr_compare($this->buffer, $str, $this->pos, strlen($str));
+    return '' === $str
+      ? false
+      : 0 === substr_compare($this->buffer, $str, $this->pos, strlen($str))
+    ;
   }
 
   public function until($delimiters) {
