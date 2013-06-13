@@ -13,47 +13,42 @@ class Markdown extends \lang\Object {
    */
   public function __construct() {
     $this->addHandler('&', function($line, $o, $target) {
-      if (false === ($s= strpos($line, ';', $o + 1))) return -1;
-      $target->add(new Entity(substr($line, $o, $s - $o + 1)));
-      return $s + 1;
+      if (-1 === ($s= $line->next(';'))) return -1;
+      $target->add(new Entity($line->slice($s)));
+      return $line->pos();
     });
     $this->addHandler('`', function($line, $o, $target) {
-      if ('`` ' === substr($line, $o, 3)) {
-        if (false === ($s= strpos($line, ' ``', $o + 3))) {
-          $s= strpos($line, '``', $o + 3);  // Be forgiving about incorrect closing
-        }
-        $target->add(new Code(substr($line, $o + 3, $s - $o - 3)));
-        return $s + 3;
-      } else if ('``' === substr($line, $o, 2)) {
-        $s= strpos($line, '``', $o + 2);  
-        $target->add(new Code(substr($line, $o + 2, $s - $o - 2)));
-        return $s + 2;
+      if ($line->matches('`` ')) {
+        $s= $line->next(array(' ``', '``'));  // Be forgiving about incorrect closing
+        $target->add(new Code($line->slice($s, +3)));
+        return $line->pos();
+      } else if ($line->matches('``')) {
+        $target->add(new Code($line->until('``')));
+        return $line->pos();
       } else {
-        $s= strpos($line, '`', $o + 1);
-        $target->add(new Code(substr($line, $o + 1, $s - $o - 1)));
-        return $s + 1;
+        $target->add(new Code($line->until('`')));
+        return $line->pos();
       }
     });
     $this->addHandler(array('*', '_'), function($line, $o, $target) {
-      if ($line{$o} === $line{$o + 1}) {    // Strong: **Word**
-        $s= strpos($line, $line{$o}.$line{$o + 1}, $o + 1);
-        $target->add(new Bold(substr($line, $o + 2, $s - $o - 2)));
-        return $s + 2;
-      } else {                              // Emphasis: *Word*
-        $s= strpos($line, $line{$o}, $o + 1);
-        $target->add(new Italic(substr($line, $o + 1, $s - $o - 1)));
-        return $s + 1;
+      $c= $line->chr();
+      if ($line->matches($c.$c)) {            // Strong: **Word**
+        $target->add(new Bold($line->until($c.$c)));
+        return $line->pos();
+      } else {                                // Emphasis: *Word*
+        $target->add(new Italic($line->until($c)));
+        return $line->pos();
       }
     });
     $this->addHandler('<', function($line, $o, $target) {
-      if (preg_match('#(([a-z]+://)[^ >]+)>#', $line, $m, 0, $o + 1)) {
+      if (preg_match('#<(([a-z]+://)[^ >]+)>#', $line, $m, 0, $line->pos())) {
         $target->add(new Link($m[1]));
-      } else if (preg_match('#(([^ @]+)@[^ >]+)>#', $line, $m, 0, $o + 1)) {
+      } else if (preg_match('#<(([^ @]+)@[^ >]+)>#', $line, $m, 0, $line->pos())) {
         $target->add(new Email($m[1]));
       } else {
         return -1;
       }
-      return $o + strlen($m[1]) + 2;
+      return $line->forward(strlen($m[0]));
     });
 
     // Links and images: [A link](http://example.com), [A link](http://example.com "Title"),
@@ -62,27 +57,20 @@ class Markdown extends \lang\Object {
     // exclamation mark, e.g. ![An image](http://example.com/image.jpg)
     $parseLink= function($line, $o, $target, $newInstance) {
       $title= null;
-      $s= strpos($line, ']', $o + 1);
-      $text= substr($line, $o + 1, $s - $o - 1);
-      $o= $s + 1;
-      $w= 0;
-      if ('(' === $line{$o}) {
-        for ($b= 1, $s= $o, $e= 1; $b && (($s+= $e) < strlen($line)); $s++, $e= strcspn($line, '()', $s)) {
-          if ('(' === $line{$s}) $b++; else if (')' === $line{$s}) $b--;
-        }
-        sscanf(substr($line, $o + 1, $s - $o - 2), '%[^" ] "%[^")]"', $url, $title);
-        $o= $s;
-      } else if ('[' === $line{$o} || $w= (' ' === $line{$o} && '[' === $line{$o + 1})) {
-        $s= strpos($line, ']', $o + $w + 1);
-        if ($s - $o - $w <= 1) {    // []
+      $text= $line->until(']');
+      $w= false;
+      if ($line->matches('(')) {
+        sscanf($line->matching('()'), '%[^" ] "%[^")]"', $url, $title);
+      } else if ($line->matches('[') || $w= $line->matches(' [')) {
+        $line->forward((int)$w);
+        if ('' === ($ref= $line->until(']'))) {
           $url= '@'.strtolower($text);
         } else {
-          $url= '@'.strtolower(substr($line, $o + $w + 1, $s - $o - $w - 1));
+          $url= '@'.strtolower($ref);
         }
-        $o= $s + 1;
       }
       $target->add($newInstance($url, $text, $title));
-      return $o;
+      return $line->pos();
     };
     $this->addHandler('[', function($line, $o, $target) use($parseLink) {
       return $parseLink($line, $o, $target, function($url, $text, $title) {
@@ -90,8 +78,8 @@ class Markdown extends \lang\Object {
       });
     });
     $this->addHandler('!', function($line, $o, $target) use($parseLink) {
-      if ('[' !== $line{$o + 1}) return -1;
-      $o++;
+      if (!$line->matches('![')) return -1;
+      $line->forward(1);
       return $parseLink($line, $o, $target, function($url, $text, $title) {
         return new Image($url, $text, $title);
       });
@@ -205,7 +193,7 @@ class Markdown extends \lang\Object {
           $t= $line{$o + 1};
           $o+= 2;             // Skip escape, don't tokenize next character
         } else if (isset($this->handler[$line{$o}])) {
-          $r= $this->handler[$line{$o}]($line, $o, $target);
+          $r= $this->handler[$line{$o}](new Line($line, $o), $o, $target);
           if (-1 === $r) {
             $t= $line{$o};    // Push back
             $o++;
