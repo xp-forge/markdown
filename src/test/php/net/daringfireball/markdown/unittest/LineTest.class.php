@@ -71,6 +71,36 @@ class LineTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function next_with_one_character() {
+    $this->assertEquals(5, create(new Line('Hello!'))->next('!'));
+  }
+
+  #[@test]
+  public function next_with_two_characters() {
+    $this->assertEquals(7, create(new Line('[[Hello]]'))->next(']]'));
+  }
+
+  #[@test]
+  public function next_with_not_ocurring_pattern() {
+    $this->assertEquals(-1, create(new Line('Hello'))->next('!'));
+  }
+
+  #[@test]
+  public function next_with_two_patterns() {
+    $this->assertEquals(5, create(new Line('Hello.'))->next(array('!', '.')));
+  }
+
+  #[@test]
+  public function next_with_two_patterns_with_two_characters() {
+    $this->assertEquals(7, create(new Line('[[Hello]]'))->next(array('>>', ']]')));
+  }
+
+  #[@test]
+  public function next_with_two_not_ocurring_patterns() {
+    $this->assertEquals(-1, create(new Line('Hello.'))->next(array('!', ',')));
+  }
+
+  #[@test]
   public function until_a_single_character() {
     $this->assertEquals('Hello', create(new Line('Hello!'))->until('!'));
   }

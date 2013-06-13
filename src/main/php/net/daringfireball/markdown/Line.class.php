@@ -58,6 +58,20 @@ class Line extends \lang\Object implements \ArrayAccess {
   }
 
   /**
+   * Finds the next occurrence of any of the given search strings
+   *
+   * @param  var $search A string for a single search string, an array for multiple
+   * @return int The found position, or -1 if no search string is found
+   */
+  public function next($search) {
+    foreach ((array)$search as $str) {
+      $s= strpos($this->buffer, $str, $this->pos + strlen($str));
+      if (false !== $s) return $s;
+    }
+    return -1;
+  }
+
+  /**
    * Returns the next slice of the string up until the position of any
    * of the characters in the given list of delimiters; and forwards the
    * internal pointer to the end.
@@ -125,14 +139,6 @@ class Line extends \lang\Object implements \ArrayAccess {
     $b= substr($this->buffer, $this->pos + $l, $length - $l);
     $this->pos+= $length + $l;
     return $b;
-  }
-
-  public function next($search) {
-    foreach ((array)$search as $str) {
-      $s= strpos($this->buffer, $str, $this->pos + strlen($str));
-      if (false !== $s) return $s;
-    }
-    return -1;
   }
 
   public function forward($offset= 1) {
