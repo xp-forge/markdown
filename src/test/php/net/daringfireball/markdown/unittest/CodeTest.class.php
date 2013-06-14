@@ -43,9 +43,9 @@ class CodeTest extends MarkdownTest {
   }
 
   #[@test]
-  public function code_span_with_leading_space_and_no_trailing_space() {
+  public function code_span_with_leading_space_and_no_trailing_space_in_sentence() {
     $this->assertTransformed(
-      '<p>This <code>$files= [];</code> will initialize "files" to an empty array</p>',
+      '<p>This <code>$files= [];</code> will initialize &quot;files&quot; to an empty array</p>',
       'This `` $files= [];`` will initialize "files" to an empty array'
     );
   }

@@ -151,12 +151,13 @@ class Line extends \lang\Object implements \ArrayAccess {
    * and forwards the internal pointer to the end.
    *
    * @param  int $length
-   * @param  int $l Cut
+   * @param  int $l The offset to the left (0 .. length)
+   * @param  int $r The offset to the right (0 .. -length)
    * @return string
    */
-  public function slice($length, $l= 0) {
-    $b= substr($this->buffer, $this->pos + $l, $length - $l);
-    $this->pos+= $length + $l;
+  public function slice($length, $l= 0, $r= 0) {
+    $b= substr($this->buffer, $this->pos + $l, $length - $l + $r);
+    $this->pos+= $length;
     return $b;
   }
 

@@ -18,8 +18,13 @@ class Markdown extends \lang\Object {
     });
     $this->addHandler('`', function($line, $target) {
       if ($line->matches('`` ')) {
-        $s= $line->next(array(' ``', '``'));  // Be forgiving about incorrect closing
-        $target->add(new Code($line->slice($s, +3)));
+        foreach (array(' ``', '``') as $delim) {
+          if (-1 === ($s= $line->next($delim))) continue;
+          $target->add(new Code($line->slice($s - $line->pos(), +3)));
+          $line->forward(strlen($delim));
+          return;
+        }
+        return false;
       } else if ($line->matches('``')) {
         $target->add(new Code($line->ending('``')));
       } else {

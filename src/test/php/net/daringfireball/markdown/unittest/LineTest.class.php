@@ -178,8 +178,18 @@ class LineTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function slice_of_given_length_and_cut() {
-    $this->assertEquals('ello', create(new Line('Hello'))->slice(5, 1));
+  public function slice_of_given_length_with_left_offset() {
+    $this->assertEquals('ello', create(new Line('Hello'))->slice(5, 1, 0));
+  }
+
+  #[@test]
+  public function slice_of_given_length_with_right_offset() {
+    $this->assertEquals('Hell', create(new Line('Hello'))->slice(5, 0, -1));
+  }
+
+  #[@test]
+  public function slice_of_given_length_with_left_and_right_offset() {
+    $this->assertEquals('ell', create(new Line('Hello'))->slice(5, 1, -1));
   }
 
   #[@test]
@@ -190,9 +200,41 @@ class LineTest extends \unittest\TestCase {
   }
 
   #[@test]
-  public function cut_affects_how_far_slice_advances_pointer() {
+  public function left_offset_does_not_affect_how_far_slice_advances_pointer() {
     $l= new Line('Test');
-    $l->slice(3, 1);
-    $this->assertEquals(4, $l->pos());
+    $l->slice(3, 1, 0);
+    $this->assertEquals(3, $l->pos());
+  }
+
+  #[@test]
+  public function right_offset_does_not_affect_how_far_slice_advances_pointer() {
+    $l= new Line('Test');
+    $l->slice(3, 0, -1);
+    $this->assertEquals(3, $l->pos());
+  }
+
+  #[@test]
+  public function slice() {
+    $l= new Line('He said: "Hello"!');
+    $l->forward(strlen('He said: '));
+    $this->assertEquals('Hello', $l->slice(7, 1, -1));
+    $this->assertEquals('!', $l->until("\n"));
+  }
+
+  #[@test, @values(array('This `` $files= []; `` is an initialization', 'This `` $files= [];`` is an initialization'))]
+  public function code_with_spaces($input) {
+    $line= new Line($input);
+    $line->forward(strlen('This '));
+    $code= null;
+    if ($line->matches('`` ')) {
+      foreach (array(' ``', '``') as $delim) {
+        if (-1 === ($s= $line->next($delim))) continue;
+        $code= $line->slice($s - $line->pos(), +3);
+        $line->forward(strlen($delim));
+        break;
+      }
+    }
+    $this->assertEquals('$files= [];', $code);
+    $this->assertEquals(' is an initialization', $line->until("\n"));
   }
 }
