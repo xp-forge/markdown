@@ -109,15 +109,19 @@ class Line extends \lang\Object implements \ArrayAccess {
    * $pos= $text->pos();            // 7
    * ```
    *
-   * @param  string $delimiters
+   * @param  var $delimiters String for one delimiter, an array for multiple
    * @return string
    */
-  public function ending($delimiter) {
-    $l= strlen($delimiter);
-    $s= strpos($this->buffer, $delimiter, $this->pos + $l);
-    $b= substr($this->buffer, $this->pos + $l, $s - $this->pos - $l);
-    $this->pos= $s + $l;
-    return $b;
+  public function ending($delimiters, $offset= -1) {
+    foreach ((array)$delimiters as $d) {
+      $l= strlen($d);
+      if (-1 === $offset) $offset= $l;
+      if (false === ($s= strpos($this->buffer, $d, $this->pos + $offset))) continue;
+      $b= substr($this->buffer, $this->pos + $offset, $s - $this->pos - $offset);
+      $this->pos= $s + $l;    // $l is correct here, not $offset
+      return $b;
+    }
+    return null;
   }
 
   /**

@@ -143,6 +143,11 @@ class LineTest extends \unittest\TestCase {
     $this->assertEquals('Hello', create(new Line($characters.'Hello'.$characters))->ending($characters));
   }
 
+  #[@test, @values(array('`` $code; ``', array('`` $code;``'))]
+  public function ending_with_any_of($input) {
+    $this->assertEquals('$code;', create(new Line($input))->ending(array(' ``', '``'), 3));
+  }
+
   #[@test]
   public function ending_advances_pointer() {
     $l= new Line('*Test*');
@@ -224,17 +229,11 @@ class LineTest extends \unittest\TestCase {
   #[@test, @values(array('This `` $files= []; `` is an initialization', 'This `` $files= [];`` is an initialization'))]
   public function code_with_spaces($input) {
     $line= new Line($input);
-    $line->forward(strlen('This '));
-    $code= null;
-    if ($line->matches('`` ')) {
-      foreach (array(' ``', '``') as $delim) {
-        if (-1 === ($s= $line->next($delim))) continue;
-        $code= $line->slice($s - $line->pos(), +3);
-        $line->forward(strlen($delim));
-        break;
-      }
-    }
-    $this->assertEquals('$files= [];', $code);
-    $this->assertEquals(' is an initialization', $line->until("\n"));
+    $before= $line->until('`');
+    $code= $line->ending(array(' ``', '``'), strlen('`` '));
+    $this->assertEquals(
+      array('before' => 'This ', 'code' => '$files= [];', 'after' => ' is an initialization'),
+      array('before' => $before, 'code' => $code, 'after' => $line->until("\n"))
+    );
   }
 }
