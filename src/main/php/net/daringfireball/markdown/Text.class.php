@@ -1,10 +1,27 @@
 <?php namespace net\daringfireball\markdown;
 
+/**
+ * A fragment of text
+ *
+ * @test  xp://net.daringfireball.markdown.unittest.TextNodeTest
+ */
 class Text extends Node {
-  public function __construct($value) {
+  public $value;
+
+  /**
+   * Creates a new fragment of text
+   *
+   * @param  string value
+   */
+  public function __construct($value= '') {
     $this->value= $value;
   }
 
+  /**
+   * Creates a string representation
+   *
+   * @return string
+   */
   public function toString() {
     return $this->getClassName().'<'.$this->value.'>';
   }

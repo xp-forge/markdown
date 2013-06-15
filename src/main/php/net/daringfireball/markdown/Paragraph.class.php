@@ -1,5 +1,10 @@
 <?php namespace net\daringfireball\markdown;
 
+/**
+ * A paragraph
+ *
+ * @test  xp://net.daringfireball.markdown.unittest.ParagraphTest 
+ */
 class Paragraph extends NodeList {
 
   /**
