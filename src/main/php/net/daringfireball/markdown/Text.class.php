@@ -9,6 +9,12 @@ class Text extends Node {
     return $this->getClassName().'<'.$this->value.'>';
   }
 
+  /**
+   * Emit this text node
+   *
+   * @param  [:net.daringfireball.markdown.Link] definitions
+   * @return string
+   */
   public function emit($definitions) {
 
     // If the string ends with two or more spaces, we have a manual line break.
