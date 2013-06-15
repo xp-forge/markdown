@@ -21,4 +21,9 @@ class ParagraphTest extends MarkdownTest {
   public function consecutive_empty_lines_open_a_new_paragraph($nl) {
     $this->assertTransformed('<p>Hello</p><p>World</p>', 'Hello'.$nl.'World');
   }
+
+  #[@test, @values(array('  ', '   '))]
+  public function manual_line_break_with_two_or_more_spaces($sp) {
+    $this->assertTransformed('<p>Hello<br/></p>', 'Hello'.$sp);
+  }
 }
