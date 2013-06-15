@@ -75,6 +75,14 @@ class CodeTest extends MarkdownTest {
   }
 
   #[@test]
+  public function indented_with_one_tab() {
+    $this->assertTransformed(
+      '<code>10 GOTO 10</code>',
+      "\t10 GOTO 10"
+    );
+  }
+
+  #[@test]
   public function two_lines_indented_with_four_spaces() {
     $this->assertTransformed(
       "<code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",

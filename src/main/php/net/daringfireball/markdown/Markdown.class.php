@@ -120,7 +120,7 @@ class Markdown extends \lang\Object {
       '(?P<ul>[+\*\-] )|'.
       '(?P<ol>[0-9]+\. )|'.
       '(?P<blockquote>\> )|'.
-      '(?P<code>    )|'.
+      '(?P<code>    |\t)|'.
       '(?P<def>\s{0,3}\[([^\]]+)\]:\s+([^ ]+))'.
     ')/';
     $lines= new \text\StringTokenizer($in, "\n");
