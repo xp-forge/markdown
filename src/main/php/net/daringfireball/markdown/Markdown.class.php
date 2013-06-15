@@ -133,7 +133,7 @@ class Markdown extends \lang\Object {
 
       // An empty line by itself ends the last element and starts a new paragraph.
       if ('' === $line) {
-        $target= $tokens->add(new Paragraph());
+        $target= $tokens->append(new Paragraph());
         continue;
       }
 
@@ -175,6 +175,14 @@ class Markdown extends \lang\Object {
         $offset= 0;
       }
 
+      // If previous line was text, add a newline
+      // * Hello\nWorld -> <p>Hello\nWorld</p>
+      // * Hello\n\nWorld -> <p>Hello</p><p>World</p>
+      $last= $target->last();
+      if ($last instanceof Text) {
+        $last->value.= "\n";
+      }
+
       // Tokenize line
       $safe= 0;
       $l= new Line($line, $offset);
@@ -190,8 +198,8 @@ class Markdown extends \lang\Object {
             $l->forward();
           }
         }
-        $target->add(new Text($t.$l->until($this->span)));
 
+        $target->add(new Text($t.$l->until($this->span)));
         if ($safe++ > 100) throw new \lang\IllegalStateException('Endless loop detected');
       }
     }

@@ -34,6 +34,11 @@ abstract class NodeList extends Node {
     return $this->nodes[$pos];
   }
 
+  public function last() {
+    $s= sizeof($this->nodes);
+    return $s ? $this->nodes[$s - 1] : null;
+  }
+
   public function toString() {
     return $this->getClassName().'<'.\xp::stringOf($this->nodes).'>';
   }
