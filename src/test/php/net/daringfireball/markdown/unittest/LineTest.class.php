@@ -4,12 +4,12 @@ use net\daringfireball\markdown\Line;
 
 class LineTest extends \unittest\TestCase {
 
-  #[@test, @values('', 'Hello')]
+  #[@test, @values(array('', 'Hello'))]
   public function length_equals_length_of_buffer_passed_to_constructor($buffer) {
     $this->assertEquals(strlen($buffer), create(new Line($buffer))->length());
   }
 
-  #[@test, @values('', 'Hello')]
+  #[@test, @values(array('', 'Hello'))]
   public function position_initially_defaults_to_zero($buffer) {
     $this->assertEquals(0, create(new Line($buffer))->pos());
   }
@@ -133,12 +133,12 @@ class LineTest extends \unittest\TestCase {
     $this->assertEquals(explode(' ', $input, $size), $tokens);
   }
 
-  #[@test, @values('*', '_', '`')]
+  #[@test, @values(array('*', '_', '`'))]
   public function ending_with_a_single_character($character) {
     $this->assertEquals('Hello', create(new Line($character.'Hello'.$character))->ending($character));
   }
 
-  #[@test, @values('**', '__', '``')]
+  #[@test, @values(array('**', '__', '``'))]
   public function ending_with_two_characters($characters) {
     $this->assertEquals('Hello', create(new Line($characters.'Hello'.$characters))->ending($characters));
   }
