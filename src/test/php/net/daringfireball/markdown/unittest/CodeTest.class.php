@@ -65,4 +65,28 @@ class CodeTest extends MarkdownTest {
       '`&#8212;` is the decimal-encoded equivalent of `&mdash;`.'
     );
   }
+
+  #[@test]
+  public function indented_with_four_spaces() {
+    $this->assertTransformed(
+      '<code>10 GOTO 10</code>',
+      '    10 GOTO 10'
+    );
+  }
+
+  #[@test]
+  public function two_lines_indented_with_four_spaces() {
+    $this->assertTransformed(
+      "<code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",
+      "    10 PRINT \"HI\"\n    20 GOTO 10"
+    );
+  }
+
+  #[@test, @ignore('Not yet implemented')]
+  public function github_style_fenced_block() {
+    $this->assertTransformed(
+      '<code>10 GOTO 10</code>',
+      "```\n10 PRINT \"HI\"\n20 GOTO 10\n```"
+    );
+  }
 }

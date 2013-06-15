@@ -120,6 +120,7 @@ class Markdown extends \lang\Object {
       '(?P<ul>[+\*\-] )|'.
       '(?P<ol>[0-9]+\. )|'.
       '(?P<blockquote>\> )|'.
+      '(?P<code>    )|'.
       '(?P<def>\s{0,3}\[([^\]]+)\]:\s+([^ ]+))'.
     ')/';
     $lines= new \text\StringTokenizer($in, "\n");
@@ -127,7 +128,7 @@ class Markdown extends \lang\Object {
     $tokens= new ParseTree();
     $definitions= array();
     $target= $tokens->add(new Paragraph());
-    $list= $quot= null;
+    $list= $quot= $code= null;
     while ($lines->hasMoreTokens()) {
       $line= $lines->nextToken();
 
@@ -155,6 +156,9 @@ class Markdown extends \lang\Object {
         } else if (isset($tag['hr']) && '' !== $tag['hr']) {
           $tokens->append(new Ruler());
           continue;
+        } else if (isset($tag['code']) && '' !== $tag['code']) {
+          $code || $code= $tokens->append(new CodeBlock());
+          $target= $code;
         } else if (isset($tag['underline']) && '' !== $tag['underline']) {
           $end= $target->size()- 1;
           $last= $target->get($end);
@@ -167,7 +171,7 @@ class Markdown extends \lang\Object {
           } else {
             $title= null;
           }
-          $definitions[strtolower($tag[11])]= new Link($tag[12], null, $title);
+          $definitions[strtolower($tag[12])]= new Link($tag[13], null, $title);
           continue;
         }
         $offset= strlen($tag[0]);
