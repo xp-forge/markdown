@@ -132,9 +132,14 @@ class Markdown extends \lang\Object {
     while ($lines->hasMoreTokens()) {
       $line= $lines->nextToken();
 
-      // An empty line by itself ends the last element and starts a new paragraph.
+      // An empty line by itself ends the last element and starts a new 
+      // paragraph. In list context, it makes the list use paragraphs.
       if ('' === $line) {
-        $target= $tokens->append(new Paragraph());
+        if ($list) {
+          $list->paragraphs= true;
+        } else {
+          $target= $tokens->append(new Paragraph());
+        }
         continue;
       }
 

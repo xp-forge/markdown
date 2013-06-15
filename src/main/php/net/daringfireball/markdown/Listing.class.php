@@ -1,15 +1,36 @@
 <?php namespace net\daringfireball\markdown;
 
 class Listing extends NodeList {
-  public function __construct($type) {
+  public $type;
+  public $paragraphs;
+
+  /**
+   * Creates a new list
+   *
+   * @param  string $type either "ul" or "ol"
+   * @param  bool $paragraphs Whether to use paragraphs inside list items.
+   */
+  public function __construct($type, $paragraphs= false) {
     $this->type= $type;
+    $this->paragraphs= $paragraphs;
   }
 
   public function toString() {
-    return $this->getClassName().'('.$this->type.')<'.\xp::stringOf($this->nodes).'>';
+    return sprintf(
+      '%s(%s%s)<%s>',
+      $this->getClassName(),
+      $this->type,
+      $this->paragraphs ? ' using paragraphs' : '',
+      \xp::stringOf($this->nodes)
+    );
   }
 
   public function emit($definitions) {
-    return '<'.$this->type.'>'.parent::emit($definitions).'</'.$this->type.'>';
+    $r= '';
+    foreach ($this->nodes as $node) {
+      $node->paragraphs= $this->paragraphs;
+      $r.= $node->emit($definitions);
+    }
+    return '<'.$this->type.'>'.$r.'</'.$this->type.'>';
   }
 }

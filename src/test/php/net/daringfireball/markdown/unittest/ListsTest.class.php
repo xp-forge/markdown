@@ -41,4 +41,12 @@ class ListsTest extends MarkdownTest {
       '1986\. What a great season.'
     );
   }
+
+  #[@test]
+  public function unordered_list_with_multiple_paragraphs() {
+    $this->assertTransformed(
+      "<ul><li><p>One</p></li><li><p>Two</p></li><li><p>Three</p></li></ul>",
+      "* One\n\n* Two\n\n* Three"
+    );
+  }
 }
