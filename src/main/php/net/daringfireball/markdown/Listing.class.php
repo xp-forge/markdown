@@ -15,6 +15,11 @@ class Listing extends NodeList {
     $this->paragraphs= $paragraphs;
   }
 
+  /**
+   * Creates a string representation
+   *
+   * @return string
+   */
   public function toString() {
     return sprintf(
       '%s(%s%s)<%s>',
@@ -25,11 +30,17 @@ class Listing extends NodeList {
     );
   }
 
+  /**
+   * Emit this text node
+   *
+   * @param  [:net.daringfireball.markdown.Link] definitions
+   * @return string
+   */
   public function emit($definitions) {
     $r= '';
-    foreach ($this->nodes as $node) {
-      $node->paragraphs= $this->paragraphs;
-      $r.= $node->emit($definitions);
+    foreach ($this->nodes as $item) {
+      $item->paragraphs= $this->paragraphs;
+      $r.= $item->emit($definitions);
     }
     return '<'.$this->type.'>'.$r.'</'.$this->type.'>';
   }

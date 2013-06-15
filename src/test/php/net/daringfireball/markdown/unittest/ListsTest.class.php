@@ -43,10 +43,18 @@ class ListsTest extends MarkdownTest {
   }
 
   #[@test]
-  public function unordered_list_with_multiple_paragraphs() {
+  public function unordered_list_with_paragraphs() {
     $this->assertTransformed(
       "<ul><li><p>One</p></li><li><p>Two</p></li><li><p>Three</p></li></ul>",
       "* One\n\n* Two\n\n* Three"
+    );
+  }
+
+  #[@test]
+  public function unordered_list_with_multiple_paragraphs() {
+    $this->assertTransformed(
+      "<ul><li><p>One</p><p>One and a half</p></li><li><p>Two</p></li></ul>",
+      "* One\n\n  One and a half\n\n* Two"
     );
   }
 }

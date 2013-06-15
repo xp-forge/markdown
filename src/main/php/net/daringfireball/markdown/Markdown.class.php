@@ -131,6 +131,7 @@ class Markdown extends \lang\Object {
     $list= $quot= $code= null;
     while ($lines->hasMoreTokens()) {
       $line= $lines->nextToken();
+      $offset= 0;
 
       // An empty line by itself ends the last element and starts a new 
       // paragraph. In list context, it makes the list use paragraphs.
@@ -143,6 +144,12 @@ class Markdown extends \lang\Object {
         continue;
       }
 
+      // Inside a list, indented elements
+      if ('  ' === substr($line, 0, 2) && $list) {
+        $target= $list->last()->add(new Paragraph());
+        $offset= 2;
+      }
+
       // Check what line begins with
       $m= preg_match($begin, $line, $tag);
       if ($m) {
@@ -151,10 +158,10 @@ class Markdown extends \lang\Object {
           $line= rtrim($line, ' #');
         } else if (isset($tag['ul']) && '' !== $tag['ul']) {
           $list || $list= $tokens->append(new Listing('ul'));
-          $target= $list->add(new ListItem());
+          $target= $list->add(new ListItem())->add(new Paragraph());
         } else if (isset($tag['ol']) && '' !== $tag['ol']) {
           $list || $list= $tokens->append(new Listing('ol'));
-          $target= $list->add(new ListItem());
+          $target= $list->add(new ListItem())->add(new Paragraph());
         } else if (isset($tag['blockquote']) && '' !== $tag['blockquote']) {
           $quot || $quot= $tokens->append(new BlockQuote());
           $target= $quot;
@@ -180,8 +187,6 @@ class Markdown extends \lang\Object {
           continue;
         }
         $offset= strlen($tag[0]);
-      } else {
-        $offset= 0;
       }
 
       // If previous line was text, add a newline

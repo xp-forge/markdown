@@ -3,13 +3,17 @@
 class ListItem extends NodeList {
   public $paragraphs;
 
+  /**
+   * Emit this text node
+   *
+   * @param  [:net.daringfireball.markdown.Link] definitions
+   * @return string
+   */
   public function emit($definitions) {
-    return 
-      '<li>'.
-      ($this->paragraphs ? '<p>' : '').
-      parent::emit($definitions).
-      ($this->paragraphs ? '</p>' : '').
-      '</li>'
-     ;
+    if ($this->paragraphs) {
+      return '<li>'.parent::emit($definitions).'</li>';
+    } else {
+      return '<li>'.$this->nodes[0]->nodes[0]->emit($definitions).'</li>';
+    }
   }
 }
