@@ -129,6 +129,7 @@ class Markdown extends \lang\Object {
     $definitions= array();
     $target= $tokens->add(new Paragraph());
     $list= $quot= $code= null;
+    $empty= false;
     while ($lines->hasMoreTokens()) {
       $line= $lines->nextToken();
       $offset= 0;
@@ -137,17 +138,28 @@ class Markdown extends \lang\Object {
       // paragraph. In list context, it makes the list use paragraphs.
       if ('' === $line) {
         if ($list) {
-          $list->paragraphs= true;
+          $empty= true;
         } else {
           $target= $tokens->append(new Paragraph());
         }
         continue;
       }
 
-      // Inside a list, indented elements
-      if ('  ' === substr($line, 0, 2) && $list) {
-        $target= $list->last()->add(new Paragraph());
-        $offset= 2;
+      // In list context, indented elements form additional paragpraphs
+      // inside list items. If the line doesn't start with a list bullet,
+      // this means the list is at its end.
+      if ($list) {
+        if ('  ' === substr($line, 0, 2)) {
+          $target= $list->last()->add(new Paragraph());
+          $offset= 2;
+        } else if (!preg_match('/^[+*-]+|[0-9]+\./', $line)) {
+          $list= null;
+          $target= $tokens->add(new Paragraph());
+          $empty= false;
+        } else {
+          $empty && $list->paragraphs= true;
+          $empty= false;
+        }
       }
 
       // Check what line begins with

@@ -57,4 +57,32 @@ class ListsTest extends MarkdownTest {
       "* One\n\n  One and a half\n\n* Two"
     );
   }
+
+  #[@test]
+  public function list_without_paragraphs_and_one_with() {
+    $this->assertTransformed(
+      "<ul><li>One</li><li>Two</li></ul>".
+      "<p>Between</p>".
+      "<ul><li><p>A</p></li><li><p>B</p></li></ul>".
+      "<p>After</p>",
+      "* One\n* Two\n\n".
+      "Between\n".
+      "* A\n\n* B\n\n".
+      "After"
+    );
+  }
+
+  #[@test]
+  public function list_with_paragraphs_and_one_without() {
+    $this->assertTransformed(
+      "<ul><li><p>A</p></li><li><p>B</p></li></ul>".
+      "<p>Between</p>".
+      "<ul><li>One</li><li>Two</li></ul>".
+      "<p>After</p>",
+      "* A\n\n* B\n\n".
+      "Between\n".
+      "* One\n* Two\n\n".
+      "After"
+    );
+  }
 }
