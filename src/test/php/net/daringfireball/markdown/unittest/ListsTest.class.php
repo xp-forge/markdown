@@ -85,4 +85,22 @@ class ListsTest extends MarkdownTest {
       "After"
     );
   }
+
+  #[@test, @ignore('Not yet implemented')]
+  public function sublist() {
+    $this->assertTransformed(
+      "<ul>".
+        "<li>One</li>".
+        "<li>Two".
+          "<ul><li>Two A</li><li>Two B</li></ul>".
+        "</li>".
+        "<li>Three</li>".
+      "</ul>",
+      "* One\n".
+      "* Two\n".
+      "  * Two A\n".
+      "  * Two B\n".
+      "* Three\n"
+    );
+  }
 }

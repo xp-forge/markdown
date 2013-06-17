@@ -128,77 +128,85 @@ class Markdown extends \lang\Object {
     $tokens= new ParseTree();
     $definitions= array();
     $target= $tokens->add(new Paragraph());
-    $list= $quot= $code= null;
+    $quot= $code= null;
+    $list= array();
     $empty= false;
     while ($lines->hasMoreTokens()) {
       $line= $lines->nextToken();
       $offset= 0;
 
-      // An empty line by itself ends the last element and starts a new 
-      // paragraph. In list context, it makes the list use paragraphs.
-      if ('' === $line) {
-        if ($list) {
-          $empty= true;
-        } else {
-          $target= $tokens->append(new Paragraph());
-        }
-        continue;
-      }
-
-      // In list context, indented elements form additional paragpraphs
-      // inside list items. If the line doesn't start with a list bullet,
-      // this means the list is at its end.
+      // List context vs. top-level paragraph
       if ($list) {
+
+        // An empty line makes the list use paragraphs.
+        if ('' === $line) {
+          $empty= true;
+          continue;
+        }
+
+        // Indented elements form additional paragpraphs inside list items. If 
+        // the line doesn't start with a list bullet, this means the list is at
+        // its end.
         if ('  ' === substr($line, 0, 2)) {
-          $target= $list->last()->add(new Paragraph());
+          $target= $list[0]->last()->add(new Paragraph());
           $offset= 2;
-        } else if (!preg_match('/^[+*-]+|[0-9]+\./', $line)) {
-          $list= null;
+        } else if (preg_match('/^([+*-]+|[0-9]+\.) /', $line, $m)) {
+          $empty && $list[0]->paragraphs= true;
+          $empty= false;
+          $target= $list[0]->add(new ListItem())->add(new Paragraph());
+          $offset= strlen($m[0]);
+        } else {
+          array_shift($list);
           $target= $tokens->add(new Paragraph());
           $empty= false;
-        } else {
-          $empty && $list->paragraphs= true;
-          $empty= false;
         }
-      }
+      } else {
 
-      // Check what line begins with
-      $m= preg_match($begin, $line, $tag);
-      if ($m) {
-        if (isset($tag['header']) && '' !== $tag['header']) {
-          $target= $tokens->append(new Header(substr_count($tag['header'], '#')));
-          $line= rtrim($line, ' #');
-        } else if (isset($tag['ul']) && '' !== $tag['ul']) {
-          $list || $list= $tokens->append(new Listing('ul'));
-          $target= $list->add(new ListItem())->add(new Paragraph());
-        } else if (isset($tag['ol']) && '' !== $tag['ol']) {
-          $list || $list= $tokens->append(new Listing('ol'));
-          $target= $list->add(new ListItem())->add(new Paragraph());
-        } else if (isset($tag['blockquote']) && '' !== $tag['blockquote']) {
-          $quot || $quot= $tokens->append(new BlockQuote());
-          $target= $quot;
-        } else if (isset($tag['hr']) && '' !== $tag['hr']) {
-          $tokens->append(new Ruler());
-          continue;
-        } else if (isset($tag['code']) && '' !== $tag['code']) {
-          $code || $code= $tokens->append(new CodeBlock());
-          $target= $code;
-        } else if (isset($tag['underline']) && '' !== $tag['underline']) {
-          $end= $target->size()- 1;
-          $last= $target->get($end);
-          $target->set($end, new Header('=' === $tag['underline']{0} ? 1 : 2))->add($last);
-          continue;
-        } else if (isset($tag['def']) && '' !== $tag['def']) {
-          $title= trim(substr($line, strlen($tag[0])));
-          if ('' !== $title && 0 === strcspn($title, '(\'"')) {
-            $title= trim($title, $def[$title{0}]);
-          } else {
-            $title= null;
-          }
-          $definitions[strtolower($tag[12])]= new Link($tag[13], null, $title);
+        // An empty line by itself ends the last element and starts a new
+        // paragraph.
+        if ('' === $line) {
+          $target= $tokens->append(new Paragraph());
           continue;
         }
-        $offset= strlen($tag[0]);
+
+        // Check what line begins with
+        $m= preg_match($begin, $line, $tag);
+        if ($m) {
+          if (isset($tag['header']) && '' !== $tag['header']) {
+            $target= $tokens->append(new Header(substr_count($tag['header'], '#')));
+            $line= rtrim($line, ' #');
+          } else if (isset($tag['ul']) && '' !== $tag['ul']) {
+            $list || array_unshift($list, $tokens->append(new Listing('ul')));
+            $target= $list[0]->add(new ListItem())->add(new Paragraph());
+          } else if (isset($tag['ol']) && '' !== $tag['ol']) {
+            $list || array_unshift($list, $tokens->append(new Listing('ol')));
+            $target= $list[0]->add(new ListItem())->add(new Paragraph());
+          } else if (isset($tag['blockquote']) && '' !== $tag['blockquote']) {
+            $quot || $quot= $tokens->append(new BlockQuote());
+            $target= $quot;
+          } else if (isset($tag['hr']) && '' !== $tag['hr']) {
+            $tokens->append(new Ruler());
+            continue;
+          } else if (isset($tag['code']) && '' !== $tag['code']) {
+            $code || $code= $tokens->append(new CodeBlock());
+            $target= $code;
+          } else if (isset($tag['underline']) && '' !== $tag['underline']) {
+            $end= $target->size()- 1;
+            $last= $target->get($end);
+            $target->set($end, new Header('=' === $tag['underline']{0} ? 1 : 2))->add($last);
+            continue;
+          } else if (isset($tag['def']) && '' !== $tag['def']) {
+            $title= trim(substr($line, strlen($tag[0])));
+            if ('' !== $title && 0 === strcspn($title, '(\'"')) {
+              $title= trim($title, $def[$title{0}]);
+            } else {
+              $title= null;
+            }
+            $definitions[strtolower($tag[12])]= new Link($tag[13], null, $title);
+            continue;
+          }
+          $offset= strlen($tag[0]);
+        }
       }
 
       // If previous line was text, add a newline
