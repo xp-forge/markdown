@@ -147,17 +147,28 @@ class Markdown extends \lang\Object {
         // Indented elements form additional paragpraphs inside list items. If 
         // the line doesn't start with a list bullet, this means the list is at
         // its end.
-        if ('  ' === substr($line, 0, 2)) {
-          $target= $list[0]->last()->add(new Paragraph());
-          $offset= 2;
-        } else if (preg_match('/^([+*-]+|[0-9]+\.) /', $line, $m)) {
+        if (preg_match('/^(\s+)?([+*-]+|[0-9]+\.) /', $line, $m)) {
           $empty && $list[0]->paragraphs= true;
           $empty= false;
+
+          // Check whether we need to indent / dedent the list level
+          $level= strlen($m[1]) / 2;
+          $current= sizeof($list) - 1;
+          if ($level > $current) {
+            array_unshift($list, $target->add(new Listing('ul')));
+          } else if ($level < $current) {
+            array_shift($list);
+          }
+
+          // Add list item
           $target= $list[0]->add(new ListItem())->add(new Paragraph());
           $offset= strlen($m[0]);
+        } else if ('  ' === substr($line, 0, 2)) {
+          $target= $list[0]->last()->add(new Paragraph());
+          $offset= 2;
         } else {
           array_shift($list);
-          $target= $tokens->add(new Paragraph());
+          $list || $target= $tokens->add(new Paragraph());
           $empty= false;
         }
       } else {

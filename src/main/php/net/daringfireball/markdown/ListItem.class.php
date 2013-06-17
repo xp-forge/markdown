@@ -13,7 +13,7 @@ class ListItem extends NodeList {
     if ($this->paragraphs) {
       return '<li>'.parent::emit($definitions).'</li>';
     } else {
-      return '<li>'.$this->nodes[0]->nodes[0]->emit($definitions).'</li>';
+      return '<li>'.$this->emitAll($this->nodes[0]->nodes, $definitions).'</li>';
     }
   }
 }

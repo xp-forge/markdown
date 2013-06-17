@@ -87,16 +87,27 @@ abstract class NodeList extends Node {
   }
 
   /**
-   * Emit this list
+   * Helper method to emit all nodes
    *
-   * @param  [:net.daringfireball.markdown.Link] definitions
+   * @param  net.daringfireball.markdown.Node[] $nodes
+   * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emit($definitions) {
+  protected function emitAll($nodes, $definitions) {
     $r= '';
-    foreach ($this->nodes as $node) {
+    foreach ($nodes as $node) {
       $r.= $node->emit($definitions);
     }
     return $r;
+  }
+
+  /**
+   * Emit this list
+   *
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emit($definitions) {
+    return $this->emitAll($this->nodes, $definitions);
   }
 }

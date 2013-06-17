@@ -86,7 +86,7 @@ class ListsTest extends MarkdownTest {
     );
   }
 
-  #[@test, @ignore('Not yet implemented')]
+  #[@test]
   public function sublist() {
     $this->assertTransformed(
       "<ul>".
