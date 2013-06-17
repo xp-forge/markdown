@@ -168,15 +168,15 @@ class Markdown extends \lang\Object {
           $offset= 2;
         } else {
           array_shift($list);
-          $list || $target= $tokens->add(new Paragraph());
+          $list || $target= null;
           $empty= false;
         }
       } else {
 
         // An empty line by itself ends the last element and starts a new
-        // paragraph.
+        // paragraph (if there are any more lines)
         if ('' === $line) {
-          $target= $tokens->append(new Paragraph());
+          $target= null;
           continue;
         }
 
@@ -202,9 +202,10 @@ class Markdown extends \lang\Object {
             $code || $code= $tokens->append(new CodeBlock());
             $target= $code;
           } else if (isset($tag['underline']) && '' !== $tag['underline']) {
-            $end= $target->size()- 1;
-            $last= $target->get($end);
-            $target->set($end, new Header('=' === $tag['underline']{0} ? 1 : 2))->add($last);
+            $paragraph= $tokens->last();
+            $text= $paragraph->remove($paragraph->size() - 1);
+            $tokens->append(new Header('=' === $tag['underline']{0} ? 1 : 2))->add($text);
+            $target= null;
             continue;
           } else if (isset($tag['def']) && '' !== $tag['def']) {
             $title= trim(substr($line, strlen($tag[0])));
@@ -218,6 +219,12 @@ class Markdown extends \lang\Object {
           }
           $offset= strlen($tag[0]);
         }
+      }
+
+      // We got here, so there is more text, and no target -> we need to open
+      // a new paragraph.
+      if (null === $target) {
+        $target= $tokens->append(new Paragraph());
       }
 
       // If previous line was text, add a newline

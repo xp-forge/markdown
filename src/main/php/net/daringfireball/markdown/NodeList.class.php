@@ -68,6 +68,18 @@ abstract class NodeList extends Node {
   }
 
   /**
+   * Removes a node at a given position
+   *
+   * @param  int $pos
+   * @return net.daringfireball.markdown.Node The removed node
+   */
+  public function remove($pos) {
+    $candidate= $this->nodes[$pos];
+    unset($this->nodes[$pos]);
+    return $candidate;
+  }
+
+  /**
    * Gets the last node
    *
    * @return net.daringfireball.markdown.Node ...or NULL if this list is empty

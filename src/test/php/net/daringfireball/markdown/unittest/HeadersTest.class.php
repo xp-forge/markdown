@@ -42,7 +42,7 @@ class HeadersTest extends MarkdownTest {
     $this->assertTransformed('<h1>A First Level Header</h1>', '# A First Level Header #####');
   }
 
-  #[@test, @ignore('Borken')]
+  #[@test]
   public function first_level_header_with_underline() {
     $this->assertTransformed(
       '<h1>A First Level Header</h1>', 
@@ -51,7 +51,7 @@ class HeadersTest extends MarkdownTest {
     );
   }
 
-  #[@test, @ignore('Borken')]
+  #[@test]
   public function second_level_header_with_underline() {
     $this->assertTransformed(
       '<h2>A Second Level Header</h2>', 

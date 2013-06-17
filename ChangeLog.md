@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Fixed issue #4: Underlined headers appear in paragraphs - (@thekid)
+
 ## 0.9.0 / 2013-06-17
 
 * Initial release with support for ordered and unordered lists, code 
