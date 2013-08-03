@@ -48,13 +48,14 @@ class Markdown extends \lang\Object {
     // [Google][goog] reference-style link, [Google][] implicit name,and finally [Google] [1] 
     // numeric references (-> spaces allowed!). Images almost identical except for leading
     // exclamation mark, e.g. ![An image](http://example.com/image.jpg)
-    $parseLink= function($line, $target, $newInstance) {
+    $tokenizer= $this;
+    $parseLink= function($line, $target, $newInstance) use($tokenizer) {
       $title= null;
       $text= $line->matching('[]');
       $w= false;
       if ($line->matches('(')) {
         sscanf($line->matching('()'), '%[^" ] "%[^")]"', $url, $title);
-        $node= $this->tokenize(new Line($text), new ParseTree());
+        $node= $tokenizer->tokenize(new Line($text), new ParseTree());
       } else if ($line->matches('[') || $w= $line->matches(' [')) {
         $line->forward((int)$w);
         $node= new Text($text);
