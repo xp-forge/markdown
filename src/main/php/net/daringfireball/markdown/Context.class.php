@@ -1,11 +1,9 @@
 <?php namespace net\daringfireball\markdown;
 
 abstract class Context extends \lang\Object {
-  protected $parent= null;
   public $tokenizer;
 
   public function enter(self $context) {
-    $context->parent= $this;
     $context->tokenizer= $this->tokenizer;
     return $context;
   }
