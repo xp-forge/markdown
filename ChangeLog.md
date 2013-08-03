@@ -3,6 +3,7 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Fixed issue #1: Error message not helpful for unclosed tags - (@thekid)
 * Fixed issue #4: Underlined headers appear in paragraphs - (@thekid)
 
 ## 0.9.0 / 2013-06-17

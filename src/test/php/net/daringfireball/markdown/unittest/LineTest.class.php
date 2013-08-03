@@ -236,4 +236,19 @@ class LineTest extends \unittest\TestCase {
       array('before' => $before, 'code' => $code, 'after' => $line->until("\n"))
     );
   }
+
+  #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched *')]
+  public function ending_single_delimiter_not_found() {
+    create(new Line('*Hello'))->ending('*');
+  }
+
+  #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched **')]
+  public function ending_double_delimiter_not_found() {
+    create(new Line('**Hello'))->ending('**');
+  }
+
+  #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched **')]
+  public function none_of_ending_delimiters_not_found() {
+    create(new Line('*Hello'))->ending(array('**', '*'));
+  }
 }

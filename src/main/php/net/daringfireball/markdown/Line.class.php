@@ -111,6 +111,7 @@ class Line extends \lang\Object implements \ArrayAccess {
    *
    * @param  var $delimiters String for one delimiter, an array for multiple
    * @return string
+   * @throws lang.IllegalArgumentException If none of the delimiters can be found
    */
   public function ending($delimiters, $offset= -1) {
     foreach ((array)$delimiters as $d) {
@@ -121,7 +122,7 @@ class Line extends \lang\Object implements \ArrayAccess {
       $this->pos= $s + $l;    // $l is correct here, not $offset
       return $b;
     }
-    return null;
+    throw new \lang\IllegalStateException('Unmatched '.implode(', ', (array)$delimiters));
   }
 
   /**
