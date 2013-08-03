@@ -2,6 +2,12 @@
 
 class ToplevelContext extends Context {
 
+  /**
+   * Sets handlers
+   * 
+   * @param [:var] handlers
+   * @see   xp://net.daringfireball.markdown.Markdown#addHandler
+   */
   public function setHandlers($handlers) {
     $this->handlers= $handlers;
   }
@@ -13,25 +19,6 @@ class ToplevelContext extends Context {
    * @return net.daringfireball.markdown.Node
    */
   public function parse($lines) {
-    static $def= array('(' => '()', '"' => '"', "'" => "'");
-
-    // * Atx-style headers "#" -> h1, "##" -> h2, ... etc.
-    // * Setext-style headers are "underlined"
-    // * "*", "+" or "-" -> ul/li
-    // * ">" or "> >" -> block quoting
-    // * [0-9]"." -> ol/li
-    // * [id]: http://example.com "Link"
-    $begin= '/^('.
-      '(?P<header>#{1,6} )|'.
-      '(?P<underline>(={3,}|-{3,}))|'.
-      '(?P<hr>(\* ?){3,}$)|'.
-      '(?P<ul>[+\*\-] )|'.
-      '(?P<ol>[0-9]+\. )|'.
-      '(?P<blockquote>\> )|'.
-      '(?P<code>    |\t)|'.
-      '(?P<def>\s{0,3}\[([^\]]+)\]:\s+([^ ]+))'.
-    ')/';
-
     $result= new ParseTree();
     $result->add(new Paragraph());
     $target= null;

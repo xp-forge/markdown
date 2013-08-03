@@ -91,6 +91,12 @@ class Markdown extends \lang\Object {
     });
 
     // Handlers
+    // * Atx-style headers "#" -> h1, "##" -> h2, ... etc.
+    // * Setext-style headers are "underlined"
+    // * "*", "+" or "-" -> ul/li
+    // * ">" or "> >" -> block quoting
+    // * [0-9]"." -> ol/li
+    // * [id]: http://example.com "Link"
     $this->addHandler('/^(#{1,6}) (.+)/', function($lines, $matches, $result, $ctx) { 
       $header= $result->append(new Header(substr_count($matches[1], '#')));
       $ctx->tokenize(new Line(rtrim($matches[2], ' #')), $header);
