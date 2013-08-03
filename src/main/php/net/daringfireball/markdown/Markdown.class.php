@@ -5,18 +5,19 @@
  * @see  https://github.com/markdown/markdown.github.com/wiki/Implementations
  */
 class Markdown extends \lang\Object {
-  protected $handler= array();
+  protected $tokens= array();
   protected $span= '\\';
 
   /**
-   * Initializes default handlers
+   * Initializes default tokenss
    */
   public function __construct() {
-    $this->addHandler('&', function($line, $target) {
+    $this->addToken('&', function($line, $target) {
       if (-1 === ($s= $line->next(';'))) return false;
       $target->add(new Entity($line->slice($s)));
+      return true;
     });
-    $this->addHandler('`', function($line, $target) {
+    $this->addToken('`', function($line, $target) {
       if ($line->matches('`` ')) {
         $target->add(new Code($line->ending(array(' ``', '``'), 3)));
       } else if ($line->matches('``')) {
@@ -24,8 +25,9 @@ class Markdown extends \lang\Object {
       } else {
         $target->add(new Code($line->ending('`')));
       }
+      return true;
     });
-    $this->addHandler('<', function($line, $target) {
+    $this->addToken('<', function($line, $target) {
       if (preg_match('#<(([a-z]+://)[^ >]+)>#', $line, $m, 0, $line->pos())) {
         $target->add(new Link($m[1]));
       } else if (preg_match('#<(([^ @]+)@[^ >]+)>#', $line, $m, 0, $line->pos())) {
@@ -34,6 +36,7 @@ class Markdown extends \lang\Object {
         return false;
       }
       $line->forward(strlen($m[0]));
+      return true;
     });
 
     // *Word* => Emphasis, **Word** => Strong emphasis
@@ -44,9 +47,10 @@ class Markdown extends \lang\Object {
       } else {
         $target->add(new Italic($line->ending($c)));
       }
+      return true;
     };
-    $this->addHandler('*', $emphasis);
-    $this->addHandler('_', $emphasis);
+    $this->addToken('*', $emphasis);
+    $this->addToken('_', $emphasis);
 
     // Links and images: [A link](http://example.com), [A link](http://example.com "Title"),
     // [Google][goog] reference-style link, [Google][] implicit name,and finally [Google] [1] 
@@ -70,13 +74,14 @@ class Markdown extends \lang\Object {
         }
       }
       $target->add($newInstance($url, $node, $title));
+      return true;
     };
-    $this->addHandler('[', function($line, $target) use($parseLink) {
+    $this->addToken('[', function($line, $target) use($parseLink) {
       return $parseLink($line, $target, function($url, $text, $title) {
         return new Link($url, $text, $title);
       });
     });
-    $this->addHandler('!', function($line, $target) use($parseLink) {
+    $this->addToken('!', function($line, $target) use($parseLink) {
       if (!$line->matches('![')) return false;
       $line->forward(1);
       return $parseLink($line, $target, function($url, $text, $title) {
@@ -86,21 +91,22 @@ class Markdown extends \lang\Object {
   }
 
   /**
-   * Adds a handler to parse starting with a given character
+   * Adds a tokens to parse starting with a given character
    *
-   * The handler is a closure of the following form:
+   * The tokens is a closure of the following form:
    * ```php
-   * $handler= function($line, $target) {
+   * $tokens= function($line, $target) {
    *   $target->add(new Code($line->ending('`')));
+   *   return true;
    * };
    * ```
-   * The handler may return FALSE to indicate it cannot handle the token.
+   * The tokens needs to return whether it handled the token.
    * 
    * @param string $char A single character starting the token
-   * @param var $handler The closure
+   * @param var $tokens The closure
    */
-  public function addHandler($char, $handler) {
-    $this->handler[$char]= $handler;
+  public function addToken($char, $tokens) {
+    $this->tokens[$char]= $tokens;
     $this->span.= $char;
   }
 
@@ -120,8 +126,8 @@ class Markdown extends \lang\Object {
       if ('\\' === $c) {
         $t= $line{$line->pos() + 1};
         $line->forward(2);          // Skip escape, don't tokenize next character
-      } else if (isset($this->handler[$c])) {
-        if (false === $this->handler[$c]($line, $target)) {
+      } else if (isset($this->tokens[$c])) {
+        if (!$this->tokens[$c]($line, $target)) {
           $t= $c;                   // Push back
           $line->forward();
         }

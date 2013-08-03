@@ -3,6 +3,7 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Heads up: Changed token handlers API to addToken() - (@thekid)
 * Added possibility to pass predefined urls to transform() - (@thekid)
 
 ## 0.9.1 / 2013-08-03
