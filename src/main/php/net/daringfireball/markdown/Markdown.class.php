@@ -132,6 +132,10 @@ class Markdown extends \lang\Object {
       $result->append($ctx->enter(new CodeContext())->parse($lines));
       return true;
     });
+    $this->addHandler('/^```(.*)/', function($lines, $matches, $result, $ctx) { 
+      $result->append($ctx->enter(new FencedCodeContext($matches[1]))->parse($lines));
+      return true;
+    });
     $this->addHandler('/^\s{0,3}\[([^\]]+)\]:\s+([^ ]+)(.*)/', function($lines, $matches, $result, $ctx) { 
       static $def= array('(' => '()', '"' => '"', "'" => "'");
   

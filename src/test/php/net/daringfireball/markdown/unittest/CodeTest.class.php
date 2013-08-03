@@ -90,11 +90,19 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test, @ignore('Not yet implemented')]
+  #[@test]
   public function github_style_fenced_block() {
     $this->assertTransformed(
-      '<code>10 GOTO 10</code>',
+      "<code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",
       "```\n10 PRINT \"HI\"\n20 GOTO 10\n```"
+    );
+  }
+
+  #[@test]
+  public function github_style_fenced_block_with_language() {
+    $this->assertTransformed(
+      "<code lang=\"basic\">10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",
+      "```basic\n10 PRINT \"HI\"\n20 GOTO 10\n```"
     );
   }
 }
