@@ -12,7 +12,7 @@ class BlockquoteContext extends Context {
     $result= new BlockQuote();
 
     while ($lines->hasMoreLines()) {
-      $line= new Line($lines->nextLine());
+      $line= $lines->nextLine();
       if ('>' !== $line->chr()) break;
 
       $line->forward(2);
