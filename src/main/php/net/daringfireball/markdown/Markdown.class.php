@@ -117,7 +117,7 @@ class Markdown extends \lang\Object {
    * @param  net.daringfireball.markdown.Node $target The target node to add nodes to
    * @return net.daringfireball.markdown.Node The target
    */
-  public function tokenize($line, $target) {
+  public function tokenize($line, Node $target) {
     $safe= 0;
     $l= $line->length();
     while ($line->pos() < $l) {
@@ -147,139 +147,10 @@ class Markdown extends \lang\Object {
    * @return string markup
    */
   public function transform($in, $urls= array()) {
-    static $def= array('(' => '()', '"' => '"', "'" => "'");
-
-    // * Atx-style headers "#" -> h1, "##" -> h2, ... etc.
-    // * Setext-style headers are "underlined"
-    // * "*", "+" or "-" -> ul/li
-    // * ">" or "> >" -> block quoting
-    // * [0-9]"." -> ol/li
-    // * [id]: http://example.com "Link"
-    $begin= '/^('.
-      '(?P<header>#{1,6} )|'.
-      '(?P<underline>(={3,}|-{3,}))|'.
-      '(?P<hr>(\* ?){3,}$)|'.
-      '(?P<ul>[+\*\-] )|'.
-      '(?P<ol>[0-9]+\. )|'.
-      '(?P<blockquote>\> )|'.
-      '(?P<code>    |\t)|'.
-      '(?P<def>\s{0,3}\[([^\]]+)\]:\s+([^ ]+))'.
-    ')/';
     $lines= new \text\StringTokenizer($in, "\n");
-
-    $tokens= new ParseTree();
-    $target= $tokens->add(new Paragraph());
-    $quot= $code= null;
-    $list= array();
-    $empty= false;
-    while ($lines->hasMoreTokens()) {
-      $line= $lines->nextToken();
-      $offset= 0;
-
-      // List context vs. top-level paragraph
-      if ($list) {
-
-        // An empty line makes the list use paragraphs.
-        if ('' === $line) {
-          $empty= true;
-          continue;
-        }
-
-        // Indented elements form additional paragpraphs inside list items. If 
-        // the line doesn't start with a list bullet, this means the list is at
-        // its end.
-        if (preg_match('/^(\s+)?([+*-]+|[0-9]+\.) /', $line, $m)) {
-          $empty && $list[0]->paragraphs= true;
-          $empty= false;
-
-          // Check whether we need to indent / dedent the list level
-          $level= strlen($m[1]) / 2;
-          $current= sizeof($list) - 1;
-          if ($level > $current) {
-            array_unshift($list, $target->add(new Listing('ul')));
-          } else if ($level < $current) {
-            array_shift($list);
-          }
-
-          // Add list item
-          $target= $list[0]->add(new ListItem())->add(new Paragraph());
-          $offset= strlen($m[0]);
-        } else if ('  ' === substr($line, 0, 2)) {
-          $target= $list[0]->last()->add(new Paragraph());
-          $offset= 2;
-        } else {
-          array_shift($list);
-          $list || $target= null;
-          $empty= false;
-        }
-      } else {
-
-        // An empty line by itself ends the last element and starts a new
-        // paragraph (if there are any more lines)
-        if ('' === $line) {
-          $target= null;
-          continue;
-        }
-
-        // Check what line begins with
-        $m= preg_match($begin, $line, $tag);
-        if ($m) {
-          if (isset($tag['header']) && '' !== $tag['header']) {
-            $target= $tokens->append(new Header(substr_count($tag['header'], '#')));
-            $line= rtrim($line, ' #');
-          } else if (isset($tag['ul']) && '' !== $tag['ul']) {
-            $list || array_unshift($list, $tokens->append(new Listing('ul')));
-            $target= $list[0]->add(new ListItem())->add(new Paragraph());
-          } else if (isset($tag['ol']) && '' !== $tag['ol']) {
-            $list || array_unshift($list, $tokens->append(new Listing('ol')));
-            $target= $list[0]->add(new ListItem())->add(new Paragraph());
-          } else if (isset($tag['blockquote']) && '' !== $tag['blockquote']) {
-            $quot || $quot= $tokens->append(new BlockQuote());
-            $target= $quot;
-          } else if (isset($tag['hr']) && '' !== $tag['hr']) {
-            $tokens->append(new Ruler());
-            continue;
-          } else if (isset($tag['code']) && '' !== $tag['code']) {
-            $code || $code= $tokens->append(new CodeBlock());
-            $target= $code;
-          } else if (isset($tag['underline']) && '' !== $tag['underline']) {
-            $paragraph= $tokens->last();
-            $text= $paragraph->remove($paragraph->size() - 1);
-            $tokens->append(new Header('=' === $tag['underline']{0} ? 1 : 2))->add($text);
-            $target= null;
-            continue;
-          } else if (isset($tag['def']) && '' !== $tag['def']) {
-            $title= trim(substr($line, strlen($tag[0])));
-            if ('' !== $title && 0 === strcspn($title, '(\'"')) {
-              $title= trim($title, $def[$title{0}]);
-            } else {
-              $title= null;
-            }
-            $urls[strtolower($tag[12])]= new Link($tag[13], null, $title);
-            continue;
-          }
-          $offset= strlen($tag[0]);
-        }
-      }
-
-      // We got here, so there is more text, and no target -> we need to open
-      // a new paragraph.
-      if (null === $target) {
-        $target= $tokens->append(new Paragraph());
-      }
-
-      // If previous line was text, add a newline
-      // * Hello\nWorld -> <p>Hello\nWorld</p>
-      // * Hello\n\nWorld -> <p>Hello</p><p>World</p>
-      $last= $target->last();
-      if ($last instanceof Text) {
-        $last->value.= "\n";
-      }
-
-      $this->tokenize(new Line($line, $offset), $target);
-    }
-    // \util\cmd\Console::writeLine('@-> ', $tokens, ' & ', $urls);
-
-    return $tokens->emit($urls);
+    $context= new ToplevelContext();
+    $context->tokenizer= $this;
+    $tree= $context->parse($lines);
+    return $tree->emit($tree->urls + $urls);
   }
 }

@@ -14,6 +14,11 @@ class CodeBlock extends NodeList {
    * @return string
    */
   public function emit($definitions) {
-    return '<code>'.parent::emit($definitions).'</code>';
+    $r= '';
+    for ($i= 0, $s= sizeof($this->nodes); $i < $s; $i++) {
+      $r.= $this->nodes[$i]->emit($definitions);
+      if ($i < $s - 1) $r.= "\n";
+    }
+    return '<code>'.$r.'</code>';
   }
 }
