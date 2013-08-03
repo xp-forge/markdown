@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 0.9.2 / 2013-08-03
+
 * Implemented feature request #2: Support GitHub-style fenced code blocks
   (@thekid)
 * Made line handlers extensible via addHandler() - (@thekid)
