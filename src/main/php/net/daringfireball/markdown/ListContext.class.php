@@ -14,6 +14,12 @@ class ListContext extends Context {
     $this->level= $level;
   }
 
+  /**
+   * Parse input into nodes
+   *
+   * @param  net.daringfireball.markdown.Input $lines
+   * @return net.daringfireball.markdown.Node
+   */
   public function parse($lines) {
     $empty= false;
     $target= null;

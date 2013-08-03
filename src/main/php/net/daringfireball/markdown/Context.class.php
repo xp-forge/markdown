@@ -16,12 +16,19 @@ abstract class Context extends \lang\Object {
   }
 
   /**
-   * Parse a node from a given input
+   * Parse input into nodes
    *
-   * @param  var lines
-   * @return net.daringfireball.markdown.Node The parsed npde
+   * @param  net.daringfireball.markdown.Input $lines
+   * @return net.daringfireball.markdown.Node
    */
   public abstract function parse($lines);
+
+  /**
+   * Returns this context's name
+   *
+   * @return string
+   */
+  public abstract function name();
 
   /**
    * Tokenize a line
@@ -51,14 +58,6 @@ abstract class Context extends \lang\Object {
     }
     return $target;
   }
-
-
-  /**
-   * Returns this context's name
-   *
-   * @return string
-   */
-  public abstract function name();
 
   /**
    * Creates a string representation of this context
