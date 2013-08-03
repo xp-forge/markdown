@@ -117,7 +117,7 @@ class Markdown extends \lang\Object {
       $c= $line->chr();
       if ('\\' === $c) {
         $t= $line{$line->pos() + 1};
-        $line->forward(2);             // Skip escape, don't tokenize next character
+        $line->forward(2);          // Skip escape, don't tokenize next character
       } else if (isset($this->handler[$c])) {
         if (false === $this->handler[$c]($line, $target)) {
           $t= $c;                   // Push back
