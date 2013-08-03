@@ -3,6 +3,7 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Fixed issue #3: Support images inside links - (@thekid)
 * Fixed issue #1: Error message not helpful for unclosed tags - (@thekid)
 * Fixed issue #4: Underlined headers appear in paragraphs - (@thekid)
 
