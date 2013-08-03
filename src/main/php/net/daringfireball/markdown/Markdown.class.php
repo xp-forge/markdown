@@ -137,9 +137,10 @@ class Markdown extends \lang\Object {
    * Transform a given input and returns the output
    *
    * @param  string $in markdown
+   * @param  [:net.daringfireball.markdown.Link] $urls
    * @return string markup
    */
-  public function transform($in) {
+  public function transform($in, $urls= array()) {
     static $def= array('(' => '()', '"' => '"', "'" => "'");
 
     // * Atx-style headers "#" -> h1, "##" -> h2, ... etc.
@@ -161,7 +162,6 @@ class Markdown extends \lang\Object {
     $lines= new \text\StringTokenizer($in, "\n");
 
     $tokens= new ParseTree();
-    $definitions= array();
     $target= $tokens->add(new Paragraph());
     $quot= $code= null;
     $list= array();
@@ -249,7 +249,7 @@ class Markdown extends \lang\Object {
             } else {
               $title= null;
             }
-            $definitions[strtolower($tag[12])]= new Link($tag[13], null, $title);
+            $urls[strtolower($tag[12])]= new Link($tag[13], null, $title);
             continue;
           }
           $offset= strlen($tag[0]);
@@ -272,8 +272,8 @@ class Markdown extends \lang\Object {
 
       $this->tokenize(new Line($line, $offset), $target);
     }
-    // \util\cmd\Console::writeLine('@-> ', $tokens, ' & ', $definitions);
+    // \util\cmd\Console::writeLine('@-> ', $tokens, ' & ', $urls);
 
-    return $tokens->emit($definitions);
+    return $tokens->emit($urls);
   }
 }

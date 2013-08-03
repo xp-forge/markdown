@@ -19,9 +19,10 @@ abstract class MarkdownTest extends \unittest\TestCase {
    *
    * @param  string $expected
    * @param  string $input
+   * @param  [:net.daringfireball.markdown.Link] $urls
    * @throws unittest.AssertionFailedError
    */
-  protected function assertTransformed($expected, $input) {
-    $this->assertEquals($expected, $this->fixture->transform($input));
+  protected function assertTransformed($expected, $input, $urls= array()) {
+    $this->assertEquals($expected, $this->fixture->transform($input, $urls));
   }
 }

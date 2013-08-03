@@ -1,7 +1,7 @@
 <?php namespace net\daringfireball\markdown;
 
 class Link extends Node {
-  public function __construct($url, $text= null, $title= null) {
+  public function __construct($url, Node $text= null, $title= null) {
     $this->url= $url;
     $this->text= $text;
     $this->title= $title;

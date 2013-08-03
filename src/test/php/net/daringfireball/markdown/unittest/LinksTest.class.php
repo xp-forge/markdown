@@ -41,6 +41,15 @@ class LinksTest extends MarkdownTest {
   }
 
   #[@test]
+  public function references_may_be_passed_to_transform_method() {
+    $this->assertTransformed(
+      '<p>This is <a href="http://example.com/">an example</a> reference-style link.</p>',
+      'This is [an example][id] reference-style link.',
+      array('id' => new \net\daringfireball\markdown\Link('http://example.com/'))
+    );
+  }
+
+  #[@test]
   public function definitions_are_case_insensitive() {
     $this->assertTransformed(
       '<p>This is <a href="http://example.com/" title="Optional Title Here">an example</a> reference-style link.</p>',
