@@ -18,8 +18,8 @@ class ListContext extends Context {
     $empty= false;
     $target= null;
     $result= new Listing($this->type);
-    while ($lines->hasMoreTokens()) {
-      $line= new Line($lines->nextToken());
+    while ($lines->hasMoreLines()) {
+      $line= $lines->nextLine();
 
       // An empty line makes the list use paragraphs, except if it's the last line.
       if (0 === $line->length()) {
@@ -38,11 +38,11 @@ class ListContext extends Context {
         // the list item belongs to this list
         $level= strlen($m[1]) / 2;
         if ($level > $this->level) {
-          $lines->pushBack($line."\n");
+          $lines->resetLine($line);
           $target= $target ?: $result->add(new ListItem())->add(new Paragraph());
           $target->add($this->enter(new self($this->type, $level))->parse($lines));
         } else if ($level < $this->level) {
-          $lines->pushBack($line."\n");
+          $lines->resetLine($line);
           break;
         } else {
           $target= $result->add(new ListItem())->add(new Paragraph());
@@ -56,7 +56,7 @@ class ListContext extends Context {
         $line->forward(2);
         $this->tokenizer->tokenize($line, $paragraph);
       } else {
-        $lines->pushBack($line."\n");
+        $lines->resetLine($line);
         break;
       }
     }

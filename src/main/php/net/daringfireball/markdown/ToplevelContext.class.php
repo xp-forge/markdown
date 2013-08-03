@@ -25,8 +25,8 @@ class ToplevelContext extends Context {
     $result= new ParseTree();
     $result->add(new Paragraph());
     $target= null;
-    while ($lines->hasMoreTokens()) {
-      $line= new Line($lines->nextToken());
+    while ($lines->hasMoreLines()) {
+      $line= $lines->nextLine();
 
       // An empty line by itself ends the last element and starts a new
       // paragraph (if there are any more lines)
@@ -41,22 +41,22 @@ class ToplevelContext extends Context {
           $target= $result->append(new Header(substr_count($tag['header'], '#')));
           $line= new Line(rtrim($line, ' #'));
         } else if (isset($tag['ul']) && '' !== $tag['ul']) {
-          $lines->pushBack($line."\n");
+          $lines->resetLine($line);
           $result->append($this->enter(new ListContext('ul'))->parse($lines));
           $target= null;
           continue;
         } else if (isset($tag['ol']) && '' !== $tag['ol']) {
-          $lines->pushBack($line."\n");
+          $lines->resetLine($line);
           $result->append($this->enter(new ListContext('ol'))->parse($lines));
           $target= null;
           continue;
         } else if (isset($tag['blockquote']) && '' !== $tag['blockquote']) {
-          $lines->pushBack($line."\n");
+          $lines->resetLine($line);
           $result->append($this->enter(new BlockquoteContext())->parse($lines));
           $target= null;
           continue;
         } else if (isset($tag['code']) && '' !== $tag['code']) {
-          $lines->pushBack($line."\n");
+          $lines->resetLine($line);
           $result->append($this->enter(new CodeContext())->parse($lines));
           $target= null;
           continue;

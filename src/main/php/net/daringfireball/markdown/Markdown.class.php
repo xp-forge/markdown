@@ -142,15 +142,14 @@ class Markdown extends \lang\Object {
   /**
    * Transform a given input and returns the output
    *
-   * @param  string $in markdown
+   * @param  var $in markdown either a string or a net.daringfireball.markdown.Input
    * @param  [:net.daringfireball.markdown.Link] $urls
    * @return string markup
    */
   public function transform($in, $urls= array()) {
-    $lines= new \text\StringTokenizer($in, "\n");
     $context= new ToplevelContext();
     $context->tokenizer= $this;
-    $tree= $context->parse($lines);
+    $tree= $context->parse($in instanceof Input ?: new StringInput((string)$in));
     return $tree->emit($tree->urls + $urls);
   }
 }

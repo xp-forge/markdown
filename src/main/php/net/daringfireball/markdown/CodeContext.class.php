@@ -5,14 +5,14 @@ class CodeContext extends Context {
   public function parse($lines) {
     $result= new CodeBlock();
 
-    while ($lines->hasMoreTokens()) {
-      $line= $lines->nextToken();
+    while ($lines->hasMoreLines()) {
+      $line= $lines->nextLine();
       if ("\t" === $line{0}) {
         $result->add(new Text(substr($line, 1)));
       } else if (0 === strncmp($line, '    ', 4)) {
         $result->add(new Text(substr($line, 4)));
       } else {
-        $lines->pushBack($line."\n");
+        $lines->resetLine($line);
         break;
       }
     }

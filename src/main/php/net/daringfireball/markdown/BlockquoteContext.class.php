@@ -5,8 +5,8 @@ class BlockquoteContext extends Context {
   public function parse($lines) {
     $result= new BlockQuote();
 
-    while ($lines->hasMoreTokens()) {
-      $line= new Line($lines->nextToken());
+    while ($lines->hasMoreLines()) {
+      $line= new Line($lines->nextLine());
       if ('>' !== $line->chr()) break;
 
       $line->forward(2);
