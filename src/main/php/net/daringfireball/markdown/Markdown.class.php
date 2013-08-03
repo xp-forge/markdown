@@ -91,16 +91,16 @@ class Markdown extends \lang\Object {
   }
 
   /**
-   * Adds a tokens to parse starting with a given character
+   * Adds a handler to parse starting with a given character
    *
-   * The tokens is a closure of the following form:
+   * The handler is a closure of the following form:
    * ```php
-   * $tokens= function($line, $target) {
+   * $handler= function($line, $target) {
    *   $target->add(new Code($line->ending('`')));
    *   return true;
    * };
    * ```
-   * The tokens needs to return whether it handled the token.
+   * The tokens handler needs to return whether it handled the token.
    * 
    * @param string $char A single character starting the token
    * @param var $tokens The closure
