@@ -247,7 +247,7 @@ class LineTest extends \unittest\TestCase {
     create(new Line('**Hello'))->ending('**');
   }
 
-  #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched **')]
+  #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched **, *')]
   public function none_of_ending_delimiters_not_found() {
     create(new Line('*Hello'))->ending(array('**', '*'));
   }
