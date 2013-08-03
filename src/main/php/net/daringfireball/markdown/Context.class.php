@@ -25,6 +25,7 @@ abstract class Context extends \lang\Object {
    * @return net.daringfireball.markdown.Node The target
    */
   public function tokenize(Line $line, Node $target) {
+    \util\cmd\Console::writeLine($this->getClassName(), '::tokenize() '.\xp::stringOf($this->tokens));
     $safe= 0;
     $l= $line->length();
     while ($line->pos() < $l) {
