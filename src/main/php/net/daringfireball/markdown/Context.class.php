@@ -4,11 +4,6 @@ abstract class Context extends \lang\Object {
   protected $tokens= array();
   protected $span= '';
 
-  public function enter(self $context) {
-    $context->tokens= $this->tokens;
-    return $context;
-  }
-
   public function setTokens($tokens) {
     $this->tokens= $tokens;
     $this->span= '\\'.implode('', array_keys($tokens));
