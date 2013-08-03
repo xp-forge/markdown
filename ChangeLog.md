@@ -3,6 +3,9 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Implemented feature request #2: Support GitHub-style fenced code blocks
+  (@thekid)
+* Made line handlers extensible via addHandler() - (@thekid)
 * Heads up: Changed token handlers API to addToken() - (@thekid)
 * Added possibility to pass predefined urls to transform() - (@thekid)
 
