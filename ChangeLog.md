@@ -3,6 +3,9 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+
+## 0.9.1 / 2013-08-03
+
 * Fixed standalone exclamation mark leading to endless loop - (@thekid)
 * Fixed issue #3: Support images inside links - (@thekid)
 * Fixed issue #1: Error message not helpful for unclosed tags - (@thekid)
