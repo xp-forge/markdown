@@ -90,6 +90,7 @@ class Markdown extends \lang\Object {
    *   $target->add(new Code($line->ending('`')));
    * };
    * ```
+   * The handler may return FALSE to indicate it cannot handle the token.
    * 
    * @param var $arg Either a single character or an array of alternative characters
    * @param var $handler The closure
