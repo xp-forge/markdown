@@ -29,4 +29,12 @@ class ImagesTest extends MarkdownTest {
       '[![Build Status](https://secure.travis-ci.org/xp-framework/xp-framework.png)](http://travis-ci.org/xp-framework/xp-framework)'
     );
   }
+
+  #[@test]
+  public function standalone_exclamation_mark_not_recognized_as_image() {
+    $this->assertTransformed(
+      '<p>This is ! an image</p>',
+      'This is ! an image'
+    );
+  }
 }

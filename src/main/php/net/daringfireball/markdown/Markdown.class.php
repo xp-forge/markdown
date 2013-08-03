@@ -73,7 +73,7 @@ class Markdown extends \lang\Object {
       });
     });
     $this->addHandler('!', function($line, $target) use($parseLink) {
-      if (!$line->matches('![')) return -1;
+      if (!$line->matches('![')) return false;
       $line->forward(1);
       return $parseLink($line, $target, function($url, $text, $title) {
         return new Image($url, $text, $title);
