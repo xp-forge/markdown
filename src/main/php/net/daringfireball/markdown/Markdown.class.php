@@ -6,11 +6,14 @@
  */
 class Markdown extends \lang\Object {
   protected $tokens= array();
+  protected $handlers= array();
 
   /**
-   * Initializes default tokenss
+   * Initializes default tokens and handlers
    */
   public function __construct() {
+
+    // Tokens
     $this->addToken('&', function($line, $target, $tokenizer) {
       if (-1 === ($s= $line->next(';'))) return false;
       $target->add(new Entity($line->slice($s)));
@@ -86,6 +89,9 @@ class Markdown extends \lang\Object {
         return new Image($url, $text, $title);
       });
     });
+
+    // Handlers
+    $this->addHandler('', function() { });
   }
 
   /**
@@ -101,10 +107,20 @@ class Markdown extends \lang\Object {
    * The tokens handler needs to return whether it handled the token.
    * 
    * @param string $char A single character starting the token
-   * @param var $tokens The closure
+   * @param var $handler The closure
    */
-  public function addToken($char, $tokens) {
-    $this->tokens[$char]= $tokens;
+  public function addToken($char, $handler) {
+    $this->tokens[$char]= $handler;
+  }
+
+  /**
+   * Adds a handler to parse start of a line
+   * 
+   * @param string $char A single character starting the token
+   * @param var $handler The closure
+   */
+  public function addHandler($pattern, $handler) {
+    $this->handlers[$pattern]= $handler;
   }
 
   /**
@@ -117,6 +133,7 @@ class Markdown extends \lang\Object {
   public function transform($in, $urls= array()) {
     $context= new ToplevelContext();
     $context->setTokens($this->tokens);
+    $context->setHandlers($this->handlers);
     $tree= $context->parse($in instanceof Input ?: new StringInput((string)$in));
     return $tree->emit($tree->urls + $urls);
   }

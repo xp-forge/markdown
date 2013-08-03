@@ -2,6 +2,16 @@
 
 class ToplevelContext extends Context {
 
+  public function setHandlers($handlers) {
+    $this->handlers= array();
+    $pattern= '';
+    foreach ($this->handlers as $pattern => $closure) {
+      $pattern.= '|('.$pattern.')';
+      $this->handlers[]= $handler;
+    }
+    $this->pattern= '/^('.substr($pattern, 1).')/';
+  }
+
   /**
    * Parse input into nodes
    *
