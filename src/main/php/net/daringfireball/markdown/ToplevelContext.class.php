@@ -48,15 +48,13 @@ class ToplevelContext extends Context {
       $handled= false;
       foreach ($this->handlers as $pattern => $handler) {
         if (preg_match($pattern, $line, $values)) {
-          $handled= $handler($lines, $values, $result, $this);
-          break;
+          if ($handled= $handler($lines, $values, $result, $this)) {
+            $target= null;
+            break;
+          }
         }
       }
-
-      if ($handled) {
-        $target= null;
-        continue;
-      }
+      if ($handled) continue;
 
       // We got here, so there is more text, and no target -> we need to open
       // a new paragraph.
