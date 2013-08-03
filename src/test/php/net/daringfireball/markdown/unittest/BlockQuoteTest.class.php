@@ -10,6 +10,14 @@ class BlockQuoteTest extends MarkdownTest {
     );
   }
 
+  #[@test]
+  public function single_line_with_markup() {
+    $this->assertTransformed(
+      '<blockquote><em>Quoting</em></blockquote>',
+      '> *Quoting*'
+    );
+  }
+
   #[@test, @ignore('Not clear what the output should be')]
   public function two_lines() {
     $this->assertTransformed(

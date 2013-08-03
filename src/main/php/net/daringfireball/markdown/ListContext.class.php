@@ -40,7 +40,7 @@ class ListContext extends Context {
         if ($level > $this->level) {
           $lines->resetLine($line);
           $target= $target ?: $result->add(new ListItem())->add(new Paragraph());
-          $target->add(create(new self($this->type, $level))->parse($lines));
+          $target->add($this->enter(new self($this->type, $level))->parse($lines));
         } else if ($level < $this->level) {
           $lines->resetLine($line);
           break;

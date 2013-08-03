@@ -4,6 +4,12 @@ abstract class Context extends \lang\Object {
   protected $tokens= array();
   protected $span= '';
 
+  public function enter(self $context) {
+    $context->tokens= $this->tokens;
+    $context->span= $this->span;
+    return $context;
+  }
+
   public function setTokens($tokens) {
     $this->tokens= $tokens;
     $this->span= '\\'.implode('', array_keys($tokens));
@@ -25,7 +31,6 @@ abstract class Context extends \lang\Object {
    * @return net.daringfireball.markdown.Node The target
    */
   public function tokenize(Line $line, Node $target) {
-    \util\cmd\Console::writeLine($this->getClassName(), '::tokenize() '.\xp::stringOf($this->tokens));
     $safe= 0;
     $l= $line->length();
     while ($line->pos() < $l) {

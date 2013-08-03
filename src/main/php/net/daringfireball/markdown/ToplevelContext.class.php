@@ -42,22 +42,22 @@ class ToplevelContext extends Context {
           $line= new Line(rtrim($line, ' #'));
         } else if (isset($tag['ul']) && '' !== $tag['ul']) {
           $lines->resetLine($line);
-          $result->append(create(new ListContext('ul'))->parse($lines));
+          $result->append($this->enter(new ListContext('ul'))->parse($lines));
           $target= null;
           continue;
         } else if (isset($tag['ol']) && '' !== $tag['ol']) {
           $lines->resetLine($line);
-          $result->append(create(new ListContext('ol'))->parse($lines));
+          $result->append($this->enter(new ListContext('ol'))->parse($lines));
           $target= null;
           continue;
         } else if (isset($tag['blockquote']) && '' !== $tag['blockquote']) {
           $lines->resetLine($line);
-          $result->append(create(new BlockquoteContext())->parse($lines));
+          $result->append($this->enter(new BlockquoteContext())->parse($lines));
           $target= null;
           continue;
         } else if (isset($tag['code']) && '' !== $tag['code']) {
           $lines->resetLine($line);
-          $result->append(create(new CodeContext())->parse($lines));
+          $result->append($this->enter(new CodeContext())->parse($lines));
           $target= null;
           continue;
         } else if (isset($tag['hr']) && '' !== $tag['hr']) {
