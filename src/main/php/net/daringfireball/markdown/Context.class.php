@@ -1,11 +1,17 @@
 <?php namespace net\daringfireball\markdown;
 
 abstract class Context extends \lang\Object {
-  public $tokenizer;
+  protected $tokens= array();
+  protected $span= '';
 
   public function enter(self $context) {
-    $context->tokenizer= $this->tokenizer;
+    $context->tokens= $this->tokens;
     return $context;
+  }
+
+  public function setTokens($tokens) {
+    $this->tokens= $tokens;
+    $this->span= '\\'.implode('', array_keys($tokens));
   }
 
   /**
@@ -15,6 +21,36 @@ abstract class Context extends \lang\Object {
    * @return net.daringfireball.markdown.Node The parsed npde
    */
   public abstract function parse($lines);
+
+  /**
+   * Tokenize a line
+   *
+   * @param  net.daringfireball.markdown.Line $l The line
+   * @param  net.daringfireball.markdown.Node $target The target node to add nodes to
+   * @return net.daringfireball.markdown.Node The target
+   */
+  public function tokenize(Line $line, Node $target) {
+    $safe= 0;
+    $l= $line->length();
+    while ($line->pos() < $l) {
+      $t= '';
+      $c= $line->chr();
+      if ('\\' === $c) {
+        $t= $line{$line->pos() + 1};
+        $line->forward(2);          // Skip escape, don't tokenize next character
+      } else if (isset($this->tokens[$c])) {
+        if (!$this->tokens[$c]($line, $target, $this)) {
+          $t= $c;                   // Push back
+          $line->forward();
+        }
+      }
+
+      $target->add(new Text($t.$line->until($this->span)));
+      if ($safe++ > $l) throw new \lang\IllegalStateException('Endless loop detected');
+    }
+    return $target;
+  }
+
 
   /**
    * Returns this context's name

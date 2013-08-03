@@ -10,7 +10,7 @@ class BlockquoteContext extends Context {
       if ('>' !== $line->chr()) break;
 
       $line->forward(2);
-      $this->tokenizer->tokenize($line, $result);
+      $this->tokenize($line, $result);
     }
 
     return $result;

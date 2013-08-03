@@ -96,7 +96,7 @@ class ToplevelContext extends Context {
         $last->value.= "\n";
       }
 
-      $this->tokenizer->tokenize($line, $target);
+      $this->tokenize($line, $target);
     }
 
     // DEBUG \util\cmd\Console::writeLine($result);

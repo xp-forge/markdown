@@ -47,14 +47,14 @@ class ListContext extends Context {
         } else {
           $target= $result->add(new ListItem())->add(new Paragraph());
           $line->forward(strlen($m[0]));
-          $this->tokenizer->tokenize($line, $target);
+          $this->tokenize($line, $target);
         }
       } else if ('  ' === substr($line, 0, 2)) {
 
         // Add paragraph to existing list item
         $paragraph= $result->last()->add(new Paragraph());
         $line->forward(2);
-        $this->tokenizer->tokenize($line, $paragraph);
+        $this->tokenize($line, $paragraph);
       } else {
         $lines->resetLine($line);
         break;
