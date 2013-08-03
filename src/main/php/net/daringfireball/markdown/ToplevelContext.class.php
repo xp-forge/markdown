@@ -3,13 +3,7 @@
 class ToplevelContext extends Context {
 
   public function setHandlers($handlers) {
-    $this->handlers= array();
-    $pattern= '';
-    foreach ($this->handlers as $pattern => $closure) {
-      $pattern.= '|('.$pattern.')';
-      $this->handlers[]= $handler;
-    }
-    $this->pattern= '/^('.substr($pattern, 1).')/';
+    $this->handlers= $handlers;
   }
 
   /**
@@ -50,52 +44,18 @@ class ToplevelContext extends Context {
         $target= null;
       }
 
-      // Check what line begins with
-      $m= preg_match($begin, $line, $tag);
-      if ($m) {
-        if (isset($tag['header']) && '' !== $tag['header']) {
-          $target= $result->append(new Header(substr_count($tag['header'], '#')));
-          $line= new Line(rtrim($line, ' #'));
-        } else if (isset($tag['ul']) && '' !== $tag['ul']) {
-          $lines->resetLine($line);
-          $result->append($this->enter(new ListContext('ul'))->parse($lines));
-          $target= null;
-          continue;
-        } else if (isset($tag['ol']) && '' !== $tag['ol']) {
-          $lines->resetLine($line);
-          $result->append($this->enter(new ListContext('ol'))->parse($lines));
-          $target= null;
-          continue;
-        } else if (isset($tag['blockquote']) && '' !== $tag['blockquote']) {
-          $lines->resetLine($line);
-          $result->append($this->enter(new BlockquoteContext())->parse($lines));
-          $target= null;
-          continue;
-        } else if (isset($tag['code']) && '' !== $tag['code']) {
-          $lines->resetLine($line);
-          $result->append($this->enter(new CodeContext())->parse($lines));
-          $target= null;
-          continue;
-        } else if (isset($tag['hr']) && '' !== $tag['hr']) {
-          $result->append(new Ruler());
-          continue;
-        } else if (isset($tag['underline']) && '' !== $tag['underline']) {
-          $paragraph= $result->last();
-          $text= $paragraph->remove($paragraph->size() - 1);
-          $result->append(new Header('=' === $tag['underline']{0} ? 1 : 2))->add($text);
-          $target= null;
-          continue;
-        } else if (isset($tag['def']) && '' !== $tag['def']) {
-          $title= trim(substr($line, strlen($tag[0])));
-          if ('' !== $title && 0 === strcspn($title, '(\'"')) {
-            $title= trim($title, $def[$title{0}]);
-          } else {
-            $title= null;
-          }
-          $result->urls[strtolower($tag[12])]= new Link($tag[13], null, $title);
-          continue;
+      // Check handlers
+      $handled= false;
+      foreach ($this->handlers as $pattern => $handler) {
+        if (preg_match($pattern, $line, $values)) {
+          $handled= $handler($lines, $values, $result, $this);
+          break;
         }
-        $line->forward(strlen($tag[0]));
+      }
+
+      if ($handled) {
+        $target= null;
+        continue;
       }
 
       // We got here, so there is more text, and no target -> we need to open

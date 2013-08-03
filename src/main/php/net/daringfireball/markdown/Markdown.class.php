@@ -14,12 +14,12 @@ class Markdown extends \lang\Object {
   public function __construct() {
 
     // Tokens
-    $this->addToken('&', function($line, $target, $tokenizer) {
+    $this->addToken('&', function($line, $target, $ctx) {
       if (-1 === ($s= $line->next(';'))) return false;
       $target->add(new Entity($line->slice($s)));
       return true;
     });
-    $this->addToken('`', function($line, $target, $tokenizer) {
+    $this->addToken('`', function($line, $target, $ctx) {
       if ($line->matches('`` ')) {
         $target->add(new Code($line->ending(array(' ``', '``'), 3)));
       } else if ($line->matches('``')) {
@@ -29,7 +29,7 @@ class Markdown extends \lang\Object {
       }
       return true;
     });
-    $this->addToken('<', function($line, $target, $tokenizer) {
+    $this->addToken('<', function($line, $target, $ctx) {
       if (preg_match('#<(([a-z]+://)[^ >]+)>#', $line, $m, 0, $line->pos())) {
         $target->add(new Link($m[1]));
       } else if (preg_match('#<(([^ @]+)@[^ >]+)>#', $line, $m, 0, $line->pos())) {
@@ -42,7 +42,7 @@ class Markdown extends \lang\Object {
     });
 
     // *Word* => Emphasis, **Word** => Strong emphasis
-    $emphasis= function($line, $target, $tokenizer) {
+    $emphasis= function($line, $target, $ctx) {
       $c= $line->chr();
       if ($line->matches($c.$c)) {
         $target->add(new Bold($line->ending($c.$c)));
@@ -58,13 +58,13 @@ class Markdown extends \lang\Object {
     // [Google][goog] reference-style link, [Google][] implicit name,and finally [Google] [1] 
     // numeric references (-> spaces allowed!). Images almost identical except for leading
     // exclamation mark, e.g. ![An image](http://example.com/image.jpg)
-    $parseLink= function($line, $target, $tokenizer, $newInstance) {
+    $parseLink= function($line, $target, $ctx, $newInstance) {
       $title= null;
       $text= $line->matching('[]');
       $w= false;
       if ($line->matches('(')) {
         sscanf($line->matching('()'), '%[^" ] "%[^")]"', $url, $title);
-        $node= $tokenizer->tokenize(new Line($text), new ParseTree());
+        $node= $ctx->tokenize(new Line($text), new ParseTree());
       } else if ($line->matches('[') || $w= $line->matches(' [')) {
         $line->forward((int)$w);
         $node= new Text($text);
@@ -77,21 +77,67 @@ class Markdown extends \lang\Object {
       $target->add($newInstance($url, $node, $title));
       return true;
     };
-    $this->addToken('[', function($line, $target, $tokenizer) use($parseLink) {
-      return $parseLink($line, $target, $tokenizer, function($url, $text, $title) {
+    $this->addToken('[', function($line, $target, $ctx) use($parseLink) {
+      return $parseLink($line, $target, $ctx, function($url, $text, $title) {
         return new Link($url, $text, $title);
       });
     });
-    $this->addToken('!', function($line, $target, $tokenizer) use($parseLink) {
+    $this->addToken('!', function($line, $target, $ctx) use($parseLink) {
       if (!$line->matches('![')) return false;
       $line->forward(1);
-      return $parseLink($line, $target, $tokenizer, function($url, $text, $title) {
+      return $parseLink($line, $target, $ctx, function($url, $text, $title) {
         return new Image($url, $text, $title);
       });
     });
 
     // Handlers
-    $this->addHandler('', function() { });
+    $this->addHandler('/^(#{1,6}) (.+)/', function($lines, $matches, $result, $ctx) { 
+      $header= $result->append(new Header(substr_count($matches[1], '#')));
+      $ctx->tokenize(new Line(rtrim($matches[2], ' #')), $header);
+      return true;
+    });
+    $this->addHandler('/^(={3,}|-{3,})/', function($lines, $matches, $result, $ctx) { 
+      $paragraph= $result->last();
+      $text= $paragraph->remove($paragraph->size() - 1);
+      $result->append(new Header('=' === $matches[0]{0} ? 1 : 2))->add($text);
+      return true;
+    });
+    $this->addHandler('/^(\* ?){3,}$/', function($lines, $matches, $result, $ctx) { 
+      $result->append(new Ruler());
+      return true;
+    });
+    $this->addHandler('/^[+\*\-] .+/', function($lines, $matches, $result, $ctx) { 
+      $lines->resetLine(new Line($matches[0]));
+      $result->append($ctx->enter(new ListContext('ul'))->parse($lines));
+      return true;
+    });
+    $this->addHandler('/^[0-9]+\. .+/', function($lines, $matches, $result, $ctx) { 
+      $lines->resetLine(new Line($matches[0]));
+      $result->append($ctx->enter(new ListContext('ol'))->parse($lines));
+      return true;
+    });
+    $this->addHandler('/^\> .+/', function($lines, $matches, $result, $ctx) { 
+      $lines->resetLine(new Line($matches[0]));
+      $result->append($ctx->enter(new BlockquoteContext())->parse($lines));
+      return true;
+    });
+    $this->addHandler('/^(    |\t).+/', function($lines, $matches, $result, $ctx) { 
+      $lines->resetLine(new Line($matches[0]));
+      $result->append($ctx->enter(new CodeContext())->parse($lines));
+      return true;
+    });
+    $this->addHandler('/^\s{0,3}\[([^\]]+)\]:\s+([^ ]+)(.*)/', function($lines, $matches, $result, $ctx) { 
+      static $def= array('(' => '()', '"' => '"', "'" => "'");
+  
+      $title= trim($matches[3]);
+      if ('' !== $title && 0 === strcspn($title, '(\'"')) {
+        $title= trim($title, $def[$title{0}]);
+      } else {
+        $title= null;
+      }
+      $result->urls[strtolower($matches[1])]= new Link($matches[2], null, $title);
+      return true;
+    });
   }
 
   /**
@@ -99,7 +145,7 @@ class Markdown extends \lang\Object {
    *
    * The handler is a closure of the following form:
    * ```php
-   * $handler= function($line, $target, $tokenizer) {
+   * $handler= function($line, $target, $ctx) {
    *   $target->add(new Code($line->ending('`')));
    *   return true;
    * };
@@ -115,7 +161,15 @@ class Markdown extends \lang\Object {
 
   /**
    * Adds a handler to parse start of a line
-   * 
+   *
+   * The handler is a closure of the following form:
+   * ```php
+   * $handler= function($lines, $matches, $result, $ctx) {
+   *   $result->append(new Ruler());
+   *   return true;
+   * };
+   * ```
+   *
    * @param string $char A single character starting the token
    * @param var $handler The closure
    */
