@@ -134,7 +134,7 @@ class Markdown extends \lang\Object {
       }
 
       $target->add(new Text($t.$line->until($this->span)));
-      if ($safe++ > 100) throw new \lang\IllegalStateException('Endless loop detected');
+      if ($safe++ > $l) throw new \lang\IllegalStateException('Endless loop detected');
     }
     return $target;
   }
