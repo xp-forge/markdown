@@ -25,14 +25,6 @@ class Markdown extends \lang\Object {
         $target->add(new Code($line->ending('`')));
       }
     });
-    $this->addHandler(array('*', '_'), function($line, $target) {
-      $c= $line->chr();
-      if ($line->matches($c.$c)) {            // Strong: **Word**
-        $target->add(new Bold($line->ending($c.$c)));
-      } else {                                // Emphasis: *Word*
-        $target->add(new Italic($line->ending($c)));
-      }
-    });
     $this->addHandler('<', function($line, $target) {
       if (preg_match('#<(([a-z]+://)[^ >]+)>#', $line, $m, 0, $line->pos())) {
         $target->add(new Link($m[1]));
@@ -43,6 +35,18 @@ class Markdown extends \lang\Object {
       }
       $line->forward(strlen($m[0]));
     });
+
+    // *Word* => Emphasis, **Word** => Strong emphasis
+    $emphasis= function($line, $target) {
+      $c= $line->chr();
+      if ($line->matches($c.$c)) {
+        $target->add(new Bold($line->ending($c.$c)));
+      } else {
+        $target->add(new Italic($line->ending($c)));
+      }
+    };
+    $this->addHandler('*', $emphasis);
+    $this->addHandler('_', $emphasis);
 
     // Links and images: [A link](http://example.com), [A link](http://example.com "Title"),
     // [Google][goog] reference-style link, [Google][] implicit name,and finally [Google] [1] 
@@ -92,14 +96,12 @@ class Markdown extends \lang\Object {
    * ```
    * The handler may return FALSE to indicate it cannot handle the token.
    * 
-   * @param var $arg Either a single character or an array of alternative characters
+   * @param string $char A single character starting the token
    * @param var $handler The closure
    */
-  public function addHandler($arg, $handler) {
-    foreach ((array)$arg as $char) {
-      $this->handler[$char]= $handler;
-      $this->span.= $char;
-    }
+  public function addHandler($char, $handler) {
+    $this->handler[$char]= $handler;
+    $this->span.= $char;
   }
 
   /**
