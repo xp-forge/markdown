@@ -10,6 +10,12 @@ abstract class Context extends \lang\Object {
     return $context;
   }
 
+  /**
+   * Sets token handlers
+   * 
+   * @param [:var] tokens
+   * @see   xp://net.daringfireball.markdown.Markdown#addToken
+   */
   public function setTokens($tokens) {
     $this->tokens= $tokens;
     $this->span= '\\'.implode('', array_keys($tokens));
