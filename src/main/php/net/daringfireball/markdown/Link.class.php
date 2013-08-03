@@ -24,6 +24,7 @@ class Link extends Node {
       $link= $this;
     }
     $attr= $link->title ? ' title="'.htmlspecialchars($link->title).'"' : '';
-    return '<a href="'.htmlspecialchars($link->url).'"'.$attr.'>'.htmlspecialchars($this->text ?: $link->url).'</a>';
+    $text= $this->text ? $this->text->emit($definitions) : $link->url;
+    return '<a href="'.htmlspecialchars($link->url).'"'.$attr.'>'.$text.'</a>';
   }
 }

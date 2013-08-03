@@ -24,7 +24,7 @@ class Image extends Node {
       $link= $this;
     }
     $attr= '';
-    $this->text && $attr.= ' alt="'.htmlspecialchars($this->text).'"';
+    $this->text && $attr.= ' alt="'.$this->text->emit($definitions).'"';
     $link->title && $attr.= ' title="'.htmlspecialchars($link->title).'"';
     return '<img src="'.htmlspecialchars($link->url).'"'.$attr.'/>';
   }

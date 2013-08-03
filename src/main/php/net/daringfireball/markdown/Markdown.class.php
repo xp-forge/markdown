@@ -50,19 +50,21 @@ class Markdown extends \lang\Object {
     // exclamation mark, e.g. ![An image](http://example.com/image.jpg)
     $parseLink= function($line, $target, $newInstance) {
       $title= null;
-      $text= $line->ending(']');
+      $text= $line->matching('[]');
       $w= false;
       if ($line->matches('(')) {
         sscanf($line->matching('()'), '%[^" ] "%[^")]"', $url, $title);
+        $node= $this->tokenize(new Line($text), new ParseTree());
       } else if ($line->matches('[') || $w= $line->matches(' [')) {
         $line->forward((int)$w);
+        $node= new Text($text);
         if ('' === ($ref= $line->ending(']'))) {
           $url= '@'.strtolower($text);
         } else {
           $url= '@'.strtolower($ref);
         }
       }
-      $target->add($newInstance($url, $text, $title));
+      $target->add($newInstance($url, $node, $title));
     };
     $this->addHandler('[', function($line, $target) use($parseLink) {
       return $parseLink($line, $target, function($url, $text, $title) {
@@ -96,6 +98,35 @@ class Markdown extends \lang\Object {
       $this->handler[$char]= $handler;
       $this->span.= $char;
     }
+  }
+
+  /**
+   * Tokenize a line
+   *
+   * @param  net.daringfireball.markdown.Line $l The line
+   * @param  net.daringfireball.markdown.Node $target The target node to add nodes to
+   * @return net.daringfireball.markdown.Node The target
+   */
+  public function tokenize($line, $target) {
+    $safe= 0;
+    $l= $line->length();
+    while ($line->pos() < $l) {
+      $t= '';
+      $c= $line->chr();
+      if ('\\' === $c) {
+        $t= $line{$line->pos() + 1};
+        $line->forward(2);             // Skip escape, don't tokenize next character
+      } else if (isset($this->handler[$c])) {
+        if (false === $this->handler[$c]($line, $target)) {
+          $t= $c;                   // Push back
+          $line->forward();
+        }
+      }
+
+      $target->add(new Text($t.$line->until($this->span)));
+      if ($safe++ > 100) throw new \lang\IllegalStateException('Endless loop detected');
+    }
+    return $target;
   }
 
   /**
@@ -235,25 +266,7 @@ class Markdown extends \lang\Object {
         $last->value.= "\n";
       }
 
-      // Tokenize line
-      $safe= 0;
-      $l= new Line($line, $offset);
-      while ($l->pos() < $l->length()) {
-        $t= '';
-        $c= $l->chr();
-        if ('\\' === $c) {
-          $t= $l{$l->pos() + 1};
-          $l->forward(2);             // Skip escape, don't tokenize next character
-        } else if (isset($this->handler[$c])) {
-          if (false === $this->handler[$c]($l, $target)) {
-            $t= $c;                   // Push back
-            $l->forward();
-          }
-        }
-
-        $target->add(new Text($t.$l->until($this->span)));
-        if ($safe++ > 100) throw new \lang\IllegalStateException('Endless loop detected');
-      }
+      $this->tokenize(new Line($line, $offset), $target);
     }
     // \util\cmd\Console::writeLine('@-> ', $tokens, ' & ', $definitions);
 

@@ -18,7 +18,7 @@ class ImagesTest extends MarkdownTest {
     );
   }
 
-  #[@test, @ignore('Does not work yet; requires nesting inside handlers')]
+  #[@test]
   public function image_inside_link() {
     $this->assertTransformed(
       '<p>'.
