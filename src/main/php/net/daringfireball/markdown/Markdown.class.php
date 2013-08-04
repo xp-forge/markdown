@@ -202,7 +202,8 @@ class Markdown extends \lang\Object {
     $context= new ToplevelContext();
     $context->setTokens($this->tokens);
     $context->setHandlers($this->handlers);
-    $tree= $context->parse($in instanceof Input ?: new StringInput((string)$in));
-    return $tree->emit($tree->urls + $urls);
+
+    $tree= $context->parse($in instanceof Input ? $in : new StringInput((string)$in));
+    return $tree->emit($tree->urls + array_change_key_case($urls, CASE_LOWER));
   }
 }
