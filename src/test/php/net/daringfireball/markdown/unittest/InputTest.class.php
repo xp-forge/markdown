@@ -89,4 +89,14 @@ abstract class InputTest extends \unittest\TestCase {
     $fixture->nextLine();
     $this->assertFalse($fixture->hasMoreLines());
   }
+
+  #[@test]
+  public function reset_line() {
+    $fixture= $this->newFixture("Line 1\nLine 2\n");
+    $fixture->resetLine($fixture->nextLine());
+    $this->assertEquals(
+      array(new Line('Line 1'), new Line('Line 2')),
+      array($fixture->nextLine(), $fixture->nextLine())
+    );
+  }
 }
