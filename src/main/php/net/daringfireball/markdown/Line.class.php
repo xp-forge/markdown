@@ -166,22 +166,49 @@ class Line extends \lang\Object implements \ArrayAccess {
     return $b;
   }
 
+  /**
+   * String cast overloading
+   *
+   * @return string
+   */
   public function __toString() {
     return $this->buffer;
   }
 
+  /**
+   * isset() overloading
+   *
+   * @return bool
+   */
   public function offsetExists($i) {
     return $i > 0 && $i < strlen($this->buffer);
   }
 
+  /**
+   * [] read overloading
+   *
+   * @param  int i
+   * @return string
+   */
   public function offsetGet($i) {
     return $this->buffer[$i];
   }
 
+  /**
+   * [] write overloading
+   *
+   * @param  int i
+   * @param  string value
+   */
   public function offsetSet($i, $value) {
     throw new IllegalAccessException('Cannot write to line');
   }
 
+  /**
+   * unset() overloading
+   *
+   * @param  int i
+   */
   public function offsetUnset($i) {
     throw new IllegalAccessException('Cannot write to line');
   }

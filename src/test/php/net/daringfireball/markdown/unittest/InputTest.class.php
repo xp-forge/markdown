@@ -68,6 +68,15 @@ abstract class InputTest extends \unittest\TestCase {
     );
   }
 
+  #[@test, @values(array("1\n2\n", "1\r\n2\r\n", "1\r2\r"))]
+  public function two_lines_with_single_characters($value) {
+    $fixture= $this->newFixture($value);
+    $this->assertEquals(
+      array(new Line('1'), new Line('2')),
+      array($fixture->nextLine(), $fixture->nextLine())
+    );
+  }
+
   #[@test]
   public function has_no_more_lines_after_reading_one_line() {
     $fixture= $this->newFixture("Test\n");
