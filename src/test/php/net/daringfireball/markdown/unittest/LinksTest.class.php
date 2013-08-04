@@ -137,6 +137,39 @@ class LinksTest extends MarkdownTest {
     );
   }
 
+  /**
+   * Returns sentence delimiters for use as parameters
+   *
+   * @return string[]
+   */
+  public function delimiters() {
+    return array('.', '?', ',', ';', '!');
+  }
+
+  #[@test, @values('delimiters')]
+  public function auto_link_in_sentence_at_end($delimiter) {
+    $this->assertTransformed(
+      '<p>This is a link to <a href="http://example.com">http://example.com</a>'.$delimiter.'</p>',
+      'This is a link to http://example.com'.$delimiter
+    );
+  }
+
+  #[@test, @values('delimiters')]
+  public function auto_link_in_sentence($delimiter) {
+    $this->assertTransformed(
+      '<p>This is a link to <a href="http://example.com">http://example.com</a>'.$delimiter.' It ...</p>',
+      'This is a link to http://example.com'.$delimiter.' It ...'
+    );
+  }
+
+  #[@test, @values('delimiters')]
+  public function auto_link_with_delimiters_in_sentence($delimiter) {
+    $this->assertTransformed(
+      '<p>This is a link to <a href="http://example.com/d;n=x/?a=b,c.d">http://example.com/d;n=x/?a=b,c.d</a>'.$delimiter.' It ...</p>',
+      'This is a link to http://example.com/d;n=x/?a=b,c.d'.$delimiter.' It ...'
+    );
+  }
+
   #[@test]
   public function link_in_square_brackets() {
     $this->assertTransformed(

@@ -260,6 +260,20 @@ class LineTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function replace_to_shorter_string_changes_length() {
+    $l= new Line('Test');
+    $l->replace('/[a-z]/', '');
+    $this->assertEquals(1, $l->length());
+  }
+
+  #[@test]
+  public function replace_to_longer_string_changes_length() {
+    $l= new Line('Test');
+    $l->replace('/[a-z]/', '$0$0');
+    $this->assertEquals(7, $l->length());
+  }
+
+  #[@test]
   public function replace_illegal_pattern() {
     $l= new Line('Test');
     try {

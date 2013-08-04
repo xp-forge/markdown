@@ -181,6 +181,7 @@ class Line extends \lang\Object implements \ArrayAccess {
       throw $e;
     }
     $this->buffer= $r;
+    $this->length= strlen($r);
   }
 
   /**

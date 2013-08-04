@@ -92,7 +92,7 @@ class Markdown extends \lang\Object {
 
     // Handlers
     // * [id]: http://example.com "Link"
-    // * Auto-linkage for http, https and ftp links
+    // * Auto-linkage for http, https and ftp links, *before* any of the below apply!
     // * Atx-style headers "#" -> h1, "##" -> h2, ... etc.
     // * Setext-style headers are "underlined"
     // * "*", "+" or "-" -> ul/li
@@ -110,7 +110,7 @@ class Markdown extends \lang\Object {
       return true;
     });
     $this->addHandler('#(^|[^\(\<])((ht|f)tps?://[^ ]+)#', function($lines, $matches, $result, $ctx) { 
-      $matches[0]->replace('#(^|[^\(\<])((ht|f)tps?://[^ ]+)#', '$1<$2>');
+      $matches[0]->replace('#(^|[^\(\<])((ht|f)tps?://[^\s]+)($|\s|[.?,;!]\s|[.?,;!]$)#U', '$1<$2>$4');
       return false;   // Further handlers may be applied
     });
     $this->addHandler('/^(#{1,6}) (.+)/', function($lines, $matches, $result, $ctx) {
