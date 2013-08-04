@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Fixed URL identifiers passed to Markdown::transform() to be handled
+  case insensitively - (@thekid)
 * Implemented auto-linking for http, https and ftp links - (@thekid)
 * Added support for Windows (`\r\n`), Un*x (`\n`) and Mac (`\r`) line
   endings in string input - (@thekid)
