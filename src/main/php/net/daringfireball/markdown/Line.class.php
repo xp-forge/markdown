@@ -167,6 +167,23 @@ class Line extends \lang\Object implements \ArrayAccess {
   }
 
   /**
+   * Replace all matches of a given pattern with the replacement
+   *
+   * @see    php://preg_replace
+   * @param  string pattern
+   * @param  string replacement
+   */
+  public function replace($pattern, $replacement) {
+    $r= preg_replace($pattern, $replacement, $this->buffer);
+    if (null === $r) {
+      $e= new \lang\FormatException('Replacement failed');
+      \xp::gc(__FILE__);
+      throw $e;
+    }
+    $this->buffer= $r;
+  }
+
+  /**
    * String cast overloading
    *
    * @return string

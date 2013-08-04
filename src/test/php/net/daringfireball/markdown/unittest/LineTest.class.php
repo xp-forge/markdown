@@ -251,4 +251,23 @@ class LineTest extends \unittest\TestCase {
   public function none_of_ending_delimiters_not_found() {
     create(new Line('*Hello'))->ending(array('**', '*'));
   }
+
+  #[@test]
+  public function replace() {
+    $l= new Line('Test');
+    $l->replace('/[a-z]/', '.');
+    $this->assertEquals('T...', (string)$l);
+  }
+
+  #[@test]
+  public function replace_illegal_pattern() {
+    $l= new Line('Test');
+    try {
+      $l->replace('/(/', '.');
+      $this->fail('No exception raised', null, 'lang.FormatException');
+    } catch (\lang\FormatException $expected) {
+      // OK
+    }
+    $this->assertEquals('Test', (string)$l);
+  }
 }

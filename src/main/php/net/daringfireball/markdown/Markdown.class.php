@@ -91,12 +91,28 @@ class Markdown extends \lang\Object {
     });
 
     // Handlers
+    // * [id]: http://example.com "Link"
+    // * Auto-linkage for http, https and ftp links
     // * Atx-style headers "#" -> h1, "##" -> h2, ... etc.
     // * Setext-style headers are "underlined"
     // * "*", "+" or "-" -> ul/li
     // * ">" or "> >" -> block quoting
     // * [0-9]"." -> ol/li
-    // * [id]: http://example.com "Link"
+    $this->addHandler('/^\s{0,3}\[([^\]]+)\]:\s+([^ ]+)(.*)/', function($lines, $matches, $result, $ctx) { 
+      static $def= array('(' => '()', '"' => '"', "'" => "'");
+      $title= trim($matches[3]);
+      if ('' !== $title && 0 === strcspn($title, '(\'"')) {
+        $title= trim($title, $def[$title{0}]);
+      } else {
+        $title= null;
+      }
+      $result->urls[strtolower($matches[1])]= new Link($matches[2], null, $title);
+      return true;
+    });
+    $this->addHandler('#(^|[^\(\<])((ht|f)tps?://[^ ]+)#', function($lines, $matches, $result, $ctx) { 
+      $matches[0]->replace('#(^|[^\(\<])((ht|f)tps?://[^ ]+)#', '$1<$2>');
+      return false;   // Further handlers may be applied
+    });
     $this->addHandler('/^(#{1,6}) (.+)/', function($lines, $matches, $result, $ctx) {
       $header= $result->append(new Header(substr_count($matches[1], '#')));
       $ctx->tokenize(new Line(rtrim($matches[2], ' #')), $header);
@@ -134,18 +150,6 @@ class Markdown extends \lang\Object {
     });
     $this->addHandler('/^```(.*)/', function($lines, $matches, $result, $ctx) { 
       $result->append($ctx->enter(new FencedCodeContext($matches[1]))->parse($lines));
-      return true;
-    });
-    $this->addHandler('/^\s{0,3}\[([^\]]+)\]:\s+([^ ]+)(.*)/', function($lines, $matches, $result, $ctx) { 
-      static $def= array('(' => '()', '"' => '"', "'" => "'");
-  
-      $title= trim($matches[3]);
-      if ('' !== $title && 0 === strcspn($title, '(\'"')) {
-        $title= trim($title, $def[$title{0}]);
-      } else {
-        $title= null;
-      }
-      $result->urls[strtolower($matches[1])]= new Link($matches[2], null, $title);
       return true;
     });
   }

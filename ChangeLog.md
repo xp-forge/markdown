@@ -3,6 +3,7 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Implemented auto-linking for http, https and ftp links - (@thekid)
 * Added support for Windows (`\r\n`), Un*x (`\n`) and Mac (`\r`) line
   endings in string input - (@thekid)
 

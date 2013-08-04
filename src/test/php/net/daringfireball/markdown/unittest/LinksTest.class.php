@@ -105,11 +105,35 @@ class LinksTest extends MarkdownTest {
     );
   }
 
-  #[@test, @ignore('Not yet implemented')]
-  public function link() {
+  #[@test]
+  public function http_auto_link() {
     $this->assertTransformed(
       '<p><a href="http://example.com">http://example.com</a></p>',
       'http://example.com'
+    );
+  }
+
+  #[@test]
+  public function https_auto_link() {
+    $this->assertTransformed(
+      '<p><a href="https://example.com">https://example.com</a></p>',
+      'https://example.com'
+    );
+  }
+
+  #[@test]
+  public function ftp_auto_link() {
+    $this->assertTransformed(
+      '<p><a href="ftp://example.com">ftp://example.com</a></p>',
+      'ftp://example.com'
+    );
+  }
+
+  #[@test]
+  public function auto_link_in_header() {
+    $this->assertTransformed(
+      '<h1><a href="http://example.com">http://example.com</a></h1>',
+      '# http://example.com'
     );
   }
 
