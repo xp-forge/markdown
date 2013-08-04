@@ -97,38 +97,38 @@ class Markdown extends \lang\Object {
     // * ">" or "> >" -> block quoting
     // * [0-9]"." -> ol/li
     // * [id]: http://example.com "Link"
-    $this->addHandler('/^(#{1,6}) (.+)/', function($lines, $matches, $result, $ctx) { 
+    $this->addHandler('/^(#{1,6}) (.+)/', function($lines, $matches, $result, $ctx) {
       $header= $result->append(new Header(substr_count($matches[1], '#')));
       $ctx->tokenize(new Line(rtrim($matches[2], ' #')), $header);
       return true;
     });
-    $this->addHandler('/^(={3,}|-{3,})/', function($lines, $matches, $result, $ctx) { 
+    $this->addHandler('/^(={3,}|-{3,})/', function($lines, $matches, $result, $ctx) {
       $paragraph= $result->last();
       $text= $paragraph->remove($paragraph->size() - 1);
-      $result->append(new Header('=' === $matches[0]{0} ? 1 : 2))->add($text);
+      $result->append(new Header('=' === $matches[1]{0} ? 1 : 2))->add($text);
       return true;
     });
-    $this->addHandler('/^(\* ?){3,}$/', function($lines, $matches, $result, $ctx) { 
+    $this->addHandler('/^(\* ?){3,}$/', function($lines, $matches, $result, $ctx) {
       $result->append(new Ruler());
       return true;
     });
-    $this->addHandler('/^[+\*\-] .+/', function($lines, $matches, $result, $ctx) { 
-      $lines->resetLine(new Line($matches[0]));
+    $this->addHandler('/^[+\*\-] /', function($lines, $matches, $result, $ctx) {
+      $lines->resetLine($matches[0]);
       $result->append($ctx->enter(new ListContext('ul'))->parse($lines));
       return true;
     });
-    $this->addHandler('/^[0-9]+\. .+/', function($lines, $matches, $result, $ctx) { 
-      $lines->resetLine(new Line($matches[0]));
+    $this->addHandler('/^[0-9]+\. /', function($lines, $matches, $result, $ctx) {
+      $lines->resetLine($matches[0]);
       $result->append($ctx->enter(new ListContext('ol'))->parse($lines));
       return true;
     });
-    $this->addHandler('/^\> .+/', function($lines, $matches, $result, $ctx) { 
-      $lines->resetLine(new Line($matches[0]));
+    $this->addHandler('/^\> /', function($lines, $matches, $result, $ctx) {
+      $lines->resetLine($matches[0]);
       $result->append($ctx->enter(new BlockquoteContext())->parse($lines));
       return true;
     });
-    $this->addHandler('/^(    |\t).+/', function($lines, $matches, $result, $ctx) { 
-      $lines->resetLine(new Line($matches[0]));
+    $this->addHandler('/^(    |\t)/', function($lines, $matches, $result, $ctx) {
+      $lines->resetLine($matches[0]);
       $result->append($ctx->enter(new CodeContext())->parse($lines));
       return true;
     });
