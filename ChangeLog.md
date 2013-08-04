@@ -3,6 +3,9 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Added support for Windows (`\r\n`), Un*x (`\n`) and Mac (`\r`) line
+  endings in string input - (@thekid)
+
 ## 0.9.2 / 2013-08-03
 
 * Implemented feature request #2: Support GitHub-style fenced code blocks

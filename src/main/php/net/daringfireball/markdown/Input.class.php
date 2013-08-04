@@ -33,6 +33,9 @@ abstract class Input extends \lang\Object {
    * @return net.daringfireball.markdown.Line
    */
   public function nextLine() {
+    if (empty($this->stack)) {
+      if (!$this->hasMoreLines()) return null;
+    }
     return array_pop($this->stack);
   }
 

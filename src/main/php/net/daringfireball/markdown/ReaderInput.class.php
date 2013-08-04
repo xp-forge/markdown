@@ -1,11 +1,27 @@
 <?php namespace net\daringfireball\markdown;
 
+/**
+ * Input implementation for stream readers
+ *
+ * @test  xp://net.daringfireball.markdown.unittest.ReaderInputTest
+ */
 class ReaderInput extends Input {
+  protected $reader= null;
 
-  public function __construct($reader) {
+  /**
+   * Creates a new reader input instance
+   *
+   * @param  io.streams.Reader $reader
+   */
+  public function __construct(\io\streams\Reader $reader) {
     $this->reader= $reader;
   }
 
+  /**
+   * Reads a line
+   *
+   * @return string or NULL to indicate EOF
+   */
   protected function readLine() {
     return $this->reader->readLine();
   }

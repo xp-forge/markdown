@@ -185,4 +185,27 @@ class Line extends \lang\Object implements \ArrayAccess {
   public function offsetUnset($i) {
     throw new IllegalAccessException('Cannot write to line');
   }
+
+  /**
+   * Returns whether a given value is equal to this line
+   *
+   * @param  var $cmp The value
+   * @return bool
+   */
+  public function equals($cmp) {
+    return (
+      $this instanceof self &&
+      $this->buffer === $cmp->buffer &&
+      $this->pos === $cmp->pos
+    );
+  }
+
+  /**
+   * Creates a string representation of this line
+   *
+   * @return string
+   */
+  public function toString() {
+    return $this->getClassName().'("'.$this->buffer.'" @ '.$this->pos.')';
+  }
 }
