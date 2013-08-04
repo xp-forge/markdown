@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 0.9.3 / 2013-08-04
+
 * Fixed URL identifiers passed to Markdown::transform() to be handled
   case insensitively - (@thekid)
 * Implemented auto-linking for http, https and ftp links - (@thekid)
