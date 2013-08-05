@@ -17,6 +17,11 @@ class EmphasisTest extends MarkdownTest {
     $this->assertTransformed('<p>Hello <em>World</em></p>', $input);
   }
 
+  #[@test, @values(array('*Hello* *World*', '_Hello_ _World_'))]
+  public function two_emphasized_words($input) {
+    $this->assertTransformed('<p><em>Hello</em> <em>World</em></p>', $input);
+  }
+
   #[@test, @values(array(
   #  'Use one marker for *emphasizing words*.',
   #  'Use one marker for _emphasizing words_.',
@@ -56,5 +61,15 @@ class EmphasisTest extends MarkdownTest {
   #)]
   public function strong_for_multiple_words($input) {
     $this->assertTransformed('<p>Use two markers for <strong>strong emphasis</strong>.</p>', $input);
+  }
+
+  #[@test, @values(array('*Hello **World**!*', '_Hello __World__!_'))]
+  public function strong_inside_emphasis($input) {
+    $this->assertTransformed('<p><em>Hello <strong>World</strong>!</em></p>', $input);
+  }
+
+  #[@test, @values(array('**Hello *World*!**', '__Hello _World_!__'))]
+  public function emphasis_inside_strong($input) {
+    $this->assertTransformed('<p><strong>Hello <em>World</em>!</strong></p>', $input);
   }
 }

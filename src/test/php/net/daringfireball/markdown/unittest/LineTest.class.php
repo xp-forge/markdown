@@ -155,6 +155,11 @@ class LineTest extends \unittest\TestCase {
     $this->assertEquals(6, $l->pos());
   }
 
+  #[@test]
+  public function ending_regards_double_delimiter_nested() {
+    $this->assertEquals('Hello **World**', create(new Line('*Hello **World***'))->ending('*'));
+  }
+
   #[@test, @values(array(
   #  array('(Hello)', 'Hello', '()'),
   #  array('((Hello))', '(Hello)', '()'),

@@ -117,7 +117,15 @@ class Line extends \lang\Object implements \ArrayAccess {
     foreach ((array)$delimiters as $d) {
       $l= strlen($d);
       if (-1 === $offset) $offset= $l;
-      if (false === ($s= strpos($this->buffer, $d, $this->pos + $offset))) continue;
+
+      // Find matching delimiter. A double delimiter is considered a nested delimiter
+      $i= 0;
+      do {
+        if (false === ($s= strpos($this->buffer, $d, $this->pos + $offset + $i))) continue 2;
+        if ($d !== substr($this->buffer, $s + $l, $l)) break;
+        $i= $s + $l;
+      } while ($i < $this->length);
+
       $b= substr($this->buffer, $this->pos + $offset, $s - $this->pos - $offset);
       $this->pos= $s + $l;    // $l is correct here, not $offset
       return $b;

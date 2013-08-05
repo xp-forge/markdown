@@ -41,13 +41,13 @@ class Markdown extends \lang\Object {
       return true;
     });
 
-    // *Word* => Emphasis, **Word** => Strong emphasis
+    // *Word* => Emphasis, **Word** => Strong emphasis. Can nest other elements!
     $emphasis= function($line, $target, $ctx) {
       $c= $line->chr();
       if ($line->matches($c.$c)) {
-        $target->add(new Bold($line->ending($c.$c)));
+        $target->add($ctx->tokenize(new Line($line->ending($c.$c)), new Bold()));
       } else {
-        $target->add(new Italic($line->ending($c)));
+        $target->add($ctx->tokenize(new Line($line->ending($c)), new Italic()));
       }
       return true;
     };

@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Fixed issue #5: Support nesting - (@thekid)
+
 ## 0.9.3 / 2013-08-04
 
 * Fixed URL identifiers passed to Markdown::transform() to be handled

@@ -196,4 +196,12 @@ class LinksTest extends MarkdownTest {
       '<address@example.com>'
     );
   }
+
+  #[@test]
+  public function link_nested_in_emphasized() {
+    $this->assertTransformed(
+      '<p><em><a href="http://example.net/">A link</a></em></p>',
+      '*[A link](http://example.net/)*'
+    );
+  }
 }

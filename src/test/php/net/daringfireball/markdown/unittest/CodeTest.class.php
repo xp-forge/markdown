@@ -105,4 +105,20 @@ class CodeTest extends MarkdownTest {
       "```basic\n10 PRINT \"HI\"\n20 GOTO 10\n```"
     );
   }
+
+  #[@test]
+  public function code_nested_in_emphasized() {
+    $this->assertTransformed(
+      '<p><em><code>code</code></em></p>',
+      '*`code`*'
+    );
+  }
+
+  #[@test]
+  public function code_nested_in_emphasized_and_strong() {
+    $this->assertTransformed(
+      '<p><strong> <em><code>code</code></em> </strong></p>',
+      '** *`code`* **'
+    );
+  }
 }
