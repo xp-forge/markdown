@@ -77,4 +77,12 @@ class EmphasisTest extends MarkdownTest {
   public function triple($input) {
     $this->assertTransformed('<p><strong><em>Test</em></strong></p>', $input);
   }
+
+  #[@test]
+  public function two_emphasized_words_inside_strong() {
+    $this->assertTransformed(
+      '<p><strong>&quot;<em>Hello</em>&quot;, he said. &quot;How are <em>you</em>?&quot;</strong></p>',
+      '**"*Hello*", he said. "How are *you*?"**'
+    );
+  }
 }
