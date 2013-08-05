@@ -72,4 +72,9 @@ class EmphasisTest extends MarkdownTest {
   public function emphasis_inside_strong($input) {
     $this->assertTransformed('<p><strong>Hello <em>World</em>!</strong></p>', $input);
   }
+
+  #[@test, @values(array('***Test***', '___Test___'))]
+  public function triple($input) {
+    $this->assertTransformed('<p><strong><em>Test</em></strong></p>', $input);
+  }
 }
