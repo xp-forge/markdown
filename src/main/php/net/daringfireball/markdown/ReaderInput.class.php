@@ -25,4 +25,13 @@ class ReaderInput extends Input {
   protected function readLine() {
     return $this->reader->readLine();
   }
+
+  /**
+   * Returns a description of the source for use in `toString()`
+   *
+   * @return string
+   */
+  protected function sourceDescription() {
+    return $this->reader->getStream()->toString();
+  }
 }

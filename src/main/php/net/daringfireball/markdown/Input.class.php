@@ -5,6 +5,16 @@
  */
 abstract class Input extends \lang\Object {
   protected $stack= array();
+  protected $line= 1;
+
+  /**
+   * Returns current line numer
+   *
+   * @return int
+   */
+  public function currentLine() {
+    return $this->line;
+  }
 
   /**
    * Reads a line
@@ -12,6 +22,13 @@ abstract class Input extends \lang\Object {
    * @return string or NULL to indicate EOF
    */
   protected abstract function readLine();
+
+  /**
+   * Returns a description of the source for use in `toString()`
+   *
+   * @return string
+   */
+  protected abstract function sourceDescription();
 
   /**
    * Returns whether there are more lines
@@ -23,6 +40,7 @@ abstract class Input extends \lang\Object {
       $l= $this->readLine();
       if (null === $l) return false;
       $this->stack[]= new Line($l);
+
     }
     return true;
   }
@@ -36,6 +54,7 @@ abstract class Input extends \lang\Object {
     if (empty($this->stack)) {
       if (!$this->hasMoreLines()) return null;
     }
+    $this->line++;
     return array_pop($this->stack);
   }
 
@@ -46,5 +65,15 @@ abstract class Input extends \lang\Object {
    */
   public function resetLine($line) {
     $this->stack[]= $line;
+    $this->line--;
+  }
+
+  /**
+   * Creates a string representation of this input
+   *
+   * @return string
+   */
+  public function toString() {
+    return $this->getClassName().'(line '.$this->line.' of '.$this->sourceDescription().')';
   }
 }

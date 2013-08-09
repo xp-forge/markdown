@@ -3,6 +3,7 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Added source description and line number to error messages - (@thekid)
 * Fixed issue #5: Support nesting - (@thekid)
 
 ## 0.9.3 / 2013-08-04

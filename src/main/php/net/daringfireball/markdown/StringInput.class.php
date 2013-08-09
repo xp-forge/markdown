@@ -36,4 +36,13 @@ class StringInput extends Input {
     $this->offset+= $c + $s;
     return $line;
   }
+
+  /**
+   * Returns a description of the source for use in `toString()`
+   *
+   * @return string
+   */
+  protected function sourceDescription() {
+    return '<'.strlen($this->str).' byte string>';
+  }
 }

@@ -108,4 +108,34 @@ abstract class InputTest extends \unittest\TestCase {
       array($fixture->nextLine(), $fixture->nextLine())
     );
   }
+
+  #[@test]
+  public function current_line_at_beginning() {
+    $fixture= $this->newFixture('');
+    $this->assertEquals(1, $fixture->currentLine());
+  }
+
+  #[@test]
+  public function current_line_after_next_line() {
+    $fixture= $this->newFixture("Line 1\nLine 2\n");
+    $fixture->nextLine();
+    $this->assertEquals(2, $fixture->currentLine());
+  }
+
+  #[@test]
+  public function current_line_after_resetting_a_line() {
+    $fixture= $this->newFixture("Line 1\nLine 2\n");
+    $fixture->resetLine($fixture->nextLine());
+    $this->assertEquals(1, $fixture->currentLine());
+  }
+
+  #[@test]
+  public function string_representation() {
+    $string= $this->newFixture('')->toString();
+    $this->assertEquals(
+      1,
+      preg_match('/^.+Input\(line 1 of .+/m', $string),
+      $string
+    );
+  }
 }
