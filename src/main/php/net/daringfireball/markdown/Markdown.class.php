@@ -42,15 +42,22 @@ class Markdown extends \lang\Object {
     });
 
     // *Word* => Emphasis, **Word** => Strong emphasis. Can nest other elements!
+    // "a * b" or "a ** b" => No, the star must not be followed by whitespace
     $emphasis= function($line, $target, $ctx) {
       $c= $line->chr();
       if ($line->matches($c.$c.$c)) {
+        $n= $line->chr(+3);
+        if (null === $n || false !== strpos("\r\n\t ", $n)) return false;
         $node= new Bold();
         $node->add($ctx->tokenize(new Line($line->ending($c.$c.$c)), new Italic()));
         $target->add($node);
       } else if ($line->matches($c.$c)) {
+        $n= $line->chr(+2);
+        if (null === $n || false !== strpos("\r\n\t ", $n)) return false;
         $target->add($ctx->tokenize(new Line($line->ending($c.$c)), new Bold()));
       } else {
+        $n= $line->chr(+1);
+        if (null === $n || false !== strpos("\r\n\t ", $n)) return false;
         $target->add($ctx->tokenize(new Line($line->ending($c)), new Italic()));
       }
       return true;

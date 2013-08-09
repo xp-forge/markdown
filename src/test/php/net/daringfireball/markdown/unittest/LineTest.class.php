@@ -60,6 +60,16 @@ class LineTest extends \unittest\TestCase {
     $this->assertEquals($buffer{$pos}, create(new Line($buffer, $pos))->chr());
   }
 
+  #[@test]
+  public function chr_with_offset() {
+    $this->assertEquals('T', create(new Line('Test', 1))->chr(-1));
+  }
+
+  #[@test]
+  public function chr_with_offset_before_beginning() {
+    $this->assertNull(create(new Line('Test', 0))->chr(-1));
+  }
+
   #[@test, @values(array('T', 'Te', 'Tes', 'Test'))]
   public function matches($str) {
     $this->assertTrue(create(new Line('Test'))->matches($str));

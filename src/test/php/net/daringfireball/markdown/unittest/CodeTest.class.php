@@ -117,8 +117,8 @@ class CodeTest extends MarkdownTest {
   #[@test]
   public function code_nested_in_emphasized_and_strong() {
     $this->assertTransformed(
-      '<p><strong> <em><code>code</code></em> </strong></p>',
-      '** *`code`* **'
+      '<p><strong><em><code>code</code></em></strong></p>',
+      '***`code`***'
     );
   }
 }

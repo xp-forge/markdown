@@ -47,12 +47,14 @@ class Line extends \lang\Object implements \ArrayAccess {
   }
 
   /**
-   * Returns the character at the current position
+   * Returns the character at the current position + the given offset
    *
+   * @param  int offset, defaults to 0
    * @return string
    */
-  public function chr() {
-    return $this->buffer[$this->pos];
+  public function chr($offset= 0) {
+    $i= $this->pos + $offset;
+    return $i < 0 || $i >= $this->length ? null : $this->buffer[$i];
   }
 
   /**

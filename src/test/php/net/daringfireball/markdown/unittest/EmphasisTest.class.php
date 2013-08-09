@@ -85,4 +85,19 @@ class EmphasisTest extends MarkdownTest {
       '**"*Hello*", he said. "How are *you*?"**'
     );
   }
+
+  #[@test]
+  public function mathematic_formula_is_not_emphasized() {
+    $this->assertTransformed('<p>a * b * c</p>', 'a * b * c');
+  }
+
+  #[@test, @values(array('a*', 'b**', 'c***'))]
+  public function reference_at_end($input) {
+    $this->assertTransformed('<p>'.$input.'</p>', $input);
+  }
+
+  #[@test]
+  public function underscore_inside_word_is_not_emphasized() {
+    $this->assertTransformed('<p>The hello_world function</p>', 'The hello_world function');
+  }
 }
