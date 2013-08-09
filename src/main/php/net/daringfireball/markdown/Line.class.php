@@ -102,8 +102,9 @@ class Line extends \lang\Object implements \ArrayAccess {
   /**
    * Returns the next slice of the string up until the position if the
    * given delimiting substring, cutting of the number of characters in
-   * the delimiting substring from both ends; and forwards the internal 
-   * pointer to the end.
+   * the delimiting substring from both ends, and forwards the internal 
+   * pointer to the end. If none of the delimiters can be found, returns
+   * NULL.
    *
    * ```php
    * $text= new Line('*Hello*');
@@ -113,9 +114,8 @@ class Line extends \lang\Object implements \ArrayAccess {
    *
    * @param  var $delimiters String for one delimiter, an array for multiple
    * @return string
-   * @throws lang.IllegalArgumentException If none of the delimiters can be found
    */
-  public function ending($delimiters, $offset= -1) {
+  public function delimited($delimiters, $offset= -1) {
     foreach ((array)$delimiters as $d) {
       $l= strlen($d);
       if (-1 === $offset) $offset= $l;
@@ -132,7 +132,22 @@ class Line extends \lang\Object implements \ArrayAccess {
       $this->pos= $s + $l;    // $l is correct here, not $offset
       return $b;
     }
-    throw new \lang\IllegalStateException('Unmatched '.implode(', ', (array)$delimiters));
+    return null;
+  }
+
+  /**
+   * Same as delimited(), but throws an exception instead of returning
+   * NULL if none of the delimiters can be found 
+   *
+   * @param  var $delimiters String for one delimiter, an array for multiple
+   * @return string
+   * @throws lang.IllegalArgumentException If none of the delimiters can be found
+   */
+  public function ending($delimiters, $offset= -1) {
+    if (null === ($chunk= $this->delimited($delimiters, $offset))) {
+      throw new \lang\IllegalStateException('Unmatched '.implode(', ', (array)$delimiters));
+    }
+    return $chunk;
   }
 
   /**

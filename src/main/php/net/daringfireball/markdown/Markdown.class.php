@@ -48,17 +48,20 @@ class Markdown extends \lang\Object {
       if ($line->matches($c.$c.$c)) {
         $n= $line->chr(+3);
         if (null === $n || false !== strpos("\r\n\t ", $n)) return false;
+        if (null === ($delimited= $line->delimited($c.$c.$c))) return false;
         $node= new Bold();
-        $node->add($ctx->tokenize(new Line($line->ending($c.$c.$c)), new Italic()));
+        $node->add($ctx->tokenize(new Line($delimited), new Italic()));
         $target->add($node);
       } else if ($line->matches($c.$c)) {
         $n= $line->chr(+2);
         if (null === $n || false !== strpos("\r\n\t ", $n)) return false;
-        $target->add($ctx->tokenize(new Line($line->ending($c.$c)), new Bold()));
+        if (null === ($delimited= $line->delimited($c.$c))) return false;
+        $target->add($ctx->tokenize(new Line($delimited), new Bold()));
       } else {
         $n= $line->chr(+1);
         if (null === $n || false !== strpos("\r\n\t ", $n)) return false;
-        $target->add($ctx->tokenize(new Line($line->ending($c)), new Italic()));
+        if (null === ($delimited= $line->delimited($c))) return false;
+        $target->add($ctx->tokenize(new Line($delimited), new Italic()));
       }
       return true;
     };
