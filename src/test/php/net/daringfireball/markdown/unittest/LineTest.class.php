@@ -4,12 +4,12 @@ use net\daringfireball\markdown\Line;
 
 class LineTest extends \unittest\TestCase {
 
-  #[@test, @values(array('', 'Hello'))]
+  #[@test, @values(['', 'Hello'])]
   public function length_equals_length_of_buffer_passed_to_constructor($buffer) {
     $this->assertEquals(strlen($buffer), create(new Line($buffer))->length());
   }
 
-  #[@test, @values(array('', 'Hello'))]
+  #[@test, @values(['', 'Hello'])]
   public function position_initially_defaults_to_zero($buffer) {
     $this->assertEquals(0, create(new Line($buffer))->pos());
   }
@@ -54,7 +54,7 @@ class LineTest extends \unittest\TestCase {
     $this->assertEquals(3, $l->forward(1));
   }
 
-  #[@test, @values(array(0, 1, 2, 3))]
+  #[@test, @values([0, 1, 2, 3])]
   public function chr_returns_character_at_current_position($pos) {
     $buffer= 'Test';
     $this->assertEquals($buffer{$pos}, create(new Line($buffer, $pos))->chr());
@@ -65,22 +65,22 @@ class LineTest extends \unittest\TestCase {
     $this->assertEquals('T', create(new Line('Test', 1))->chr(-1));
   }
 
-  #[@test, @values(array(-1, -2, -10000))]
+  #[@test, @values([-1, -2, -10000])]
   public function chr_with_offset_before_beginning($offset) {
     $this->assertNull(create(new Line('Test', 0))->chr($offset));
   }
 
-  #[@test, @values(array(4, 5, 10000))]
+  #[@test, @values([4, 5, 10000])]
   public function chr_with_offset_after_end($offset) {
     $this->assertNull(create(new Line('Test', 0))->chr($offset));
   }
 
-  #[@test, @values(array('T', 'Te', 'Tes', 'Test'))]
+  #[@test, @values(['T', 'Te', 'Tes', 'Test'])]
   public function matches($str) {
     $this->assertTrue(create(new Line('Test'))->matches($str));
   }
 
-  #[@test, @values(array('', 'e', 'es', 'does-not-occur', "\0"))]
+  #[@test, @values(['', 'e', 'es', 'does-not-occur', "\0"])]
   public function does_not_match($str) {
     $this->assertFalse(create(new Line('Test'))->matches($str));
   }
@@ -102,17 +102,17 @@ class LineTest extends \unittest\TestCase {
 
   #[@test]
   public function next_with_two_patterns() {
-    $this->assertEquals(5, create(new Line('Hello.'))->next(array('!', '.')));
+    $this->assertEquals(5, create(new Line('Hello.'))->next(['!', '.']));
   }
 
   #[@test]
   public function next_with_two_patterns_with_two_characters() {
-    $this->assertEquals(7, create(new Line('[[Hello]]'))->next(array('>>', ']]')));
+    $this->assertEquals(7, create(new Line('[[Hello]]'))->next(['>>', ']]']));
   }
 
   #[@test]
   public function next_with_two_not_ocurring_patterns() {
-    $this->assertEquals(-1, create(new Line('Hello.'))->next(array('!', ',')));
+    $this->assertEquals(-1, create(new Line('Hello.'))->next(['!', ',']));
   }
 
   #[@test]
@@ -137,10 +137,10 @@ class LineTest extends \unittest\TestCase {
     $this->assertEquals(4, $l->pos());
   }
 
-  #[@test, @values(array(array('Hello', 1), array('Hello World', 2), array('Hello New World', 3))]
+  #[@test, @values([['Hello', 1], ['Hello World', 2], ['Hello New World', 3]])]
   public function until_used_as_tokenizer($input, $size) {
     $l= new Line($input);
-    $tokens= array();
+    $tokens= [];
     for ($i= 0; $i < $size; $i++) {
       $tokens[]= $l->until(' ');
       $l->forward();
@@ -148,19 +148,19 @@ class LineTest extends \unittest\TestCase {
     $this->assertEquals(explode(' ', $input, $size), $tokens);
   }
 
-  #[@test, @values(array('*', '_', '`'))]
+  #[@test, @values(['*', '_', '`'])]
   public function ending_with_a_single_character($character) {
     $this->assertEquals('Hello', create(new Line($character.'Hello'.$character))->ending($character));
   }
 
-  #[@test, @values(array('**', '__', '``'))]
+  #[@test, @values(['**', '__', '``'])]
   public function ending_with_two_characters($characters) {
     $this->assertEquals('Hello', create(new Line($characters.'Hello'.$characters))->ending($characters));
   }
 
-  #[@test, @values(array('`` $code; ``', array('`` $code;``'))]
+  #[@test, @values(['`` $code; ``', '`` $code;``'])]
   public function ending_with_any_of($input) {
-    $this->assertEquals('$code;', create(new Line($input))->ending(array(' ``', '``'), 3));
+    $this->assertEquals('$code;', create(new Line($input))->ending([' ``', '``'], 3));
   }
 
   #[@test]
@@ -175,17 +175,17 @@ class LineTest extends \unittest\TestCase {
     $this->assertEquals('Hello **World**', create(new Line('*Hello **World***'))->ending('*'));
   }
 
-  #[@test, @values(array(
-  #  array('(Hello)', 'Hello', '()'),
-  #  array('((Hello))', '(Hello)', '()'),
-  #  array('((Hello) World)', '(Hello) World', '()'),
-  #  array('(Hello (World))', 'Hello (World)', '()'),
-  #  array('(Hello (New) (World))', 'Hello (New) (World)', '()'),
-  #  array('(Hello ((New)) (World))', 'Hello ((New)) (World)', '()'),
-  #  array('[Hello]', 'Hello', '[]'),
-  #  array('<Hello>', 'Hello', '<>'),
-  #  array('{Hello}', 'Hello', '{}'),
-  #)]
+  #[@test, @values([
+  #  ['(Hello)', 'Hello', '()'],
+  #  ['[Hello]', 'Hello', '[]'],
+  #  ['<Hello>', 'Hello', '<>'],
+  #  ['{Hello}', 'Hello', '{}'],
+  #  ['((Hello))', '(Hello)', '()'],
+  #  ['((Hello) World)', '(Hello) World', '()'],
+  #  ['(Hello (World))', 'Hello (World)', '()'],
+  #  ['(Hello (New) (World))', 'Hello (New) (World)', '()'],
+  #  ['(Hello ((New)) (World))', 'Hello ((New)) (World)', '()']
+  #])]
   public function matching_square_braces($input, $expected, $braces) {
     $this->assertEquals($expected, create(new Line($input))->matching($braces));
   }
@@ -246,14 +246,14 @@ class LineTest extends \unittest\TestCase {
     $this->assertEquals('!', $l->until("\n"));
   }
 
-  #[@test, @values(array('This `` $files= []; `` is an initialization', 'This `` $files= [];`` is an initialization'))]
+  #[@test, @values(['This `` $files= []; `` is an initialization', 'This `` $files= [];`` is an initialization'])]
   public function code_with_spaces($input) {
     $line= new Line($input);
     $before= $line->until('`');
-    $code= $line->ending(array(' ``', '``'), strlen('`` '));
+    $code= $line->ending([' ``', '``'], strlen('`` '));
     $this->assertEquals(
-      array('before' => 'This ', 'code' => '$files= [];', 'after' => ' is an initialization'),
-      array('before' => $before, 'code' => $code, 'after' => $line->until("\n"))
+      ['before' => 'This ', 'code' => '$files= [];', 'after' => ' is an initialization'],
+      ['before' => $before, 'code' => $code, 'after' => $line->until("\n")]
     );
   }
 
@@ -269,7 +269,7 @@ class LineTest extends \unittest\TestCase {
 
   #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched **, *')]
   public function none_of_ending_delimiters_not_found() {
-    create(new Line('*Hello'))->ending(array('**', '*'));
+    create(new Line('*Hello'))->ending(['**', '*']);
   }
 
   #[@test]
