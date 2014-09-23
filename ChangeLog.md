@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 0.9.4 / 2014-09-23
+
 * Fixed `a * b` leading to formatting errors - (@thekid)
 * Added source description and line number to error messages - (@thekid)
 * Fixed issue #5: Support nesting - (@thekid)

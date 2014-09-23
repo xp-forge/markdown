@@ -14,7 +14,7 @@ Example
 ```php
 use net\daringfireball\markdown\Markdown;
 
-$engine= new net\daringfireball\markdown\Markdown();
+$engine= new Markdown();
 $transformed= $engine->transform(
   'This is [Markdown](http://daringfireball.net/projects/markdown/) for **XP**'
 );
