@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 1.0.0 / 2015-01-10
+
+* Made available via Composer - (@thekid)
+
 ## 0.9.4 / 2014-09-23
 
 * Fixed `a * b` leading to formatting errors - (@thekid)
