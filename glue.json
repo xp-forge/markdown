@@ -1,7 +1,0 @@
-{
-  "name": "xp-forge/markdown",
-  "version": "0.9.4",
-  "require": {
-    "xp-framework/core": "~6.0"
-  }
-}
