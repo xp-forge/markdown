@@ -6,17 +6,17 @@ class LineTest extends \unittest\TestCase {
 
   #[@test, @values(['', 'Hello'])]
   public function length_equals_length_of_buffer_passed_to_constructor($buffer) {
-    $this->assertEquals(strlen($buffer), create(new Line($buffer))->length());
+    $this->assertEquals(strlen($buffer), (new Line($buffer))->length());
   }
 
   #[@test, @values(['', 'Hello'])]
   public function position_initially_defaults_to_zero($buffer) {
-    $this->assertEquals(0, create(new Line($buffer))->pos());
+    $this->assertEquals(0, (new Line($buffer))->pos());
   }
 
   #[@test]
   public function position_passable_as_second_constructor_parameter() {
-    $this->assertEquals(2, create(new Line('buffer', 2))->pos());
+    $this->assertEquals(2, (new Line('buffer', 2))->pos());
   }
 
   #[@test]
@@ -57,77 +57,77 @@ class LineTest extends \unittest\TestCase {
   #[@test, @values([0, 1, 2, 3])]
   public function chr_returns_character_at_current_position($pos) {
     $buffer= 'Test';
-    $this->assertEquals($buffer{$pos}, create(new Line($buffer, $pos))->chr());
+    $this->assertEquals($buffer{$pos}, (new Line($buffer, $pos))->chr());
   }
 
   #[@test]
   public function chr_with_offset() {
-    $this->assertEquals('T', create(new Line('Test', 1))->chr(-1));
+    $this->assertEquals('T', (new Line('Test', 1))->chr(-1));
   }
 
   #[@test, @values([-1, -2, -10000])]
   public function chr_with_offset_before_beginning($offset) {
-    $this->assertNull(create(new Line('Test', 0))->chr($offset));
+    $this->assertNull((new Line('Test', 0))->chr($offset));
   }
 
   #[@test, @values([4, 5, 10000])]
   public function chr_with_offset_after_end($offset) {
-    $this->assertNull(create(new Line('Test', 0))->chr($offset));
+    $this->assertNull((new Line('Test', 0))->chr($offset));
   }
 
   #[@test, @values(['T', 'Te', 'Tes', 'Test'])]
   public function matches($str) {
-    $this->assertTrue(create(new Line('Test'))->matches($str));
+    $this->assertTrue((new Line('Test'))->matches($str));
   }
 
   #[@test, @values(['', 'e', 'es', 'does-not-occur', "\0"])]
   public function does_not_match($str) {
-    $this->assertFalse(create(new Line('Test'))->matches($str));
+    $this->assertFalse((new Line('Test'))->matches($str));
   }
 
   #[@test]
   public function next_with_one_character() {
-    $this->assertEquals(5, create(new Line('Hello!'))->next('!'));
+    $this->assertEquals(5, (new Line('Hello!'))->next('!'));
   }
 
   #[@test]
   public function next_with_two_characters() {
-    $this->assertEquals(7, create(new Line('[[Hello]]'))->next(']]'));
+    $this->assertEquals(7, (new Line('[[Hello]]'))->next(']]'));
   }
 
   #[@test]
   public function next_with_not_ocurring_pattern() {
-    $this->assertEquals(-1, create(new Line('Hello'))->next('!'));
+    $this->assertEquals(-1, (new Line('Hello'))->next('!'));
   }
 
   #[@test]
   public function next_with_two_patterns() {
-    $this->assertEquals(5, create(new Line('Hello.'))->next(['!', '.']));
+    $this->assertEquals(5, (new Line('Hello.'))->next(['!', '.']));
   }
 
   #[@test]
   public function next_with_two_patterns_with_two_characters() {
-    $this->assertEquals(7, create(new Line('[[Hello]]'))->next(['>>', ']]']));
+    $this->assertEquals(7, (new Line('[[Hello]]'))->next(['>>', ']]']));
   }
 
   #[@test]
   public function next_with_two_not_ocurring_patterns() {
-    $this->assertEquals(-1, create(new Line('Hello.'))->next(['!', ',']));
+    $this->assertEquals(-1, (new Line('Hello.'))->next(['!', ',']));
   }
 
   #[@test]
   public function until_a_single_character() {
-    $this->assertEquals('Hello', create(new Line('Hello!'))->until('!'));
+    $this->assertEquals('Hello', (new Line('Hello!'))->until('!'));
   }
 
   #[@test]
   public function until_a_list_of_characters() {
-    $this->assertEquals('Hello', create(new Line('Hello!'))->until('.,;:!?'));
+    $this->assertEquals('Hello', (new Line('Hello!'))->until('.,;:!?'));
   }
 
   #[@test]
   public function until_a_single_character_that_does_not_occurr() {
-    $this->assertEquals('Hello', create(new Line('Hello'))->until('!'));
+    $this->assertEquals('Hello', (new Line('Hello'))->until('!'));
   }
 
   #[@test]
@@ -150,17 +150,17 @@ class LineTest extends \unittest\TestCase {
 
   #[@test, @values(['*', '_', '`'])]
   public function ending_with_a_single_character($character) {
-    $this->assertEquals('Hello', create(new Line($character.'Hello'.$character))->ending($character));
+    $this->assertEquals('Hello', (new Line($character.'Hello'.$character))->ending($character));
   }
 
   #[@test, @values(['**', '__', '``'])]
   public function ending_with_two_characters($characters) {
-    $this->assertEquals('Hello', create(new Line($characters.'Hello'.$characters))->ending($characters));
+    $this->assertEquals('Hello', (new Line($characters.'Hello'.$characters))->ending($characters));
   }
 
   #[@test, @values(['`` $code; ``', '`` $code;``'])]
   public function ending_with_any_of($input) {
-    $this->assertEquals('$code;', create(new Line($input))->ending([' ``', '``'], 3));
+    $this->assertEquals('$code;', (new Line($input))->ending([' ``', '``'], 3));
   }
 
   #[@test]
@@ -172,7 +172,7 @@ class LineTest extends \unittest\TestCase {
 
   #[@test]
   public function ending_regards_double_delimiter_nested() {
-    $this->assertEquals('Hello **World**', create(new Line('*Hello **World***'))->ending('*'));
+    $this->assertEquals('Hello **World**', (new Line('*Hello **World***'))->ending('*'));
   }
 
   #[@test, @values([
@@ -187,7 +187,7 @@ class LineTest extends \unittest\TestCase {
   #  ['(Hello ((New)) (World))', 'Hello ((New)) (World)', '()']
   #])]
   public function matching_square_braces($input, $expected, $braces) {
-    $this->assertEquals($expected, create(new Line($input))->matching($braces));
+    $this->assertEquals($expected, (new Line($input))->matching($braces));
   }
 
   #[@test]
@@ -199,22 +199,22 @@ class LineTest extends \unittest\TestCase {
 
   #[@test]
   public function slice_of_given_length() {
-    $this->assertEquals('Hello', create(new Line('Hello'))->slice(5));
+    $this->assertEquals('Hello', (new Line('Hello'))->slice(5));
   }
 
   #[@test]
   public function slice_of_given_length_with_left_offset() {
-    $this->assertEquals('ello', create(new Line('Hello'))->slice(5, 1, 0));
+    $this->assertEquals('ello', (new Line('Hello'))->slice(5, 1, 0));
   }
 
   #[@test]
   public function slice_of_given_length_with_right_offset() {
-    $this->assertEquals('Hell', create(new Line('Hello'))->slice(5, 0, -1));
+    $this->assertEquals('Hell', (new Line('Hello'))->slice(5, 0, -1));
   }
 
   #[@test]
   public function slice_of_given_length_with_left_and_right_offset() {
-    $this->assertEquals('ell', create(new Line('Hello'))->slice(5, 1, -1));
+    $this->assertEquals('ell', (new Line('Hello'))->slice(5, 1, -1));
   }
 
   #[@test]
@@ -259,17 +259,17 @@ class LineTest extends \unittest\TestCase {
 
   #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched *')]
   public function ending_single_delimiter_not_found() {
-    create(new Line('*Hello'))->ending('*');
+    (new Line('*Hello'))->ending('*');
   }
 
   #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched **')]
   public function ending_double_delimiter_not_found() {
-    create(new Line('**Hello'))->ending('**');
+    (new Line('**Hello'))->ending('**');
   }
 
   #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched **, *')]
   public function none_of_ending_delimiters_not_found() {
-    create(new Line('*Hello'))->ending(['**', '*']);
+    (new Line('*Hello'))->ending(['**', '*']);
   }
 
   #[@test]
