@@ -1,10 +1,21 @@
 <?php namespace net\daringfireball\markdown;
 
+use util\Objects;
+
 /**
  * Abstract base class for all nodes with nested child elements
  */
 abstract class NodeList extends Node {
-  protected $nodes= array();
+  protected $nodes;
+
+  /**
+   * Creates a new list of nodes
+   *
+   * @param  net.daringfireball.markdown.Node[] $nodes
+   */
+  public function __construct($nodes= []) {
+    $this->nodes= $nodes;
+  }
 
   /**
    * Returns this nodelist's size
@@ -121,5 +132,15 @@ abstract class NodeList extends Node {
    */
   public function emit($definitions) {
     return $this->emitAll($this->nodes, $definitions);
+  }
+
+  /**
+   * Returns whether a given comparison value is equal to this node list
+   *
+   * @param  var $cmp
+   * @return string
+   */
+  public function equals($cmp) {
+    return $cmp instanceof self && Objects::equal($this->nodes, $cmp->nodes);
   }
 }

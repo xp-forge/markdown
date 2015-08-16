@@ -1,5 +1,8 @@
 <?php namespace net\daringfireball\markdown;
 
+use lang\Throwable;
+use lang\FormatException;
+
 /**
  * @see  http://daringfireball.net/projects/markdown/basics
  * @see  https://github.com/markdown/markdown.github.com/wiki/Implementations
@@ -206,13 +209,13 @@ class Markdown extends \lang\Object {
   }
 
   /**
-   * Transform a given input and returns the output
+   * Parses the output and returns the resulting parse tree
    *
    * @param  var $in markdown either a string or a net.daringfireball.markdown.Input
-   * @param  [:net.daringfireball.markdown.Link] $urls
-   * @return string markup
+   * @return net.daringfireball.markdown.ParseTree
+   * @throws lang.FormatException
    */
-  public function transform($in, $urls= array()) {
+  public function parse($in) {
     $context= new ToplevelContext();
     $context->setTokens($this->tokens);
     $context->setHandlers($this->handlers);
@@ -220,9 +223,22 @@ class Markdown extends \lang\Object {
     $input= $in instanceof Input ? $in : new StringInput((string)$in);
     try {
       $tree= $context->parse($input);
-    } catch (\lang\XPException $e) {
-      throw new \lang\FormatException('Error in '.$input->toString(), $e);
+    } catch (Throwable $e) {
+      throw new FormatException('Error in '.$input->toString(), $e);
     }
-    return $tree->emit($tree->urls + array_change_key_case($urls, CASE_LOWER));
+    return $tree;
+  }
+
+  /**
+   * Transform a given input and returns the output
+   *
+   * @param  var $in markdown either a string or a net.daringfireball.markdown.Input
+   * @param  [:net.daringfireball.markdown.Link] $urls
+   * @return string markup
+   * @throws lang.FormatException
+   */
+  public function transform($in, $urls= []) {
+    $tree= $this->parse($in);
+    return $tree->emit(array_change_key_case($urls, CASE_LOWER));
   }
 }

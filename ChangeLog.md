@@ -3,6 +3,11 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Added new `Markdown::parse()` method which will return a parse tree
+  instead of directly transorming it. This tree can be reused multiple
+  times later on.
+  (@thekid)
+
 ## 1.0.2 / 2015-07-12
 
 * Added forward compatibility with XP 6.4.0 - @thekid

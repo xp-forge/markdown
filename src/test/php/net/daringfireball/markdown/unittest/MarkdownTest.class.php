@@ -1,5 +1,7 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
+use net\daringfireball\markdown\Markdown;
+
 /**
  * Base class for other markdown tests. Creates fixture and 
  * provides assertion helper.
@@ -7,11 +9,9 @@
 abstract class MarkdownTest extends \unittest\TestCase {
   protected $fixture;
 
-  /**
-   * Create fixture
-   */
+  /** @return void */
   public function setUp() {
-    $this->fixture= new \net\daringfireball\markdown\Markdown();
+    $this->fixture= new Markdown();
   }
 
   /**
@@ -22,7 +22,7 @@ abstract class MarkdownTest extends \unittest\TestCase {
    * @param  [:net.daringfireball.markdown.Link] $urls
    * @throws unittest.AssertionFailedError
    */
-  protected function assertTransformed($expected, $input, $urls= array()) {
+  protected function assertTransformed($expected, $input, $urls= []) {
     $this->assertEquals($expected, $this->fixture->transform($input, $urls));
   }
 }

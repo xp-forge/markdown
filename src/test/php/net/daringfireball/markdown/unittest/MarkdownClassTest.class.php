@@ -4,12 +4,24 @@ use net\daringfireball\markdown\Markdown;
 use net\daringfireball\markdown\StringInput;
 use net\daringfireball\markdown\ReaderInput;
 use net\daringfireball\markdown\Link;
+use net\daringfireball\markdown\ParseTree;
+use net\daringfireball\markdown\Paragraph;
+use io\streams\MemoryInputStream;
+use io\streams\TextReader;
 
 class MarkdownClassTest extends MarkdownTest {
 
   #[@test]
   public function can_create() {
     new Markdown();
+  }
+
+  #[@test]
+  public function parse_string() {
+    $this->assertEquals(
+      new ParseTree([new Paragraph()], []),
+      (new Markdown())->parse('')
+    );
   }
 
   #[@test]
@@ -25,7 +37,7 @@ class MarkdownClassTest extends MarkdownTest {
   #[@test]
   public function transform_reader_input() {
     $this->assertEquals('<p></p>', (new Markdown())->transform(new ReaderInput(
-      new \io\streams\TextReader(new \io\streams\MemoryInputStream(''))
+      new TextReader(new MemoryInputStream(''))
     )));
   }
 
@@ -33,10 +45,10 @@ class MarkdownClassTest extends MarkdownTest {
   public function transform_given_urls() {
     $this->assertEquals(
       '<p><a href="http://example.com">Link</a> to <a href="http://xp-framework.net">XP</a></p>',
-      (new Markdown())->transform('[Link][] to [XP][]', array(
+      (new Markdown())->transform('[Link][] to [XP][]', [
         'link' => new Link('http://example.com'),
         'XP'   => new Link('http://xp-framework.net')
-      ))
+      ])
     );
   }
 }
