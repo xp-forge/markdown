@@ -79,6 +79,15 @@ abstract class NodeList extends Node {
   }
 
   /**
+   * Gets all nodes
+   *
+   * @return net.daringfireball.markdown.Node[]
+   */
+  public function all() {
+    return $this->nodes;
+  }
+
+  /**
    * Removes a node at a given position
    *
    * @param  int $pos
