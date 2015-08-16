@@ -12,6 +12,18 @@ class CodeBlock extends NodeList {
     $this->language= $language;
   }
 
+  /** @return string */
+  public function language() { return $this->language; }
+
+  /** @return string */
+  public function code() {
+    $r= '';
+    foreach ($this->nodes as $node) {
+      $r.= "\n".cast($node, Text::class)->value;
+    }
+    return substr($r, 1);
+  }
+
   /**
    * Emit this code block
    *
