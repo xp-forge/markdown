@@ -238,7 +238,6 @@ class Markdown extends \lang\Object {
    * @throws lang.FormatException
    */
   public function transform($in, $urls= []) {
-    $tree= $this->parse($in);
-    return $tree->emit(array_change_key_case($urls, CASE_LOWER));
+    return $this->parse($in)->emit(array_change_key_case($urls, CASE_LOWER));
   }
 }
