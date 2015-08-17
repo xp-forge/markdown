@@ -1,15 +1,17 @@
 <?php namespace net\daringfireball\markdown;
 
 class Cell extends NodeList {
-  private $type;
+  private $type, $alignment;
 
   /**
    * Creates a new list
    *
    * @param  string $type either "th" or "td"
+   * @param  string $alignment
    */
-  public function __construct($type) {
+  public function __construct($type, $alignment) {
     $this->type= $type;
+    $this->alignment= $alignment;
   }
 
   /**
@@ -23,6 +25,7 @@ class Cell extends NodeList {
     foreach ($this->nodes as $cell) {
       $r.= $cell->emit($definitions);
     }
-    return '<'.$this->type.'>'.$r.'</'.$this->type.'>';
+    $attr= $this->alignment ? ' style="text-align: '.$this->alignment.'"' : '';
+    return '<'.$this->type.$attr.'>'.$r.'</'.$this->type.'>';
   }
 }

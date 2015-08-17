@@ -170,8 +170,7 @@ class Markdown extends \lang\Object {
       return true;
     });
     $this->addHandler('/^\|.+\|$/', function($lines, $matches, $result, $ctx) {
-      $lines->resetLine($matches[0]);
-      $result->append($ctx->enter(new TableContext())->parse($lines));
+      $result->append($ctx->enter(new TableContext($matches[0], $lines->nextLine()))->parse($lines));
       return true;
     });
   }

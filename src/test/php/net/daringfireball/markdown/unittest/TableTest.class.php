@@ -44,4 +44,17 @@ class TableTest extends MarkdownTest {
       "| [T-Shirt](https://t-shirt.example.com/) | *$12.49* |\n"
     );
   }
+
+  #[@test]
+  public function alignment() {
+    $this->assertTransformed(
+      '<table>'.
+      '<tr><th style="text-align: left">Product</th><th style="text-align: center">Size</th><th style="text-align: right">Price</th></tr>'.
+      '<tr><td style="text-align: left">T-Shirt</td><td style="text-align: center">S</td><td style="text-align: right">12.49</td></tr>'.
+      '</table>',
+      "| Product | Size | Price |\n".
+      "|:--------|:----:|------:|\n".
+      "| T-Shirt |   S  | 12.49 |\n"
+    );
+  }
 }
