@@ -19,7 +19,7 @@ class CodeBlock extends NodeList {
   public function code() {
     $r= '';
     foreach ($this->nodes as $node) {
-      $r.= "\n".cast($node, Text::class)->value;
+      $r.= "\n".cast($node, 'net.daringfireball.markdown.Text')->value;
     }
     return substr($r, 1);
   }
