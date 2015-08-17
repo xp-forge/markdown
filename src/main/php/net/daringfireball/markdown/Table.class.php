@@ -1,5 +1,11 @@
 <?php namespace net\daringfireball\markdown;
 
+/**
+ * A table in markdown
+ *
+ * @see   http://www.tablesgenerator.com/markdown_tables
+ * @test  xp://net.daringfireball.markdown.unittest.TableTest
+ */
 class Table extends NodeList {
  
   /**
