@@ -25,8 +25,8 @@ class Table extends NodeList {
   /** @return var[][] */
   public function rows() {
     $rows= [];
-    foreach ($this->nodes as $row) {
-      $rows[]= $row->cells();
+    foreach ($this->nodes as $i => $row) {
+      $i && $rows[]= $row->cells();
     }
     return $rows;
   }
