@@ -169,6 +169,11 @@ class Markdown extends \lang\Object {
       $result->append($ctx->enter(new FencedCodeContext($matches[1]))->parse($lines));
       return true;
     });
+    $this->addHandler('/^\|.+\|$/', function($lines, $matches, $result, $ctx) {
+      $lines->resetLine($matches[0]);
+      $result->append($ctx->enter(new TableContext())->parse($lines));
+      return true;
+    });
   }
 
   /**
