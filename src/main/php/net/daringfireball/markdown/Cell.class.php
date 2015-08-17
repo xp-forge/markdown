@@ -1,9 +1,16 @@
 <?php namespace net\daringfireball\markdown;
 
-class Row extends NodeList {
+class Cell extends NodeList {
+  private $type;
 
-  /** @return var[][] */
-  public function cells() { return $this->nodes; }
+  /**
+   * Creates a new list
+   *
+   * @param  string $type either "th" or "td"
+   */
+  public function __construct($type) {
+    $this->type= $type;
+  }
 
   /**
    * Emit this table row
@@ -16,6 +23,6 @@ class Row extends NodeList {
     foreach ($this->nodes as $cell) {
       $r.= $cell->emit($definitions);
     }
-    return '<tr>'.$r.'</tr>';
+    return '<'.$this->type.'>'.$r.'</'.$this->type.'>';
   }
 }

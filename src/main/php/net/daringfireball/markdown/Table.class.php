@@ -16,11 +16,11 @@ class Table extends NodeList {
     return '<table>'.$r.'</table>';
   }
 
-  /** @return string[][] */
+  /** @return var[][] */
   public function rows() {
     $rows= [];
     foreach ($this->nodes as $row) {
-      $rows[]= array_map(function($cell) { return $cell->value; }, $row->nodes);
+      $rows[]= $row->cells();
     }
     return $rows;
   }

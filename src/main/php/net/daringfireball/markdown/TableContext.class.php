@@ -10,9 +10,9 @@ class TableContext extends Context {
    * @return net.daringfireball.markdown.Row
    */
   private function parseRow($line, $type) {
-    $row= new Row($type);
+    $row= new Row();
     foreach (explode('|', substr($line, 1, -1)) as $cell) {
-      $row->add(new Text(trim($cell)));
+      $this->tokenize(new Line(trim($cell)), $row->add(new Cell($type)));
     }
     return $row;
   }
