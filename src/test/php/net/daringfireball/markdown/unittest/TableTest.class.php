@@ -72,4 +72,20 @@ class TableTest extends MarkdownTest {
       "| T-Shirt |   S  | 12.49 |\n"
     );
   }
+
+  #[@test]
+  public function line_after_table() {
+    $this->assertTransformed(
+      '<table>'.
+      '<tr><th>Product</th><th>Price</th></tr>'.
+      '<tr><td>T-Shirt</td><td>12.49</td></tr>'.
+      '</table>'.
+      '<p>Line</p>',
+      "Product | Price\n".
+      "------- | -----\n".
+      "T-Shirt | 12.49\n".
+      "\n".
+      "Line"
+    );
+  }
 }
