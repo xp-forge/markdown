@@ -1,6 +1,6 @@
 <?php namespace net\daringfireball\markdown;
 
-class TableContext extends Context {
+abstract class TableContext extends Context {
   private $headers, $alignment;
 
   /**
@@ -12,7 +12,7 @@ class TableContext extends Context {
   public function __construct($headers, $alignment) {
     $this->headers= $headers;
     $this->alignment= [];
-    foreach (explode('|', substr($alignment, 1, -1)) as $align) {
+    foreach ($this->cellsIn($alignment) as $align) {
       preg_match('/^ ?(:)?\-+(:)? ?$/', $align, $matches);
       if (isset($matches[2])) {
         $this->alignment[]= $matches[1] ? 'center' : 'right';
@@ -25,6 +25,14 @@ class TableContext extends Context {
   }
 
   /**
+   * Parse a line into a cells. Returns NULL if this is no table line.
+   *
+   * @param  string $line
+   * @return string[]
+   */
+  protected abstract function cellsIn($line);
+
+  /**
    * Parse a line into a row
    *
    * @param  string $line
@@ -32,8 +40,10 @@ class TableContext extends Context {
    * @return net.daringfireball.markdown.Row
    */
   private function parseRow($line, $type) {
+    if (null === ($cells= $this->cellsIn($line))) return null;
+
     $row= new Row();
-    foreach (explode('|', substr($line, 1, -1)) as $pos => $cell) {
+    foreach ($cells as $pos => $cell) {
       $this->tokenize(new Line(trim($cell)), $row->add(new Cell($type, $this->alignment[$pos])));
     }
     return $row;
@@ -51,11 +61,11 @@ class TableContext extends Context {
 
     while ($lines->hasMoreLines()) {
       $line= $lines->nextLine();
-      if ('|' === $line{0}) {
-        $table->add($this->parseRow($line, 'td'));
-      } else {
+      if (null === ($row= $this->parseRow($line, 'td'))) {
+        $lines->resetLine($line);
         break;
       }
+      $table->add($row);
     }
 
     return $table;
