@@ -171,13 +171,23 @@ class Markdown extends \lang\Object {
     });
     $this->addHandler('/^\|.+\| *$/', function($lines, $matches, $result, $ctx) {
       $separator= $lines->nextLine();
-      $result->append($ctx->enter(new WrappedTableContext($matches[0], $separator))->parse($lines));
-      return true;
+      if (preg_match('/^\|[ :|-]+\| *$/', $separator)) {
+        $result->append($ctx->enter(new WrappedTableContext($matches[0], $separator))->parse($lines));
+        return true;
+      } else {
+        $lines->resetLine($separator);
+        return false;
+      }
     });
     $this->addHandler('/^(.+\|.+)+$/', function($lines, $matches, $result, $ctx) {
       $separator= $lines->nextLine();
-      $result->append($ctx->enter(new InlineTableContext($matches[0], $separator))->parse($lines));
-      return true;
+      if (preg_match('/^([ :|-]+\|[ :|-]+)+$/', $separator)) {
+        $result->append($ctx->enter(new InlineTableContext($matches[0], $separator))->parse($lines));
+        return true;
+      } else {
+        $lines->resetLine($separator);
+        return false;
+      }
     });
   }
 

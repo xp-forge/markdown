@@ -18,6 +18,15 @@ class TableTest extends MarkdownTest {
   }
 
   #[@test]
+  public function not_simple_layout() {
+    $this->assertTransformed(
+      "<p>Product | Price\nSecond Line</p>",
+      "Product | Price\n".
+      "Second Line"
+    );
+  }
+
+  #[@test]
   public function wrapped_layout() {
     $this->assertTransformed(
       '<table>'.
@@ -29,6 +38,15 @@ class TableTest extends MarkdownTest {
       "| ------- | ----- |\n".
       "| T-Shirt | 12.49 |\n".
       "| Server  | 99.99 |\n"
+    );
+  }
+
+  #[@test]
+  public function not_wrapped_layout() {
+    $this->assertTransformed(
+      "<p>| Product | Price |\nSecond Line</p>",
+      "| Product | Price |\n".
+      "Second Line"
     );
   }
 
