@@ -169,6 +169,26 @@ class Markdown extends \lang\Object {
       $result->append($ctx->enter(new FencedCodeContext($matches[1]))->parse($lines));
       return true;
     });
+    $this->addHandler('/^\|.+\| *$/', function($lines, $matches, $result, $ctx) {
+      $separator= $lines->nextLine();
+      if (preg_match('/^\|[ :|-]+\| *$/', $separator)) {
+        $result->append($ctx->enter(new WrappedTableContext($matches[0], $separator))->parse($lines));
+        return true;
+      } else {
+        $lines->resetLine($separator);
+        return false;
+      }
+    });
+    $this->addHandler('/^(.+\|.+)+$/', function($lines, $matches, $result, $ctx) {
+      $separator= $lines->nextLine();
+      if (preg_match('/^([ :|-]+\|[ :|-]+)+$/', $separator)) {
+        $result->append($ctx->enter(new InlineTableContext($matches[0], $separator))->parse($lines));
+        return true;
+      } else {
+        $lines->resetLine($separator);
+        return false;
+      }
+    });
   }
 
   /**
