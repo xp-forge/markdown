@@ -3,6 +3,9 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 1.1.0 / 2015-08-20
+
+* Merged pull request #7: Table support - @thekid
 * Added new `Markdown::parse()` method which will return a parse tree
   instead of directly transorming it. This tree can be reused multiple
   times later on.
