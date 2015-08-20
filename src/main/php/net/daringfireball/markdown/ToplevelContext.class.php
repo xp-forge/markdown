@@ -35,7 +35,7 @@ class ToplevelContext extends Context {
       $handled= false;
       foreach ($this->handlers as $pattern => $handler) {
         if (preg_match($pattern, $line, $values)) {
-          if ($handled= $handler($lines, array($line) + $values, $result, $this)) {
+          if ($handled= $handler($lines, [$line] + $values, $result, $this)) {
             $target= null;
             break;
           }

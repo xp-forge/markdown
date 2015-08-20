@@ -18,11 +18,11 @@ class LinksTest extends MarkdownTest {
     );
   }
 
-  #[@test, @values(array(
+  #[@test, @values([
   #  '[id]: http://example.com/  "Optional Title Here"',
   #  "[id]: http://example.com/  'Optional Title Here'",
   #  '[id]: http://example.com/  (Optional Title Here)',
-  #))]
+  #])]
   public function reference_style_link($definition) {
     $this->assertTransformed(
       '<p>This is <a href="http://example.com/" title="Optional Title Here">an example</a> reference-style link.</p>',
@@ -45,7 +45,7 @@ class LinksTest extends MarkdownTest {
     $this->assertTransformed(
       '<p>This is <a href="http://example.com/">an example</a> reference-style link.</p>',
       'This is [an example][id] reference-style link.',
-      array('id' => new \net\daringfireball\markdown\Link('http://example.com/'))
+      ['id' => new \net\daringfireball\markdown\Link('http://example.com/')]
     );
   }
 
@@ -95,7 +95,7 @@ class LinksTest extends MarkdownTest {
     );
   }
 
-  #[@test, @values(array(' ', '  ', '   '))]
+  #[@test, @values([' ', '  ', '   '])]
   public function definitions_indented($indent) {
     $this->assertTransformed(
       '<p>Traffic from <a href="http://google.com/">Google</a> is higher than from <a href="http://search.yahoo.com/">Yahoo</a></p>',
@@ -142,9 +142,7 @@ class LinksTest extends MarkdownTest {
    *
    * @return string[]
    */
-  public function delimiters() {
-    return array('.', '?', ',', ';', '!');
-  }
+  public function delimiters() { return ['.', '?', ',', ';', '!']; }
 
   #[@test, @values('delimiters')]
   public function auto_link_in_sentence_at_end($delimiter) {

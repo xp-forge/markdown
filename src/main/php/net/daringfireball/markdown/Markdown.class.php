@@ -8,8 +8,8 @@ use lang\FormatException;
  * @see  https://github.com/markdown/markdown.github.com/wiki/Implementations
  */
 class Markdown extends \lang\Object {
-  protected $tokens= array();
-  protected $handlers= array();
+  protected $tokens= [];
+  protected $handlers= [];
 
   /**
    * Initializes default tokens and handlers
@@ -24,7 +24,7 @@ class Markdown extends \lang\Object {
     });
     $this->addToken('`', function($line, $target, $ctx) {
       if ($line->matches('`` ')) {
-        $target->add(new Code($line->ending(array(' ``', '``'), 3)));
+        $target->add(new Code($line->ending([' ``', '``'], 3)));
       } else if ($line->matches('``')) {
         $target->add(new Code($line->ending('``')));
       } else {
@@ -116,7 +116,7 @@ class Markdown extends \lang\Object {
     // * ">" or "> >" -> block quoting
     // * [0-9]"." -> ol/li
     $this->addHandler('/^\s{0,3}\[([^\]]+)\]:\s+([^ ]+)(.*)/', function($lines, $matches, $result, $ctx) { 
-      static $def= array('(' => '()', '"' => '"', "'" => "'");
+      static $def= ['(' => '()', '"' => '"', "'" => "'"];
       $title= trim($matches[3]);
       if ('' !== $title && 0 === strcspn($title, '(\'"')) {
         $title= trim($title, $def[$title{0}]);

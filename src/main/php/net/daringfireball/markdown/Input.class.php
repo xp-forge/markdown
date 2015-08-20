@@ -4,7 +4,7 @@
  * Abstract base class for input
  */
 abstract class Input extends \lang\Object {
-  protected $stack= array();
+  protected $stack= [];
   protected $line= 1;
 
   /**

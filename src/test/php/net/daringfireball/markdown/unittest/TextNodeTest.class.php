@@ -7,7 +7,7 @@ use net\daringfireball\markdown\Text;
  */
 class TextNodeTest extends \unittest\TestCase {
 
-  #[@test, @values(array('', 'Test'))]
+  #[@test, @values(['', 'Test'])]
   public function value_passed_to_constructor($value) {
     $this->assertEquals($value, (new Text($value))->value);
   }
@@ -19,17 +19,17 @@ class TextNodeTest extends \unittest\TestCase {
 
   #[@test]
   public function special_chars_are_escaped() {
-    $this->assertEquals('4 &lt; 5', (new Text('4 < 5'))->emit(array()));
+    $this->assertEquals('4 &lt; 5', (new Text('4 < 5'))->emit([]));
   }
 
   #[@test]
   public function one_trailing_space() {
-    $this->assertEquals('Test ', (new Text('Test '))->emit(array()));
+    $this->assertEquals('Test ', (new Text('Test '))->emit([]));
   }
 
-  #[@test, @values(array('  ', '   '))]
+  #[@test, @values(['  ', '   '])]
   public function manual_line_break_with_two_or_more_spaces($spaces) {
-    $this->assertEquals('Test<br/>', (new Text('Test'.$spaces))->emit(array()));
+    $this->assertEquals('Test<br/>', (new Text('Test'.$spaces))->emit([]));
   }
 
   #[@test]

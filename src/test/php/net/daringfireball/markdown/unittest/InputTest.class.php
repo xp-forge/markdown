@@ -39,12 +39,12 @@ abstract class InputTest extends \unittest\TestCase {
     $this->assertNull($fixture->nextLine(), '#2');
   }
 
-  #[@test, @values(array("Test\n", "Test\r\n", "Test\r"))]
+  #[@test, @values(["Test\n", "Test\r\n", "Test\r"])]
   public function has_one_line($value) {
     $this->assertTrue($this->newFixture($value)->hasMoreLines());
   }
 
-  #[@test, @values(array("Test\n", "Test\r\n", "Test\r"))]
+  #[@test, @values(["Test\n", "Test\r\n", "Test\r"])]
   public function read_one_line($value) {
     $this->assertEquals(new Line('Test'), $this->newFixture($value)->nextLine());
   }
@@ -59,21 +59,21 @@ abstract class InputTest extends \unittest\TestCase {
     $this->assertEquals(new Line('Test'), $this->newFixture('Test')->nextLine());
   }
 
-  #[@test, @values(array("Line 1\nLine 2\n", "Line 1\r\nLine 2\r\n", "Line 1\rLine 2\r"))]
+  #[@test, @values(["Line 1\nLine 2\n", "Line 1\r\nLine 2\r\n", "Line 1\rLine 2\r"])]
   public function two_lines($value) {
     $fixture= $this->newFixture($value);
     $this->assertEquals(
-      array(new Line('Line 1'), new Line('Line 2')),
-      array($fixture->nextLine(), $fixture->nextLine())
+      [new Line('Line 1'), new Line('Line 2')],
+      [$fixture->nextLine(), $fixture->nextLine()]
     );
   }
 
-  #[@test, @values(array("1\n2\n", "1\r\n2\r\n", "1\r2\r"))]
+  #[@test, @values(["1\n2\n", "1\r\n2\r\n", "1\r2\r"])]
   public function two_lines_with_single_characters($value) {
     $fixture= $this->newFixture($value);
     $this->assertEquals(
-      array(new Line('1'), new Line('2')),
-      array($fixture->nextLine(), $fixture->nextLine())
+      [new Line('1'), new Line('2')],
+      [$fixture->nextLine(), $fixture->nextLine()]
     );
   }
 
@@ -104,8 +104,8 @@ abstract class InputTest extends \unittest\TestCase {
     $fixture= $this->newFixture("Line 1\nLine 2\n");
     $fixture->resetLine($fixture->nextLine());
     $this->assertEquals(
-      array(new Line('Line 1'), new Line('Line 2')),
-      array($fixture->nextLine(), $fixture->nextLine())
+      [new Line('Line 1'), new Line('Line 2')],
+      [$fixture->nextLine(), $fixture->nextLine()]
     );
   }
 

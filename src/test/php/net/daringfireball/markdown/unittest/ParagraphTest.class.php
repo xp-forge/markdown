@@ -17,12 +17,12 @@ class ParagraphTest extends MarkdownTest {
     $this->assertTransformed('<p>Hello</p><p>World</p>', "Hello\n\nWorld");
   }
 
-  #[@test, @values(array("\n\n\n", "\n\n\n\n"))]
+  #[@test, @values(["\n\n\n", "\n\n\n\n"])]
   public function consecutive_empty_lines_open_a_new_paragraph($nl) {
     $this->assertTransformed('<p>Hello</p><p>World</p>', 'Hello'.$nl.'World');
   }
 
-  #[@test, @values(array('  ', '   '))]
+  #[@test, @values(['  ', '   '])]
   public function manual_line_break_with_two_or_more_spaces($sp) {
     $this->assertTransformed('<p>Hello<br/></p>', 'Hello'.$sp);
   }

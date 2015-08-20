@@ -1,7 +1,7 @@
 <?php namespace net\daringfireball\markdown;
 
 abstract class Context extends \lang\Object {
-  protected $tokens= array();
+  protected $tokens= [];
   protected $span= '';
 
   public function enter(self $context) {

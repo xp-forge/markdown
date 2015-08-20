@@ -2,7 +2,7 @@
 
 class ListsTest extends MarkdownTest {
 
-  #[@test, @values(array("* One\n* Two\n* Three", "- One\n- Two\n- Three", "+ One\n+ Two\n+ Three"))]
+  #[@test, @values(["* One\n* Two\n* Three", "- One\n- Two\n- Three", "+ One\n+ Two\n+ Three"])]
   public function unordered_list($value) {
     $this->assertTransformed(
       '<ul><li>One</li><li>Two</li><li>Three</li></ul>',
