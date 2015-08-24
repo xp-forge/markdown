@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 1.1.1 / 2015-08-25
+
+* Merged pull request #8: Strike through - @thekid
+
 ## 1.1.0 / 2015-08-20
 
 * Merged pull request #7: Table support - @thekid
