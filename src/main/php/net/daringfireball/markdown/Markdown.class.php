@@ -73,12 +73,11 @@ class Markdown extends \lang\Object {
 
     $this->addToken('~', function($line, $target, $ctx) {
       if ($line->matches('~~')) {
-        $n= $line->chr(+2);
-        if (null === $n || false !== strpos("\r\n\t ", $n)) return false;
         if (null === ($delimited= $line->delimited('~~'))) return false;
         $target->add($ctx->tokenize(new Line($delimited), new StrikeThrough()));
+        return true;
       }
-      return true;
+      return false;
     });
 
     // Links and images: [A link](http://example.com), [A link](http://example.com "Title"),
