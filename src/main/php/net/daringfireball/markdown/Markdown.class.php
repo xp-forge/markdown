@@ -71,6 +71,15 @@ class Markdown extends \lang\Object {
     $this->addToken('*', $emphasis);
     $this->addToken('_', $emphasis);
 
+    $this->addToken('~', function($line, $target, $ctx) {
+      if ($line->matches('~~')) {
+        if (null === ($delimited= $line->delimited('~~'))) return false;
+        $target->add($ctx->tokenize(new Line($delimited), new StrikeThrough()));
+        return true;
+      }
+      return false;
+    });
+
     // Links and images: [A link](http://example.com), [A link](http://example.com "Title"),
     // [Google][goog] reference-style link, [Google][] implicit name,and finally [Google] [1] 
     // numeric references (-> spaces allowed!). Images almost identical except for leading
