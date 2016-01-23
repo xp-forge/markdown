@@ -6,7 +6,7 @@ class Entity extends Node {
   }
 
   public function toString() {
-    return $this->getClassName().'<'.$this->value.'>';
+    return nameof($this).'<'.$this->value.'>';
   }
 
   public function emit($definitions) {

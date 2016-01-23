@@ -37,7 +37,7 @@ class Table extends NodeList {
    * @return string
    */
   public function toString() {
-    $s= $this->getClassName()."@{\n";
+    $s= nameof($this)."@{\n";
     foreach ($this->nodes as $row) {
       $s.= '  '.$row->toString()."\n";
     }

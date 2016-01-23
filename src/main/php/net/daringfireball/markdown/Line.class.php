@@ -276,6 +276,6 @@ class Line extends \lang\Object implements \ArrayAccess {
    * @return string
    */
   public function toString() {
-    return $this->getClassName().'("'.$this->buffer.'" @ '.$this->pos.')';
+    return nameof($this).'("'.$this->buffer.'" @ '.$this->pos.')';
   }
 }

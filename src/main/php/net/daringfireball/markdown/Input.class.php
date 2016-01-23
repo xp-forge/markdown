@@ -74,6 +74,6 @@ abstract class Input extends \lang\Object {
    * @return string
    */
   public function toString() {
-    return $this->getClassName().'(line '.$this->line.' of '.$this->sourceDescription().')';
+    return nameof($this).'(line '.$this->line.' of '.$this->sourceDescription().')';
   }
 }

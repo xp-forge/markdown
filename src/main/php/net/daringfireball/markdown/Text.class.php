@@ -23,7 +23,7 @@ class Text extends Node {
    * @return string
    */
   public function toString() {
-    return $this->getClassName().'<'.$this->value.'>';
+    return nameof($this).'<'.$this->value.'>';
   }
 
   /**

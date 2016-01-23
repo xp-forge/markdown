@@ -6,7 +6,7 @@ class Email extends Node {
   }
 
   public function toString() {
-    return $this->getClassName().'<'.$this->address.'>';
+    return nameof($this).'<'.$this->address.'>';
   }
 
   public function emit($definitions) {

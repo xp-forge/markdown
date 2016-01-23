@@ -23,7 +23,7 @@ class Listing extends NodeList {
   public function toString() {
     return sprintf(
       '%s(%s%s)<%s>',
-      $this->getClassName(),
+      nameof($this),
       $this->type,
       $this->paragraphs ? ' using paragraphs' : '',
       \xp::stringOf($this->nodes)

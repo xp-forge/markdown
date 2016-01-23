@@ -115,7 +115,7 @@ abstract class NodeList extends Node {
    * @return string
    */
   public function toString() {
-    return $this->getClassName().'<'.\xp::stringOf($this->nodes).'>';
+    return nameof($this).'<'.\xp::stringOf($this->nodes).'>';
   }
 
   /**

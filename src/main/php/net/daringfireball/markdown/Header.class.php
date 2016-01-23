@@ -6,7 +6,7 @@ class Header extends NodeList {
   }
 
   public function toString() {
-    return $this->getClassName().'(h'.$this->level.')<'.\xp::stringOf($this->nodes).'>';
+    return nameof($this).'(h'.$this->level.')<'.\xp::stringOf($this->nodes).'>';
   }
 
   public function emit($definitions) {

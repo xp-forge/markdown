@@ -32,7 +32,7 @@ class ParseTree extends NodeList {
    * @return string
    */
   public function toString() {
-    return $this->getClassName()."@{\n".
+    return nameof($this)."@{\n".
       "urls  : ".\xp::stringOf($this->urls)."\n".
       "nodes : ".\xp::stringOf($this->nodes)."\n".
     "}";

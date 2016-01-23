@@ -10,7 +10,7 @@ class Link extends Node {
   public function toString() {
     return sprintf(
       '%s(url= %s, text= %s, title= %s)',
-      $this->getClassName(),
+      nameof($this),
       $this->url,
       \xp::stringOf($this->text),
       \xp::stringOf($this->title)
