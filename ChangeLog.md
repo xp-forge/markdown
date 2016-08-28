@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 3.1.0 / 2016-08-28
+
+* Added forward compatibility with XP 8.0.0 - @thekid
+
 ## 3.0.0 / 2016-02-21
 
 * Added version compatibility with XP 7 - @thekid
