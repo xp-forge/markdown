@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Fixed tables with empty cells causing *Invalid argument* warning
+  (@thekid)
 * Fixed string offset reading which could lead to parse exceptions
   (@thekid)
 

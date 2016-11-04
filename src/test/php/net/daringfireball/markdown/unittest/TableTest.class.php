@@ -79,6 +79,32 @@ class TableTest extends MarkdownTest {
   }
 
   #[@test]
+  public function cells_may_be_empty() {
+    $this->assertTransformed(
+      '<table>'.
+      '<tr><th>Product</th><th>Price</th></tr>'.
+      '<tr><td><a href="https://t-shirt.example.com/">T-Shirt</a></td><td></td></tr>'.
+      '</table>',
+      "| Product | Price |\n".
+      "| ------- | ----- |\n".
+      "| [T-Shirt](https://t-shirt.example.com/) | |\n"
+    );
+  }
+
+  #[@test]
+  public function empty_header_cells() {
+    $this->assertTransformed(
+      '<table>'.
+      '<tr><th></th><th></th></tr>'.
+      '<tr><td><a href="https://t-shirt.example.com/">T-Shirt</a></td><td><em>$12.49</em></td></tr>'.
+      '</table>',
+      "| | |\n".
+      "| - | - |\n".
+      "| [T-Shirt](https://t-shirt.example.com/) | *$12.49* |\n"
+    );
+  }
+
+  #[@test]
   public function alignment() {
     $this->assertTransformed(
       '<table>'.

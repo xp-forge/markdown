@@ -22,7 +22,7 @@ class Cell extends NodeList {
    */
   public function emit($definitions) {
     $r= '';
-    foreach ($this->nodes as $cell) {
+    foreach ((array)$this->nodes as $cell) {
       $r.= $cell->emit($definitions);
     }
     $attr= $this->alignment ? ' style="text-align: '.$this->alignment.'"' : '';
