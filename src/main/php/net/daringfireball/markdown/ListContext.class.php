@@ -36,7 +36,7 @@ class ListContext extends Context {
       // Indented elements form additional paragpraphs inside list items. If 
       // the line doesn't start with a list bullet, this means the list is at
       // its end.
-      if (preg_match('/^(\s+)?([+*-]+|[0-9]+\.) /', $line, $m)) {
+      if (preg_match('/^(\s+)?([+*-]+|[0-9]+\.) /', $line, $m) && !preg_match('/^(\* ?){3,}$/', $line)) {
         $empty && $result->paragraphs= true;
         $empty= false;
 

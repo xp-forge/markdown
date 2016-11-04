@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 3.1.2 / 2016-11-04
+
+* Fixed lists followed by horizontal rulers - @thekid
+
 ## 3.1.1 / 2016-11-04
 
 * Optimized parser to no longer create empty text nodes

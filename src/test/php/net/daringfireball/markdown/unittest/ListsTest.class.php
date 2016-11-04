@@ -103,4 +103,21 @@ class ListsTest extends MarkdownTest {
       "* Three\n"
     );
   }
+
+  #[@test, @values(["", "\n", "\n\n"])]
+  public function list_followed_by_ruler($spacing) {
+    $this->assertTransformed(
+      "<ul>".
+        "<li>One</li>".
+        "<li>Two</li>".
+        "<li>Three</li>".
+      "</ul>".
+      "<hr/>",
+      "* One\n".
+      "* Two\n".
+      "* Three\n".
+      $spacing.
+      "* * *"
+    );
+  }
 }
