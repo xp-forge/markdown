@@ -25,4 +25,14 @@ class ParsingTest extends MarkdownTest {
       $this->fixture->parse('Hello World')
     );
   }
+
+  #[@test]
+  public function single_paragraph() {
+    $this->assertEquals(
+      new ParseTree([
+        new Paragraph([new Text('Hello World')])
+      ]),
+      $this->fixture->parse("A table:\n| | |\n| - | - |\n| Key | Value |\nThat's it!")
+    );
+  }
 }
