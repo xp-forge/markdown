@@ -304,4 +304,28 @@ class LineTest extends \unittest\TestCase {
     }
     $this->assertEquals('Test', (string)$l);
   }
+
+  #[@test]
+  public function read_string_offset() {
+    $l= new Line('Test');
+    $this->assertEquals('T', $l{0});
+  }
+
+  #[@test]
+  public function test_string_offset() {
+    $l= new Line('Test');
+    $this->assertTrue(isset($l{0}));
+  }
+
+  #[@test]
+  public function read_non_existant_string_offset() {
+    $l= new Line('');
+    $this->assertNull($l{0});
+  }
+
+  #[@test]
+  public function test_non_existant_string_offset() {
+    $l= new Line('');
+    $this->assertFalse(isset($l{0}));
+  }
 }

@@ -3,6 +3,9 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Fixed string offset reading which could lead to parse exceptions
+  (@thekid)
+
 ## 3.1.0 / 2016-08-28
 
 * Added forward compatibility with XP 8.0.0 - @thekid

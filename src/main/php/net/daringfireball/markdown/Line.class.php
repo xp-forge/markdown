@@ -224,7 +224,7 @@ class Line extends \lang\Object implements \ArrayAccess {
    * @return bool
    */
   public function offsetExists($i) {
-    return $i > 0 && $i < strlen($this->buffer);
+    return $i >= 0 && $i < strlen($this->buffer);
   }
 
   /**
@@ -234,7 +234,7 @@ class Line extends \lang\Object implements \ArrayAccess {
    * @return string
    */
   public function offsetGet($i) {
-    return $this->buffer[$i];
+    return ($i >= 0 && $i < strlen($this->buffer)) ? $this->buffer[$i] : null;
   }
 
   /**
