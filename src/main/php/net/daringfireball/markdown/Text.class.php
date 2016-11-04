@@ -27,16 +27,6 @@ class Text extends Node {
   }
 
   /**
-   * Returns whether a given comparison value is equal to this node list
-   *
-   * @param  var $cmp
-   * @return string
-   */
-  public function equals($cmp) {
-    return $cmp instanceof self && $this->value === $cmp->value;
-  }
-
-  /**
    * Emit this text node
    *
    * @param  [:net.daringfireball.markdown.Link] definitions
@@ -54,5 +44,15 @@ class Text extends Node {
     } else {
       return htmlspecialchars($this->value);
     }
+  }
+
+  /**
+   * Returns whether a given comparison value is equal to this node list
+   *
+   * @param  var $cmp
+   * @return string
+   */
+  public function equals($cmp) {
+    return $cmp instanceof self && $this->value === $cmp->value;
   }
 }
