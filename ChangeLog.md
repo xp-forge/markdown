@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 3.1.1 / 2016-11-04
+
 * Optimized parser to no longer create empty text nodes
   (@thekid)
 * Fixed tables with empty cells causing *Invalid argument* warning
