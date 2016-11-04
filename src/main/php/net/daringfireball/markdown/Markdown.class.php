@@ -90,7 +90,7 @@ class Markdown extends \lang\Object {
       $w= false;
       if ($line->matches('(')) {
         sscanf($line->matching('()'), '%[^" ] "%[^")]"', $url, $title);
-        $node= $ctx->tokenize(new Line($text), new ParseTree());
+        $node= $ctx->tokenize(new Line($text), new NodeList());
       } else if ($line->matches('[') || $w= $line->matches(' [')) {
         $line->forward((int)$w);
         $node= new Text($text);

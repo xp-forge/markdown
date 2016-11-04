@@ -59,7 +59,11 @@ abstract class Context extends \lang\Object {
         }
       }
 
-      $target->add(new Text($t.$line->until($this->span)));
+      // Optimization: Do not create empty text nodes
+      if ('' !== ($t.= $line->until($this->span))) {
+        $target->add(new Text($t));
+      }
+
       if ($safe++ > $l) throw new \lang\IllegalStateException('Endless loop detected');
     }
     return $target;

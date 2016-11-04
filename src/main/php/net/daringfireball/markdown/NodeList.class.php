@@ -3,9 +3,9 @@
 use util\Objects;
 
 /**
- * Abstract base class for all nodes with nested child elements
+ * Base class for all nodes with nested child elements
  */
-abstract class NodeList extends Node {
+class NodeList extends Node {
   protected $nodes;
 
   /**
