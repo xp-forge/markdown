@@ -13,6 +13,7 @@ The [Markdown syntax](http://daringfireball.net/projects/markdown/syntax) implem
 
 Example
 -------
+To transform markdown to HTML, all that is necessary is the following:
 
 ```php
 use net\daringfireball\markdown\Markdown;
@@ -21,4 +22,19 @@ $engine= new Markdown();
 $transformed= $engine->transform(
   'This is [Markdown](http://daringfireball.net/projects/markdown/) for **XP**'
 );
+```
+
+The implementation is based on a parse tree. To work with the tree, you can use the `parse()` method, which returns a `net.daringfireball.markdown.ParseTree` instance.
+
+```php
+use net\daringfireball\markdown\{Markdown, ToHtml};
+
+$engine= new Markdown();
+$tree= $engine->parse(
+  'This is [Markdown](http://daringfireball.net/projects/markdown/) for **XP**'
+);
+
+// ...work with tree...
+
+$tree->emit(new ToHtml());
 ```
