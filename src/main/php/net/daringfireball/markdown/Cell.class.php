@@ -3,7 +3,7 @@
 use util\Objects;
 
 class Cell extends NodeList {
-  private $type, $alignment;
+  public $type, $alignment;
 
   /**
    * Creates a new list
@@ -19,18 +19,14 @@ class Cell extends NodeList {
   }
 
   /**
-   * Emit this table row
+   * Emit this node
    *
+   * @param  net.daringfireball.markdown.Emitter $emitter
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emit($definitions) {
-    $r= '';
-    foreach ($this->nodes as $cell) {
-      $r.= $cell->emit($definitions);
-    }
-    $attr= $this->alignment ? ' style="text-align: '.$this->alignment.'"' : '';
-    return '<'.$this->type.$attr.'>'.$r.'</'.$this->type.'>';
+  public function emit($emitter, $definitions= []) {
+    return $emitter->emitCell($this, $definitions);
   }
 
   /**

@@ -27,23 +27,14 @@ class Text extends Node {
   }
 
   /**
-   * Emit this text node
+   * Emit this node
    *
-   * @param  [:net.daringfireball.markdown.Link] definitions
+   * @param  net.daringfireball.markdown.Emitter $emitter
+   * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emit($definitions) {
-
-    // If the string ends with two or more spaces, we have a manual line break.
-    $sp= 0;
-    for ($i= strlen($this->value)- 1; $i > 0 && ' ' === $this->value{$i}; $i--) {
-      $sp++;
-    }
-    if ($sp >= 2) {
-      return htmlspecialchars(substr($this->value, 0, -$sp)).'<br/>';
-    } else {
-      return htmlspecialchars($this->value);
-    }
+  public function emit($emitter, $definitions= []) {
+    return $emitter->emitText($this, $definitions);
   }
 
   /**

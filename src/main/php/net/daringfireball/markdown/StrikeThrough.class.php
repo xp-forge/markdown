@@ -2,7 +2,14 @@
 
 class StrikeThrough extends NodeList {
 
-  public function emit($definitions) {
-    return '<del>'.parent::emit($definitions).'</del>';
+  /**
+   * Emit this node
+   *
+   * @param  net.daringfireball.markdown.Emitter $emitter
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emit($emitter, $definitions= []) {
+    return $emitter->emitStrikeThrough($this, $definitions);
   }
 }

@@ -1,8 +1,7 @@
 <?php namespace net\daringfireball\markdown;
 
 class Listing extends NodeList {
-  public $type;
-  public $paragraphs;
+  public $type, $paragraphs;
 
   /**
    * Creates a new list
@@ -31,17 +30,13 @@ class Listing extends NodeList {
   }
 
   /**
-   * Emit this text node
+   * Emit this node
    *
-   * @param  [:net.daringfireball.markdown.Link] definitions
+   * @param  net.daringfireball.markdown.Emitter $emitter
+   * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emit($definitions) {
-    $r= '';
-    foreach ($this->nodes as $item) {
-      $item->paragraphs= $this->paragraphs;
-      $r.= $item->emit($definitions);
-    }
-    return '<'.$this->type.'>'.$r.'</'.$this->type.'>';
+  public function emit($emitter, $definitions= []) {
+    return $emitter->emitListing($this, $definitions);
   }
 }

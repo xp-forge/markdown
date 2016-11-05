@@ -3,7 +3,7 @@
 use util\Objects;
 
 class Image extends Node {
-  private $url, $text, $title;
+  public $url, $text, $title;
 
   /**
    * Creates a new image element
@@ -34,21 +34,14 @@ class Image extends Node {
   }
 
   /**
-   * Emit this text node
+   * Emit this node
    *
-   * @param  [:net.daringfireball.markdown.Link] definitions
+   * @param  net.daringfireball.markdown.Emitter $emitter
+   * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emit($definitions) {
-    if ('@' === $this->url{0}) {
-      $link= $definitions[substr($this->url, 1)];
-    } else {
-      $link= $this;
-    }
-    $attr= '';
-    $this->text && $attr.= ' alt="'.$this->text->emit($definitions).'"';
-    $link->title && $attr.= ' title="'.htmlspecialchars($link->title).'"';
-    return '<img src="'.htmlspecialchars($link->url).'"'.$attr.'/>';
+  public function emit($emitter, $definitions= []) {
+    return $emitter->emitImage($this, $definitions);
   }
 
   /**

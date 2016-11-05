@@ -240,7 +240,7 @@ class Markdown extends \lang\Object {
   /**
    * Parses the output and returns the resulting parse tree
    *
-   * @param  var $in markdown either a string or a net.daringfireball.markdown.Input
+   * @param  string|net.daringfireball.markdown.Input $in markdown
    * @return net.daringfireball.markdown.ParseTree
    * @throws lang.FormatException
    */
@@ -259,7 +259,7 @@ class Markdown extends \lang\Object {
   }
 
   /**
-   * Transform a given input and returns the output
+   * Transform a given input and returns the output as HTML
    *
    * @param  var $in markdown either a string or a net.daringfireball.markdown.Input
    * @param  [:net.daringfireball.markdown.Link] $urls
@@ -267,6 +267,6 @@ class Markdown extends \lang\Object {
    * @throws lang.FormatException
    */
   public function transform($in, $urls= []) {
-    return $this->parse($in)->emit(array_change_key_case($urls, CASE_LOWER));
+    return $this->parse($in)->emit(new ToHtml(), array_change_key_case($urls, CASE_LOWER));
   }
 }

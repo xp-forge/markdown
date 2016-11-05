@@ -2,9 +2,6 @@
 
 use net\daringfireball\markdown\Text;
 
-/**
- * Tests the "Text" node
- */
 class TextNodeTest extends \unittest\TestCase {
 
   #[@test, @values(['', 'Test'])]
@@ -15,21 +12,6 @@ class TextNodeTest extends \unittest\TestCase {
   #[@test]
   public function default_for_value_is_empty_string() {
     $this->assertEquals('', (new Text())->value);
-  }
-
-  #[@test]
-  public function special_chars_are_escaped() {
-    $this->assertEquals('4 &lt; 5', (new Text('4 < 5'))->emit([]));
-  }
-
-  #[@test]
-  public function one_trailing_space() {
-    $this->assertEquals('Test ', (new Text('Test '))->emit([]));
-  }
-
-  #[@test, @values(['  ', '   '])]
-  public function manual_line_break_with_two_or_more_spaces($spaces) {
-    $this->assertEquals('Test<br/>', (new Text('Test'.$spaces))->emit([]));
   }
 
   #[@test]

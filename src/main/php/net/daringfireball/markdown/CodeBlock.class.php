@@ -6,7 +6,7 @@
  * @test  xp://net.daringfireball.markdown.unittest.CodeTest 
  */
 class CodeBlock extends NodeList {
-  protected $language= '';
+  public $language;
 
   public function __construct($language= null) {
     $this->language= $language;
@@ -25,18 +25,13 @@ class CodeBlock extends NodeList {
   }
 
   /**
-   * Emit this code block
+   * Emit this node
    *
-   * @param	 [:net.daringfireball.markdown.Link] definitions
+   * @param  net.daringfireball.markdown.Emitter $emitter
+   * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emit($definitions) {
-    $r= '';
-    for ($i= 0, $s= sizeof($this->nodes); $i < $s; $i++) {
-      $r.= $this->nodes[$i]->emit($definitions);
-      if ($i < $s - 1) $r.= "\n";
-    }
-    $attr= $this->language ? ' lang="'.htmlspecialchars($this->language).'"' : '';
-    return '<code'.$attr.'>'.$r.'</code>';
+  public function emit($emitter, $definitions= []) {
+    return $emitter->emitCodeBlock($this, $definitions);
   }
 }
