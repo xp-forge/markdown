@@ -3,7 +3,7 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
-## 3.2.0 / 2016-11-04
+## 3.2.0 / 2016-11-05
 
 * Merged PR #9: Extract emitting HTML from nodes into emitter class
   (@thekid)
