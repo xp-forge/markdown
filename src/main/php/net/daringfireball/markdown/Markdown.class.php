@@ -4,8 +4,11 @@ use lang\Throwable;
 use lang\FormatException;
 
 /**
+ * Markdown
+ *
  * @see  http://daringfireball.net/projects/markdown/basics
  * @see  https://github.com/markdown/markdown.github.com/wiki/Implementations
+ * @test xp://net.daringfireball.markdown.unittest.MarkdownClassTest
  */
 class Markdown extends \lang\Object {
   protected $tokens= [];
