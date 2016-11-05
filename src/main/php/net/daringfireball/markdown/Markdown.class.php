@@ -262,14 +262,15 @@ class Markdown extends \lang\Object {
   }
 
   /**
-   * Transform a given input and returns the output as HTML
+   * Transform a given input and returns the output
    *
    * @param  var $in markdown either a string or a net.daringfireball.markdown.Input
    * @param  [:net.daringfireball.markdown.Link] $urls
+   * @param  net.daringfireball.markdown.Emitter $emitter Defaults to HTML
    * @return string markup
    * @throws lang.FormatException
    */
-  public function transform($in, $urls= []) {
-    return $this->parse($in)->emit(new ToHtml(), array_change_key_case($urls, CASE_LOWER));
+  public function transform($in, $urls= [], Emitter $emitter= null) {
+    return $this->parse($in)->emit($emitter ?: new ToHtml(), array_change_key_case($urls, CASE_LOWER));
   }
 }
