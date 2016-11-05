@@ -6,7 +6,7 @@ use util\Objects;
  * Base class for all nodes with nested child elements
  */
 class NodeList extends Node {
-  protected $nodes;
+  protected $nodes= [];
 
   /**
    * Creates a new list of nodes
