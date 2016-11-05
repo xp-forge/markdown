@@ -235,12 +235,7 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitListing($listing, $definitions) {
-    $r= '';
-    foreach ($listing->all() as $item) {
-      $item->paragraphs= $listing->paragraphs;
-      $r.= $item->emit($this, $definitions);
-    }
-    return '<'.$listing->type.'>'.$r.'</'.$listing->type.'>';
+    return '<'.$listing->type.'>'.$this->emitAll($listing->all(), $definitions).'</'.$listing->type.'>';
   }
 
   /**
@@ -251,6 +246,6 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitListItem($item, $definitions) {
-    return '<li>'.$this->emitAll($item->paragraphs ? $item->all() : $item->get(0)->all(), $definitions).'</li>';
+    return '<li>'.$this->emitAll($item->list->paragraphs ? $item->all() : $item->get(0)->all(), $definitions).'</li>';
   }
 }

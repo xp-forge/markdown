@@ -1,7 +1,16 @@
 <?php namespace net\daringfireball\markdown;
 
 class ListItem extends NodeList {
-  public $paragraphs;
+  public $list;
+
+  /**
+   * Creates a new list item on a given list
+   *
+   * @param  net.daringfireball.markdown.Listing $list
+   */
+  public function __construct($list) {
+    $this->list= $list;
+  }
 
   /**
    * Emit this node
