@@ -248,9 +248,7 @@ class Markdown extends \lang\Object {
    * @throws lang.FormatException
    */
   public function parse($in) {
-    $context= new ToplevelContext();
-    $context->setTokens($this->tokens);
-    $context->setHandlers($this->handlers);
+    $context= (new ToplevelContext())->withTokens($this->tokens)->withHandlers($this->handlers);
 
     $input= $in instanceof Input ? $in : new StringInput((string)$in);
     try {

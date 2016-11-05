@@ -2,14 +2,19 @@
 
 class ToplevelContext extends Context {
 
+  /** @deprecated - Use withHandlers() instead! */
+  public function setHandlers($handlers) { $this->withHandlers($handlers); }
+
   /**
    * Sets handlers
    * 
-   * @param [:var] handlers
-   * @see   xp://net.daringfireball.markdown.Markdown#addHandler
+   * @param  [:var] $handlers
+   * @return self
+   * @see    xp://net.daringfireball.markdown.Markdown#addHandler
    */
-  public function setHandlers($handlers) {
+  public function withHandlers($handlers) {
     $this->handlers= $handlers;
+    return $this;
   }
 
   /**

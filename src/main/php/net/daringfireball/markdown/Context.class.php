@@ -4,21 +4,32 @@ abstract class Context extends \lang\Object {
   protected $tokens= [];
   protected $span= '';
 
+  /**
+   * Enters subcontext
+   *
+   * @param  self $context
+   * @return self
+   */
   public function enter(self $context) {
     $context->tokens= $this->tokens;
     $context->span= $this->span;
     return $context;
   }
 
+  /** @deprecated - Use withTokens() instead! */
+  public function setTokens($tokens) { $this->withTokens($tokens); }
+
   /**
    * Sets token handlers
    * 
-   * @param [:var] tokens
-   * @see   xp://net.daringfireball.markdown.Markdown#addToken
+   * @param  [:var] tokens
+   * @return self
+   * @see    xp://net.daringfireball.markdown.Markdown#addToken
    */
-  public function setTokens($tokens) {
+  public function withTokens($tokens) {
     $this->tokens= $tokens;
     $this->span= '\\'.implode('', array_keys($tokens));
+    return $this;
   }
 
   /**
