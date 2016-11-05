@@ -6,7 +6,7 @@ use util\Objects;
  * Base class for all nodes with nested child elements
  */
 class NodeList extends Node {
-  protected $nodes;
+  protected $nodes= [];
 
   /**
    * Creates a new list of nodes
@@ -119,28 +119,14 @@ class NodeList extends Node {
   }
 
   /**
-   * Helper method to emit all nodes
+   * Emit this parse tree
    *
-   * @param  net.daringfireball.markdown.Node[] $nodes
+   * @param  net.daringfireball.markdown.Emitter $emitter
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  protected function emitAll($nodes, $definitions) {
-    $r= '';
-    foreach ($nodes as $node) {
-      $r.= $node->emit($definitions);
-    }
-    return $r;
-  }
-
-  /**
-   * Emit this list
-   *
-   * @param  [:net.daringfireball.markdown.Link] $definitions
-   * @return string
-   */
-  public function emit($definitions) {
-    return $this->emitAll($this->nodes, $definitions);
+  public function emit($emitter, $definitions= []) {
+    return $emitter->emitNodeList($this, $definitions);
   }
 
   /**

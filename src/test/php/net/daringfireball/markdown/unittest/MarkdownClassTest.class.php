@@ -1,13 +1,14 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\Markdown;
-use net\daringfireball\markdown\StringInput;
-use net\daringfireball\markdown\ReaderInput;
-use net\daringfireball\markdown\Link;
-use net\daringfireball\markdown\ParseTree;
-use net\daringfireball\markdown\Paragraph;
 use io\streams\MemoryInputStream;
 use io\streams\TextReader;
+use net\daringfireball\markdown\Link;
+use net\daringfireball\markdown\Markdown;
+use net\daringfireball\markdown\Paragraph;
+use net\daringfireball\markdown\ParseTree;
+use net\daringfireball\markdown\ReaderInput;
+use net\daringfireball\markdown\StringInput;
+use net\daringfireball\markdown\ToHtml;
 
 class MarkdownClassTest extends MarkdownTest {
 
@@ -49,6 +50,18 @@ class MarkdownClassTest extends MarkdownTest {
         'link' => new Link('http://example.com'),
         'XP'   => new Link('http://xp-framework.net')
       ])
+    );
+  }
+
+  #[@test]
+  public function transform_with_emitter() {
+    $this->assertEquals(
+      '<p><span>Test</span></p>',
+      (new Markdown())->transform('Test', [], newinstance(ToHtml::class, [], [
+        'emitText' => function($text, $definitions) {
+          return '<span>'.parent::emitText($text, $definitions).'</span>';
+        }
+      ]))
     );
   }
 }

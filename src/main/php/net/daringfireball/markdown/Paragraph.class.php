@@ -8,12 +8,13 @@
 class Paragraph extends NodeList {
 
   /**
-   * Emit this paragraph
+   * Emit this node
    *
-   * @param	 [:net.daringfireball.markdown.Link] definitions
+   * @param  net.daringfireball.markdown.Emitter $emitter
+   * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emit($definitions) {
-    return '<p>'.parent::emit($definitions).'</p>';
+  public function emit($emitter, $definitions= []) {
+    return $emitter->emitParagraph($this, $definitions);
   }
 }

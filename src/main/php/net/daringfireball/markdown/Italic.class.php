@@ -2,7 +2,14 @@
 
 class Italic extends NodeList {
 
-  public function emit($definitions) {
-    return '<em>'.parent::emit($definitions).'</em>';
+  /**
+   * Emit this node
+   *
+   * @param  net.daringfireball.markdown.Emitter $emitter
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emit($emitter, $definitions= []) {
+    return $emitter->emitItalic($this, $definitions);
   }
 }

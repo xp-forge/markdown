@@ -45,13 +45,13 @@ class ListContext extends Context {
         $level= strlen($m[1]) / 2;
         if ($level > $this->level) {
           $lines->resetLine($line);
-          $target= $target ?: $result->add(new ListItem())->add(new Paragraph());
+          $target= $target ?: $result->add(new ListItem($result))->add(new Paragraph());
           $target->add($this->enter(new self($this->type, $level))->parse($lines));
         } else if ($level < $this->level) {
           $lines->resetLine($line);
           break;
         } else {
-          $target= $result->add(new ListItem())->add(new Paragraph());
+          $target= $result->add(new ListItem($result))->add(new Paragraph());
           $line->forward(strlen($m[0]));
           $this->tokenize($line, $target);
         }

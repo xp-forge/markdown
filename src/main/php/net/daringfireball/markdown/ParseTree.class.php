@@ -17,13 +17,14 @@ class ParseTree extends NodeList {
   }
 
   /**
-   * Emit this list
+   * Emit this parse tree
    *
+   * @param  net.daringfireball.markdown.Emitter $emitter
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emit($definitions) {
-    return $this->emitAll($this->nodes, $this->urls + $definitions);
+  public function emit($emitter, $definitions= []) {
+    return $emitter->emitParseTree($this, $definitions);
   }
 
   /**

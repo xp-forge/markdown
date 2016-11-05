@@ -6,16 +6,13 @@ class Row extends NodeList {
   public function cells() { return $this->nodes; }
 
   /**
-   * Emit this table row
+   * Emit this node
    *
+   * @param  net.daringfireball.markdown.Emitter $emitter
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emit($definitions) {
-    $r= '';
-    foreach ($this->nodes as $cell) {
-      $r.= $cell->emit($definitions);
-    }
-    return '<tr>'.$r.'</tr>';
+  public function emit($emitter, $definitions= []) {
+    return $emitter->emitRow($this, $definitions);
   }
 }

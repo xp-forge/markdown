@@ -4,8 +4,11 @@ use lang\Throwable;
 use lang\FormatException;
 
 /**
+ * Markdown
+ *
  * @see  http://daringfireball.net/projects/markdown/basics
  * @see  https://github.com/markdown/markdown.github.com/wiki/Implementations
+ * @test xp://net.daringfireball.markdown.unittest.MarkdownClassTest
  */
 class Markdown extends \lang\Object {
   protected $tokens= [];
@@ -240,7 +243,7 @@ class Markdown extends \lang\Object {
   /**
    * Parses the output and returns the resulting parse tree
    *
-   * @param  var $in markdown either a string or a net.daringfireball.markdown.Input
+   * @param  string|net.daringfireball.markdown.Input $in markdown
    * @return net.daringfireball.markdown.ParseTree
    * @throws lang.FormatException
    */
@@ -263,10 +266,11 @@ class Markdown extends \lang\Object {
    *
    * @param  var $in markdown either a string or a net.daringfireball.markdown.Input
    * @param  [:net.daringfireball.markdown.Link] $urls
+   * @param  net.daringfireball.markdown.Emitter $emitter Defaults to HTML
    * @return string markup
    * @throws lang.FormatException
    */
-  public function transform($in, $urls= []) {
-    return $this->parse($in)->emit(array_change_key_case($urls, CASE_LOWER));
+  public function transform($in, $urls= [], Emitter $emitter= null) {
+    return $this->parse($in)->emit($emitter ?: new ToHtml(), array_change_key_case($urls, CASE_LOWER));
   }
 }
