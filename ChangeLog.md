@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Fixed text in square braces not followed by neither `(...)` nor `[...]`
+  (@thekid)
 * Fixed underlines directly at the beginning of the markdown string
   (@thekid)
 * Fixed errors when removing non-existant elements from a NodeList

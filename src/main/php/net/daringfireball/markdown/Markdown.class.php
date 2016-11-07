@@ -102,6 +102,9 @@ class Markdown extends \lang\Object {
         } else {
           $url= '@'.strtolower($ref);
         }
+      } else {
+        $target->add(new Text('['.$text.']'));
+        return true;
       }
       $target->add($newInstance($url, $node, $title));
       return true;
