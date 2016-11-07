@@ -27,12 +27,21 @@ class Markdown extends \lang\Object {
     });
     $this->addToken('`', function($line, $target, $ctx) {
       if ($line->matches('`` ')) {
-        $target->add(new Code($line->ending([' ``', '``'], 3)));
+        $delimiters= [' ``', '``'];
+        $offset= 3;
       } else if ($line->matches('``')) {
-        $target->add(new Code($line->ending('``')));
+        $delimiters= '``';
+        $offset= -1;
       } else {
-        $target->add(new Code($line->ending('`')));
+        $delimiters= '`';
+        $offset= -1;
       }
+
+      // Unmatched backticks - just handle rest of line as text
+      if (null === ($code= $line->delimited($delimiters, $offset))) {
+        return false;
+      }
+      $target->add(new Code($code));
       return true;
     });
     $this->addToken('<', function($line, $target, $ctx) {

@@ -121,4 +121,13 @@ class CodeTest extends MarkdownTest {
       '***`code`***'
     );
   }
+
+  #[@test, @values([
+  #  'This is `not code',
+  #  'This is ``not code',
+  #  'This is `` not code'
+  #])]
+  public function unmatched_backticks($input) {
+    $this->assertTransformed('<p>'.$input.'</p>', $input);
+  }
 }

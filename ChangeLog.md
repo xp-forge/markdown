@@ -3,6 +3,11 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 3.2.2 / 2016-11-07
+
+* Change parsed to handle unclosed inline code fragments gracefully
+  (@thekid)
+
 ## 3.2.1 / 2016-11-07
 
 * Fixed text in square braces not followed by neither `(...)` nor `[...]`
