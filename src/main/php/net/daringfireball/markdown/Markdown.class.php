@@ -149,8 +149,11 @@ class Markdown extends \lang\Object {
     });
     $this->addHandler('/^(={3,}|-{3,})/', function($lines, $matches, $result, $ctx) {
       $paragraph= $result->last();
-      $text= $paragraph->remove($paragraph->size() - 1);
-      $result->append(new Header('=' === $matches[1]{0} ? 1 : 2))->add($text);
+      if ($text= $paragraph->remove($paragraph->size() - 1)) {
+        $result->append(new Header('=' === $matches[1]{0} ? 1 : 2))->add($text);
+      } else {
+        $paragraph->add(new Text($matches[0]));
+      }
       return true;
     });
     $this->addHandler('/^(\* ?){3,}$/', function($lines, $matches, $result, $ctx) {

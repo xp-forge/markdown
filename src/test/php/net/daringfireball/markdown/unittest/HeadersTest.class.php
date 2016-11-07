@@ -59,4 +59,20 @@ class HeadersTest extends MarkdownTest {
       "---------------------"
     );
   }
+
+  #[@test]
+  public function markdown_consisting_solely_of_underline() {
+    $this->assertTransformed(
+      '<p>====================</p>',
+      "===================="
+    );
+  }
+
+  #[@test]
+  public function underline_directly_at_beginning_of_text() {
+    $this->assertTransformed(
+      '<p>====================</p><p>An overline</p>',
+      "====================\nAn overline"
+    );
+  }
 }

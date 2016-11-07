@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Fixed underlines directly at the beginning of the markdown string
+  (@thekid)
 * Fixed errors when removing non-existant elements from a NodeList
   (@thekid)
 
