@@ -132,4 +132,20 @@ class TableTest extends MarkdownTest {
       "Line"
     );
   }
+
+  #[@test]
+  public function extra_column() {
+    $this->assertTransformed(
+      '<table>'.
+      '<tr><th>Product</th><th>Price</th></tr>'.
+      '<tr><td>T-Shirt</td><td>12.49</td><td>(out of stock)</td></tr>'.
+      '</table>'.
+      '<p>Line</p>',
+      "Product | Price\n".
+      "------- | -----\n".
+      "T-Shirt | 12.49 | (out of stock)\n".
+      "\n".
+      "Line"
+    );
+  }
 }

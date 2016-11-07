@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 3.2.3 / 2016-11-07
+
+* Fixed tables with extra columns not "declared" in header - @thekid
+
 ## 3.2.2 / 2016-11-07
 
 * Change parsed to handle unclosed inline code fragments gracefully
