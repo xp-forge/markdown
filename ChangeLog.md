@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 3.2.1 / 2016-11-07
+
 * Fixed text in square braces not followed by neither `(...)` nor `[...]`
   (@thekid)
 * Fixed underlines directly at the beginning of the markdown string
