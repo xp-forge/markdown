@@ -4,6 +4,8 @@ use util\Objects;
 
 /**
  * Base class for all nodes with nested child elements
+ *
+ * @test  xp://net.daringfireball.markdown.unittest.NodeListTest
  */
 class NodeList extends Node {
   protected $nodes= [];
@@ -72,7 +74,7 @@ class NodeList extends Node {
    * Gets a node at a given position.
    *
    * @param  int $pos
-   * @return net.daringfireball.markdown.Node The added node
+   * @return net.daringfireball.markdown.Node
    */
   public function get($pos) {
     return $this->nodes[$pos];
@@ -91,9 +93,11 @@ class NodeList extends Node {
    * Removes a node at a given position
    *
    * @param  int $pos
-   * @return net.daringfireball.markdown.Node The removed node
+   * @return net.daringfireball.markdown.Node The removed node, or NULL if there was no node
    */
   public function remove($pos) {
+    if ($pos < 0 || $pos >= sizeof($this->nodes)) return null;
+
     $candidate= $this->nodes[$pos];
     unset($this->nodes[$pos]);
     return $candidate;

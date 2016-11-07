@@ -3,6 +3,9 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Fixed errors when removing non-existant elements from a NodeList
+  (@thekid)
+
 ## 3.2.0 / 2016-11-05
 
 * Merged PR #9: Extract emitting HTML from nodes into emitter class
