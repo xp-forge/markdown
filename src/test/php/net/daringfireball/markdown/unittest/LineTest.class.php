@@ -170,9 +170,16 @@ class LineTest extends \unittest\TestCase {
     $this->assertEquals(6, $l->pos());
   }
 
-  #[@test]
-  public function ending_regards_double_delimiter_nested() {
-    $this->assertEquals('Hello **World**', (new Line('*Hello **World***'))->ending('*'));
+  #[@test, @values([
+  #  '*Hello **World***',
+  #  'Say *Hello **World***',
+  #  'He said *Hello **World***',
+  #  '*Hello **World*** is a common phrase'
+  #])]
+  public function ending_regards_double_delimiter_nested($line) {
+    $line= new Line($line);
+    $line->until('*');
+    $this->assertEquals('Hello **World**', $line->ending('*'));
   }
 
   #[@test, @values([

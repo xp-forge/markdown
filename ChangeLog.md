@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 3.2.4 / 2016-12-29
+
+* Fixed bug with nesting of emphasis - @thekid
+
 ## 3.2.3 / 2016-11-07
 
 * Fixed tables with extra columns not "declared" in header - @thekid

@@ -100,4 +100,12 @@ class EmphasisTest extends MarkdownTest {
   public function underscore_inside_word_is_not_emphasized() {
     $this->assertTransformed('<p>The hello_world function</p>', 'The hello_world function');
   }
+
+  #[@test]
+  public function italics_and_bold_formatting_combined() {
+    $this->assertTransformed(
+      '<p>You can also combine <em>italics and <strong>bold</strong> formatting</em>, e.g.:</p>',
+      'You can also combine *italics and **bold** formatting*, e.g.:'
+    );
+  }
 }
