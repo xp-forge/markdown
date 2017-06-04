@@ -35,7 +35,7 @@ class Image extends Node {
       '%s(url= %s, text= %s, title= %s)',
       nameof($this),
       $this->url,
-      Objects::stringOf($this->text),
+      $this->text ? Objects::stringOf($this->text) : 'null',
       Objects::stringOf($this->title)
     );
   }
