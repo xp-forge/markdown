@@ -5,17 +5,7 @@
  *
  * @test  xp://net.daringfireball.markdown.unittest.TextNodeTest
  */
-class Text extends Node {
-  public $value;
-
-  /**
-   * Creates a new fragment of text
-   *
-   * @param  string value
-   */
-  public function __construct($value= '') {
-    $this->value= $value;
-  }
+class Text extends ValueNode {
 
   /**
    * Emit this node
@@ -26,25 +16,5 @@ class Text extends Node {
    */
   public function emit($emitter, $definitions= []) {
     return $emitter->emitText($this, $definitions);
-  }
-
-  /** @return string */
-  public function toString() {
-    return nameof($this).'<'.$this->value.'>';
-  }
-
-  /** @return string */
-  public function hashCode() {
-    return '"'.md5($this->value);
-  }
-
-  /**
-   * Returns whether a given comparison value is equal to this node list
-   *
-   * @param  var $value
-   * @return string
-   */
-  public function compareTo($value) {
-    return $value instanceof self ? strcmp($this->value, $value->value) : 1;
   }
 }

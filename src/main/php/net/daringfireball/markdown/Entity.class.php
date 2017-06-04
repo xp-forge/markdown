@@ -1,33 +1,20 @@
 <?php namespace net\daringfireball\markdown;
 
-class Entity extends Node {
-  public $value;
-
-  public function __construct($value) {
-    $this->value= $value;
-  }
-
-  public function emit($definitions) {
-    return $this->value;
-  }
-
-  /** @return string */
-  public function toString() {
-    return nameof($this).'<'.$this->value.'>';
-  }
-
-  /** @return string */
-  public function hashCode() {
-    return '`'.md5($this->value);
-  }
+/**
+ * A HTML entity
+ *
+ * @test  xp://net.daringfireball.markdown.unittest.EntityTest
+ */
+class Entity extends ValueNode {
 
   /**
-   * Returns whether a given comparison value is equal to this node list
+   * Emit this node
    *
-   * @param  var $value
+   * @param  net.daringfireball.markdown.Emitter $emitter
+   * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function compareTo($value) {
-    return $value instanceof self ? strcmp($this->value, $value->value) : 1;
+  public function emit($emitter, $definitions= []) {
+    return $this->value;
   }
 }
