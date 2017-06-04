@@ -1,5 +1,7 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
+use net\daringfireball\markdown\Code;
+
 class CodeTest extends MarkdownTest {
 
   #[@test]
@@ -129,5 +131,13 @@ class CodeTest extends MarkdownTest {
   #])]
   public function unmatched_backticks($input) {
     $this->assertTransformed('<p>'.$input.'</p>', $input);
+  }
+
+  #[@test]
+  public function string_representation() {
+    $this->assertEquals(
+      'net.daringfireball.markdown.Code<1 + 2>',
+      (new Code('1 + 2'))->toString()
+    );
   }
 }

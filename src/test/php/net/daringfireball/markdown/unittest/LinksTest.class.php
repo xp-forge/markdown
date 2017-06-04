@@ -1,5 +1,8 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
+use net\daringfireball\markdown\Link;
+use net\daringfireball\markdown\Text;
+
 class LinksTest extends MarkdownTest {
 
   #[@test]
@@ -208,6 +211,31 @@ class LinksTest extends MarkdownTest {
     $this->assertTransformed(
       '<p>This is [not a link], man.</p>',
       'This is [not a link], man.'
+    );
+  }
+
+  #[@test]
+  public function string_representation() {
+    $this->assertEquals(
+      'net.daringfireball.markdown.Link(url= http://example.com, text= null, title= null)',
+      (new Link('http://example.com'))->toString()
+    );
+  }
+
+  #[@test]
+  public function string_representation_with_text() {
+    $t= new Text('example');
+    $this->assertEquals(
+      'net.daringfireball.markdown.Link(url= http://example.com, text= '.$t->toString().', title= null)',
+      (new Link('http://example.com', $t))->toString()
+    );
+  }
+
+  #[@test]
+  public function string_representation_with_title() {
+    $this->assertEquals(
+      'net.daringfireball.markdown.Link(url= http://example.com, text= null, title= "Test")',
+      (new Link('http://example.com', null, 'Test'))->toString()
     );
   }
 }
