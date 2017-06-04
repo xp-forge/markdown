@@ -1,5 +1,7 @@
 <?php namespace net\daringfireball\markdown;
 
+use util\Objects;
+
 class Header extends NodeList {
   public $level;
 
@@ -10,7 +12,7 @@ class Header extends NodeList {
 
   /** @return string */
   public function toString() {
-    return nameof($this).'(h'.$this->level.')<'.\xp::stringOf($this->nodes).'>';
+    return nameof($this).'(h'.$this->level.')<'.Objects::stringOf($this->nodes).'>';
   }
 
   /**
@@ -20,7 +22,7 @@ class Header extends NodeList {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emit($definitions) {
-    return '<h'.$this->level.'>'.parent::emit($definitions).'</h'.$this->level.'>';
+  public function emit($emitter, $definitions= []) {
+    return '<h'.$this->level.'>'.parent::emit($emitter, $definitions).'</h'.$this->level.'>';
   }
 }
