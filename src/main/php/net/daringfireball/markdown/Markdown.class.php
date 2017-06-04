@@ -215,8 +215,9 @@ class Markdown {
    * ```
    * The tokens handler needs to return whether it handled the token.
    * 
-   * @param string $char A single character starting the token
-   * @param var $handler The closure
+   * @param  string $char A single character starting the token
+   * @param  var $handler The closure
+   * @return void
    */
   public function addToken($char, $handler) {
     $this->tokens[$char]= $handler;
@@ -233,8 +234,9 @@ class Markdown {
    * };
    * ```
    *
-   * @param string $char A single character starting the token
-   * @param var $handler The closure
+   * @param  string $char A single character starting the token
+   * @param  var $handler The closure
+   * @return void
    */
   public function addHandler($pattern, $handler) {
     $this->handlers[$pattern]= $handler;
