@@ -28,11 +28,11 @@ The implementation is based on a parse tree. To work with the tree, you can use 
 
 ```php
 use net\daringfireball\markdown\{Markdown, ToHtml};
+use io\streams\TextReader;
+use io\File;
 
 $engine= new Markdown();
-$tree= $engine->parse(
-  'This is [Markdown](http://daringfireball.net/projects/markdown/) for **XP**'
-);
+$tree= $engine->parse(new TextReader(new File('file.md')));
 
 // ...work with tree...
 
