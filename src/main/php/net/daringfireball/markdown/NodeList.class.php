@@ -124,13 +124,25 @@ class NodeList extends Node {
     return $emitter->emitNodeList($this, $definitions);
   }
 
+  /**
+   * Returns nodes' string representation indented with a given indent
+   *
+   * @param  string $indent
+   * @return string
+   */
+  protected function nodesIndented($indent) {
+    if (empty($this->nodes)) return '';
+
+    $s= "\n";
+    foreach ($this->nodes as $node) {
+      $s.= $indent.str_replace("\n", "\n".$indent, $node->toString())."\n";
+    }
+    return $s;
+  }
+
   /** @return string */
   public function toString() {
-    $s= nameof($this)."@{\n";
-    foreach ($this->nodes as $node) {
-      $s.= '  '.str_replace("\n", "\n  ", $node->toString())."\n";
-    }
-    return $s.'}';
+    return nameof($this).'@{'.$this->nodesIndented('  ').'}';
   }
 
   /** @return string */

@@ -35,7 +35,7 @@ class Cell extends NodeList {
    * @return string
    */
   public function toString() {
-    return nameof($this).'(type= '.$this->type.', alignment= '.$this->alignment.')@'.\xp::stringOf($this->nodes);
+    return nameof($this).'(type= '.$this->type.', alignment= '.$this->alignment.')@'.Objects::stringOf($this->nodes);
   }
 
   /**

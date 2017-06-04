@@ -25,7 +25,7 @@ class Listing extends NodeList {
       nameof($this),
       $this->type,
       $this->paragraphs ? ' using paragraphs' : '',
-      \xp::stringOf($this->nodes)
+      $this->nodesIndented('  ')
     );
   }
 

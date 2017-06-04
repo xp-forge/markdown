@@ -12,7 +12,7 @@ class Header extends NodeList {
 
   /** @return string */
   public function toString() {
-    return nameof($this).'(h'.$this->level.')<'.Objects::stringOf($this->nodes).'>';
+    return nameof($this).'(h'.$this->level.')<'.$this->nodesIndented('  ').'>';
   }
 
   /**
