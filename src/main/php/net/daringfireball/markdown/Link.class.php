@@ -35,8 +35,8 @@ class Link extends Node {
       '%s(url= %s, text= %s, title= %s)',
       nameof($this),
       $this->url,
-      $this->text ? Objects::stringOf($this->text) : 'null',
-      Objects::stringOf($this->title)
+      null === $this->text ? 'null' : $this->text->toString(),
+      null === $this->title ? 'null' : '"'.$this->title.'"'
     );
   }
 
