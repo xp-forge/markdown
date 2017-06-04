@@ -10,7 +10,7 @@ use lang\FormatException;
  * @see  https://github.com/markdown/markdown.github.com/wiki/Implementations
  * @test xp://net.daringfireball.markdown.unittest.MarkdownClassTest
  */
-class Markdown extends \lang\Object {
+class Markdown {
   protected $tokens= [];
   protected $handlers= [];
 
