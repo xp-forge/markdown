@@ -35,21 +35,24 @@ class ParseTree extends NodeList {
   public function toString() {
     $s= '';
     foreach ($this->nodes as $node) {
-      $s.= '  '.str_replace("\n", "\n  ", $node->toString())."\n";
+      $s.= '    '.str_replace("\n", "\n    ", $node->toString())."\n";
     }
     return nameof($this)."@{\n".
-      "urls  : ".\xp::stringOf($this->urls)."\n".
-      "nodes : [\n".$s."]\n".
+      "  urls  : ".Objects::stringOf($this->urls)."\n".
+      "  nodes : [\n".$s."  ]\n".
     "}";
   }
 
   /**
-   * Returns whether a given comparison value is equal to this parse tree
+   * Returns whether a given comparison value is equal to this node list
    *
-   * @param  var $cmp
+   * @param  var $value
    * @return string
    */
-  public function equals($cmp) {
-    return parent::equals($cmp) && Objects::equal($this->urls, $cmp->urls);
+  public function compareTo($value) {
+    return $value instanceof self
+      ? Objects::compare([$this->urls, $this->nodes], [$value->urls, $value->nodes])
+      : 1
+    ;
   }
 }

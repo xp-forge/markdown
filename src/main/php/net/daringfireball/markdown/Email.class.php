@@ -13,15 +13,6 @@ class Email extends Node {
   }
 
   /**
-   * Creates a string representation
-   *
-   * @return string
-   */
-  public function toString() {
-    return nameof($this).'<'.$this->address.'>';
-  }
-
-  /**
    * Emit this node
    *
    * @param  net.daringfireball.markdown.Emitter $emitter
@@ -30,5 +21,25 @@ class Email extends Node {
    */
   public function emit($emitter, $definitions= []) {
     return $emitter->emitEmail($this, $definitions);
+  }
+
+  /** @return string */
+  public function toString() {
+    return nameof($this).'<'.$this->address.'>';
+  }
+
+  /** @return string */
+  public function hashCode() {
+    return '@'.md5($this->address);
+  }
+
+  /**
+   * Returns whether a given comparison value is equal to this node list
+   *
+   * @param  var $value
+   * @return string
+   */
+  public function compareTo($value) {
+    return $value instanceof self ? strcmp($this->address, $value->address) : 1;
   }
 }

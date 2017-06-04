@@ -10,7 +10,7 @@ use lang\FormatException;
  * @see  https://github.com/markdown/markdown.github.com/wiki/Implementations
  * @test xp://net.daringfireball.markdown.unittest.MarkdownClassTest
  */
-class Markdown extends \lang\Object {
+class Markdown {
   protected $tokens= [];
   protected $handlers= [];
 
@@ -230,8 +230,9 @@ class Markdown extends \lang\Object {
    * ```
    * The tokens handler needs to return whether it handled the token.
    * 
-   * @param string $char A single character starting the token
-   * @param var $handler The closure
+   * @param  string $char A single character starting the token
+   * @param  var $handler The closure
+   * @return void
    */
   public function addToken($char, $handler) {
     $this->tokens[$char]= $handler;
@@ -248,8 +249,9 @@ class Markdown extends \lang\Object {
    * };
    * ```
    *
-   * @param string $char A single character starting the token
-   * @param var $handler The closure
+   * @param  string $char A single character starting the token
+   * @param  var $handler The closure
+   * @return void
    */
   public function addHandler($pattern, $handler) {
     $this->handlers[$pattern]= $handler;
@@ -267,11 +269,10 @@ class Markdown extends \lang\Object {
 
     $input= $in instanceof Input ? $in : new StringInput((string)$in);
     try {
-      $tree= $context->parse($input);
+      return $context->parse($input);
     } catch (Throwable $e) {
       throw new FormatException('Error in '.$input->toString(), $e);
     }
-    return $tree;
   }
 
   /**

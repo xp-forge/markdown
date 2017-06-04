@@ -1,6 +1,8 @@
 <?php namespace net\daringfireball\markdown;
 
-class Line extends \lang\Object implements \ArrayAccess {
+use util\Objects;
+
+class Line implements \lang\Value, \ArrayAccess {
   protected $buffer;
   protected $pos;
   protected $length;
@@ -257,25 +259,29 @@ class Line extends \lang\Object implements \ArrayAccess {
   }
 
   /**
-   * Returns whether a given value is equal to this line
-   *
-   * @param  var $cmp The value
-   * @return bool
-   */
-  public function equals($cmp) {
-    return (
-      $this instanceof self &&
-      $this->buffer === $cmp->buffer &&
-      $this->pos === $cmp->pos
-    );
-  }
-
-  /**
    * Creates a string representation of this line
    *
    * @return string
    */
   public function toString() {
     return nameof($this).'("'.$this->buffer.'" @ '.$this->pos.')';
+  }
+
+  /** @return string */
+  public function hashCode() {
+    return 'L'.Objects::hashOf([$this->buffer, $this->pos]);
+  }
+
+  /**
+   * Compare
+   *
+   * @param  var $value
+   * @return int
+   */
+  public function compareTo($value) {
+    return $value instanceof self
+      ? Objects::compare([$this->buffer, $this->pos], [$value->buffer, $value->pos])
+      : 1
+    ;
   }
 }

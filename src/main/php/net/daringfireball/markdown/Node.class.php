@@ -3,7 +3,7 @@
 /**
  * Abstract base class for all nodes and node lists
  */
-abstract class Node extends \lang\Object {
+abstract class Node implements \lang\Value {
 
   /**
    * Emit this node

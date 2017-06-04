@@ -3,12 +3,13 @@
 class BlockQuote extends NodeList {
 
   /**
-   * Emit this blockquote element
+   * Emit this node
    *
-   * @param	 [:net.daringfireball.markdown.Link] definitions
+   * @param  net.daringfireball.markdown.Emitter $emitter
+   * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emit($definitions) {
-    return '<blockquote>'.parent::emit($definitions).'</blockquote>';
+  public function emit($emitter, $definitions= []) {
+    return '<blockquote>'.parent::emit($emitter, $definitions).'</blockquote>';
   }
 }

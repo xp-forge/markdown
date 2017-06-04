@@ -335,4 +335,12 @@ class LineTest extends \unittest\TestCase {
     $l= new Line('');
     $this->assertFalse(isset($l{0}));
   }
+
+  #[@test]
+  public function string_representation() {
+    $this->assertEquals(
+      'net.daringfireball.markdown.Line("Hello" @ 2)',
+      (new Line('Hello', 2))->toString()
+    );
+  }
 }

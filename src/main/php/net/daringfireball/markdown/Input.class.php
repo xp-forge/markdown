@@ -1,9 +1,11 @@
 <?php namespace net\daringfireball\markdown;
 
+use util\Objects;
+
 /**
  * Abstract base class for input
  */
-abstract class Input extends \lang\Object {
+abstract class Input implements \lang\Value {
   protected $stack= [];
   protected $line= 1;
 
@@ -75,5 +77,26 @@ abstract class Input extends \lang\Object {
    */
   public function toString() {
     return nameof($this).'(line '.$this->line.' of '.$this->sourceDescription().')';
+  }
+
+  /** @return string */
+  public function hashCode() {
+    return md5($this->line.'@'.$this->sourceDescription());
+  }
+
+  /**
+   * Compare
+   *
+   * @param  var $value
+   * @return int
+   */
+  public function compareTo($value) {
+    return $value instanceof self
+      ? Objects::compare(
+        [$this->line, $this->sourceDescription()],
+        [$value->line, $value->sourceDescription()]
+      )
+      : 1
+    ;
   }
 }

@@ -1,6 +1,8 @@
 <?php namespace net\daringfireball\markdown;
 
-abstract class Context extends \lang\Object {
+use util\Objects;
+
+abstract class Context implements \lang\Value {
   protected $tokens= [];
   protected $span= '';
 
@@ -80,11 +82,7 @@ abstract class Context extends \lang\Object {
     return $target;
   }
 
-  /**
-   * Creates a string representation of this context
-   *
-   * @return string
-   */
+  /** @return string */
   public function toString() {
     $s= 'net.daringfireball.markdown.Context('.$this->name();
     $parent= $this->parent;
@@ -93,5 +91,23 @@ abstract class Context extends \lang\Object {
       $parent= $parent->parent;
     }
     return $s.')';
+  }
+
+  /** @return string */
+  public function hashCode() {
+    return 'C'.Objects::hashOf([$this->tokens, $this->span]);
+  }
+
+  /**
+   * Compare
+   *
+   * @param  var $value
+   * @return int
+   */
+  public function compareTo($value) {
+    return $value instanceof self
+      ? Objects::compare([$this->tokens, $this->span], [$value->tokens, $value->span])
+      : 1
+    ;
   }
 }

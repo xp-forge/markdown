@@ -114,15 +114,6 @@ class NodeList extends Node {
   }
 
   /**
-   * Creates a string representation
-   *
-   * @return string
-   */
-  public function toString() {
-    return nameof($this).'<'.\xp::stringOf($this->nodes).'>';
-  }
-
-  /**
    * Emit this parse tree
    *
    * @param  net.daringfireball.markdown.Emitter $emitter
@@ -134,12 +125,38 @@ class NodeList extends Node {
   }
 
   /**
-   * Returns whether a given comparison value is equal to this node list
+   * Returns nodes' string representation indented with a given indent
    *
-   * @param  var $cmp
+   * @param  string $indent
    * @return string
    */
-  public function equals($cmp) {
-    return $cmp instanceof self && Objects::equal($this->nodes, $cmp->nodes);
+  protected function nodesIndented($indent) {
+    if (empty($this->nodes)) return '';
+
+    $s= "\n";
+    foreach ($this->nodes as $node) {
+      $s.= $indent.str_replace("\n", "\n".$indent, $node->toString())."\n";
+    }
+    return $s;
+  }
+
+  /** @return string */
+  public function toString() {
+    return nameof($this).'@{'.$this->nodesIndented('  ').'}';
+  }
+
+  /** @return string */
+  public function hashCode() {
+    return '['.Objects::hashOf($this->nodes);
+  }
+
+  /**
+   * Returns whether a given comparison value is equal to this node list
+   *
+   * @param  var $value
+   * @return string
+   */
+  public function compareTo($value) {
+    return $value instanceof self ? Objects::compare($this->nodes, $value->nodes) : 1;
   }
 }

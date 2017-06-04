@@ -3,6 +3,11 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 4.0.0 / 2017-06-04
+
+* **Heads up:** Dropped PHP 5.5 support - @thekid
+* Added forward compatibility with XP 9.0.0 - @thekid
+
 ## 3.2.4 / 2016-12-29
 
 * Fixed bug with nesting of emphasis - @thekid
