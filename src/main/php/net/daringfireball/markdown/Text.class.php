@@ -18,15 +18,6 @@ class Text extends Node {
   }
 
   /**
-   * Creates a string representation
-   *
-   * @return string
-   */
-  public function toString() {
-    return nameof($this).'<'.$this->value.'>';
-  }
-
-  /**
    * Emit this node
    *
    * @param  net.daringfireball.markdown.Emitter $emitter
@@ -37,13 +28,23 @@ class Text extends Node {
     return $emitter->emitText($this, $definitions);
   }
 
+  /** @return string */
+  public function toString() {
+    return nameof($this).'<'.$this->value.'>';
+  }
+
+  /** @return string */
+  public function hashCode() {
+    return '"'.md5($this->value);
+  }
+
   /**
    * Returns whether a given comparison value is equal to this node list
    *
-   * @param  var $cmp
+   * @param  var $value
    * @return string
    */
-  public function equals($cmp) {
-    return $cmp instanceof self && $this->value === $cmp->value;
+  public function compareTo($value) {
+    return $value instanceof self ? strcmp($this->value, $value->value) : 1;
   }
 }

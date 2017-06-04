@@ -110,15 +110,6 @@ class NodeList extends Node {
   }
 
   /**
-   * Creates a string representation
-   *
-   * @return string
-   */
-  public function toString() {
-    return nameof($this).'<'.\xp::stringOf($this->nodes).'>';
-  }
-
-  /**
    * Emit this parse tree
    *
    * @param  net.daringfireball.markdown.Emitter $emitter
@@ -129,13 +120,27 @@ class NodeList extends Node {
     return $emitter->emitNodeList($this, $definitions);
   }
 
+  /** @return string */
+  public function toString() {
+    $s= nameof($this)."@{\n";
+    foreach ($this->nodes as $node) {
+      $s.= '  '.str_replace("\n", "\n  ", $node->toString())."\n";
+    }
+    return $s.'}';
+  }
+
+  /** @return string */
+  public function hashCode() {
+    return '['.Objects::hashOf($this->nodes);
+  }
+
   /**
    * Returns whether a given comparison value is equal to this node list
    *
-   * @param  var $cmp
+   * @param  var $value
    * @return string
    */
-  public function equals($cmp) {
-    return $cmp instanceof self && Objects::equal($this->nodes, $cmp->nodes);
+  public function compareTo($value) {
+    return $value instanceof self ? Objects::compare($this->nodes, $value->nodes) : 1;
   }
 }

@@ -254,11 +254,10 @@ class Markdown {
 
     $input= $in instanceof Input ? $in : new StringInput((string)$in);
     try {
-      $tree= $context->parse($input);
+      return $context->parse($input);
     } catch (Throwable $e) {
       throw new FormatException('Error in '.$input->toString(), $e);
     }
-    return $tree;
   }
 
   /**

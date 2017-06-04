@@ -19,21 +19,6 @@ class Image extends Node {
   }
 
   /**
-   * Creates a string representation
-   *
-   * @return string
-   */
-  public function toString() {
-    return sprintf(
-      '%s(url= %s, text= %s, title= %s)',
-      nameof($this),
-      $this->url,
-      \xp::stringOf($this->text),
-      \xp::stringOf($this->title)
-    );
-  }
-
-  /**
    * Emit this node
    *
    * @param  net.daringfireball.markdown.Emitter $emitter
@@ -44,18 +29,35 @@ class Image extends Node {
     return $emitter->emitImage($this, $definitions);
   }
 
+  /** @return string */
+  public function toString() {
+    return sprintf(
+      '%s(url= %s, text= %s, title= %s)',
+      nameof($this),
+      $this->url,
+      Objects::stringOf($this->text),
+      Objects::stringOf($this->title)
+    );
+  }
+
+  /** @return string */
+  public function hashCode() {
+    return '!'.Objects::hashOf([$this->url, $this->text, $this->title]);
+  }
+
   /**
    * Returns whether a given comparison value is equal to this node list
    *
-   * @param  var $cmp
+   * @param  var $value
    * @return string
    */
-  public function equals($cmp) {
-    return (
-      $cmp instanceof self &&
-      $this->url === $cmp->url &&
-      $this->title === $cmp->title &&
-      Objects::equal($this->text, $cmp->text)
-    );
+  public function compareTo($value) {
+    return $value instanceof self
+      ? Objects::compare(
+        [$this->url, $this->title, $this->text],
+        [$value->url, $value->title, $value->text]
+      )
+      : 1
+    ;
   }
 }
