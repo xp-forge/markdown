@@ -27,12 +27,21 @@ class Markdown {
     });
     $this->addToken('`', function($line, $target, $ctx) {
       if ($line->matches('`` ')) {
-        $target->add(new Code($line->ending([' ``', '``'], 3)));
+        $delimiters= [' ``', '``'];
+        $offset= 3;
       } else if ($line->matches('``')) {
-        $target->add(new Code($line->ending('``')));
+        $delimiters= '``';
+        $offset= -1;
       } else {
-        $target->add(new Code($line->ending('`')));
+        $delimiters= '`';
+        $offset= -1;
       }
+
+      // Unmatched backticks - just handle rest of line as text
+      if (null === ($code= $line->delimited($delimiters, $offset))) {
+        return false;
+      }
+      $target->add(new Code($code));
       return true;
     });
     $this->addToken('<', function($line, $target, $ctx) {
@@ -102,6 +111,9 @@ class Markdown {
         } else {
           $url= '@'.strtolower($ref);
         }
+      } else {
+        $target->add(new Text('['.$text.']'));
+        return true;
       }
       $target->add($newInstance($url, $node, $title));
       return true;
@@ -149,8 +161,11 @@ class Markdown {
     });
     $this->addHandler('/^(={3,}|-{3,})/', function($lines, $matches, $result, $ctx) {
       $paragraph= $result->last();
-      $text= $paragraph->remove($paragraph->size() - 1);
-      $result->append(new Header('=' === $matches[1]{0} ? 1 : 2))->add($text);
+      if ($text= $paragraph->remove($paragraph->size() - 1)) {
+        $result->append(new Header('=' === $matches[1]{0} ? 1 : 2))->add($text);
+      } else {
+        $paragraph->add(new Text($matches[0]));
+      }
       return true;
     });
     $this->addHandler('/^(\* ?){3,}$/', function($lines, $matches, $result, $ctx) {

@@ -202,4 +202,12 @@ class LinksTest extends MarkdownTest {
       '*[A link](http://example.net/)*'
     );
   }
+
+  #[@test]
+  public function text_in_square_braces() {
+    $this->assertTransformed(
+      '<p>This is [not a link], man.</p>',
+      'This is [not a link], man.'
+    );
+  }
 }

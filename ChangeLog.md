@@ -8,6 +8,28 @@ Markdown for XP Framework ChangeLog
 * **Heads up:** Dropped PHP 5.5 support - @thekid
 * Added forward compatibility with XP 9.0.0 - @thekid
 
+## 3.2.4 / 2016-12-29
+
+* Fixed bug with nesting of emphasis - @thekid
+
+## 3.2.3 / 2016-11-07
+
+* Fixed tables with extra columns not "declared" in header - @thekid
+
+## 3.2.2 / 2016-11-07
+
+* Change parsed to handle unclosed inline code fragments gracefully
+  (@thekid)
+
+## 3.2.1 / 2016-11-07
+
+* Fixed text in square braces not followed by neither `(...)` nor `[...]`
+  (@thekid)
+* Fixed underlines directly at the beginning of the markdown string
+  (@thekid)
+* Fixed errors when removing non-existant elements from a NodeList
+  (@thekid)
+
 ## 3.2.0 / 2016-11-05
 
 * Merged PR #9: Extract emitting HTML from nodes into emitter class

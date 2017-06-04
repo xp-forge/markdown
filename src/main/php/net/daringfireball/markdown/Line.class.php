@@ -123,9 +123,9 @@ class Line implements \lang\Value, \ArrayAccess {
       if (-1 === $offset) $offset= $l;
 
       // Find matching delimiter. A double delimiter is considered a nested delimiter
-      $i= 0;
+      $i= $this->pos;
       do {
-        if (false === ($s= strpos($this->buffer, $d, $this->pos + $offset + $i))) continue 2;
+        if (false === ($s= strpos($this->buffer, $d, $offset + $i))) continue 2;
         if ($d !== substr($this->buffer, $s + $l, $l)) break;
         $i= $s + $l;
       } while ($i < $this->length);
