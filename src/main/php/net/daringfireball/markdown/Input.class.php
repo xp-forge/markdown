@@ -1,7 +1,7 @@
 <?php namespace net\daringfireball\markdown;
 
 use util\Objects;
-use io\streams\Reader;
+use io\streams\TextReader;
 
 /**
  * Abstract base class for input
@@ -13,13 +13,13 @@ abstract class Input implements \lang\Value {
   /**
    * Creates a new input from a given argument
    *
-   * @param  string|self|io.streams.Reader $arg
+   * @param  string|self|io.streams.TextReader $arg
    * @return self
    */
   public static function from($arg) {
     if ($arg instanceof self) {
       return $arg;
-    } else if ($arg instanceof Reader) {
+    } else if ($arg instanceof TextReader) {
       return new ReaderInput($arg);
     } else {
       return new StringInput((string)$arg);
