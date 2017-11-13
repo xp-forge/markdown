@@ -260,14 +260,13 @@ class Markdown {
   /**
    * Parses the output and returns the resulting parse tree
    *
-   * @param  string|net.daringfireball.markdown.Input $in markdown
+   * @param  string|net.daringfireball.markdown.Input|io.streams.TextReader $in markdown
    * @return net.daringfireball.markdown.ParseTree
    * @throws lang.FormatException
    */
   public function parse($in) {
     $context= (new ToplevelContext())->withTokens($this->tokens)->withHandlers($this->handlers);
-
-    $input= $in instanceof Input ? $in : new StringInput((string)$in);
+    $input= Input::from($in);
     try {
       return $context->parse($input);
     } catch (Throwable $e) {
@@ -278,7 +277,7 @@ class Markdown {
   /**
    * Transform a given input and returns the output
    *
-   * @param  var $in markdown either a string or a net.daringfireball.markdown.Input
+   * @param  string|net.daringfireball.markdown.Input|io.streams.TextReader $in markdown
    * @param  [:net.daringfireball.markdown.Link] $urls
    * @param  net.daringfireball.markdown.Emitter $emitter Defaults to HTML
    * @return string markup

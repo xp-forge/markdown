@@ -1,5 +1,7 @@
 <?php namespace net\daringfireball\markdown;
 
+use io\streams\TextReader;
+
 /**
  * Input implementation for stream readers
  *
@@ -11,9 +13,9 @@ class ReaderInput extends Input {
   /**
    * Creates a new reader input instance
    *
-   * @param  io.streams.Reader $reader
+   * @param  io.streams.TextReader $reader
    */
-  public function __construct(\io\streams\Reader $reader) {
+  public function __construct(TextReader $reader) {
     $this->reader= $reader;
   }
 

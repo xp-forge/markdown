@@ -31,6 +31,13 @@ class MarkdownClassTest extends MarkdownTest {
   }
 
   #[@test]
+  public function transform_reader() {
+    $this->assertEquals('<p></p>', (new Markdown())->transform(
+      new TextReader(new MemoryInputStream(''))
+    ));
+  }
+
+  #[@test]
   public function transform_string_input() {
     $this->assertEquals('<p></p>', (new Markdown())->transform(new StringInput('')));
   }
