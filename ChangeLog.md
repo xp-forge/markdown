@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 4.1.1 / 2018-07-22
+
+* Fixed issue #12: Call to a member function length() on null - @thekid
+
 ## 4.1.0 / 2017-11-13
 
 * Merged PR #11: Also accept io.streams.TextReader instances - @thekid

@@ -130,6 +130,14 @@ abstract class InputTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function reset_line_with_null_ignroed() {
+    $fixture= $this->newFixture('Input');
+    $fixture->resetLine(null);
+    $fixture->nextLine();
+    $this->assertFalse($fixture->hasMoreLines());
+  }
+
+  #[@test]
   public function string_representation() {
     $string= $this->newFixture('')->toString();
     $this->assertEquals(

@@ -1,7 +1,7 @@
 <?php namespace net\daringfireball\markdown;
 
-use lang\Throwable;
 use lang\FormatException;
+use lang\Throwable;
 
 /**
  * Markdown

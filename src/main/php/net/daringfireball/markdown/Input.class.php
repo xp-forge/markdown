@@ -1,7 +1,7 @@
 <?php namespace net\daringfireball\markdown;
 
-use util\Objects;
 use io\streams\TextReader;
+use util\Objects;
 
 /**
  * Abstract base class for input
@@ -83,6 +83,7 @@ abstract class Input implements \lang\Value {
    * @param  net.daringfireball.markdown.Line $line
    */
   public function resetLine($line) {
+    if (null === $line) return;
     $this->stack[]= $line;
     $this->line--;
   }

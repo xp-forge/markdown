@@ -148,4 +148,14 @@ class TableTest extends MarkdownTest {
       "Line"
     );
   }
+
+  #[@test, @values([
+  #  ['TLDR: docker (system|container|volume|image) prune'],
+  #  ['Bei Shell-Escape ; und | wegzulassen wäre aber auch gewagt'],
+  #  ['For instance, | did not work...'],
+  #  ['PDF | Powerpoint'],
+  #])]
+  public function issue_12($input) {
+    $this->assertTransformed('<p>'.$input.'</p>', $input);
+  }
 }
