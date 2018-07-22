@@ -23,6 +23,6 @@ class Header extends NodeList {
    * @return string
    */
   public function emit($emitter, $definitions= []) {
-    return '<h'.$this->level.'>'.parent::emit($emitter, $definitions).'</h'.$this->level.'>';
+    return $emitter->emitHeader($this, $definitions);
   }
 }

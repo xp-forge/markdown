@@ -3,6 +3,13 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 5.0.0 / 2018-07-22
+
+* Changed emitter to also emit headers, blockquotes, rulers and entities
+  **Heads up**: `net.daringfireball.markdown.Emitter` interface contains
+  four new corresponding methods which now need to be implemented!
+  (@thekid)
+
 ## 4.1.1 / 2018-07-22
 
 * Fixed issue #12: Call to a member function length() on null - @thekid

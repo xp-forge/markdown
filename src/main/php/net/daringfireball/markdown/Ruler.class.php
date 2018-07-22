@@ -15,7 +15,7 @@ class Ruler extends Node {
    * @return string
    */
   public function emit($emitter, $definitions= []) {
-    return '<hr/>';
+    return $emitter->emitRuler($this, $definitions);
   }
 
   /** @return string */

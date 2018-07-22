@@ -15,6 +15,6 @@ class Entity extends ValueNode {
    * @return string
    */
   public function emit($emitter, $definitions= []) {
-    return $this->value;
+    return $emitter->emitEntity($this, $definitions);
   }
 }

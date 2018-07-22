@@ -21,6 +21,15 @@ interface Emitter {
   public function emitNodeList($list, $definitions);
 
   /**
+   * Emits a header
+   *
+   * @param  net.daringfireball.markdown.Header $paragraph
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitHeader($header, $definitions);
+
+  /**
    * Emits a paragraph
    *
    * @param  net.daringfireball.markdown.Paragraph $paragraph
@@ -28,6 +37,24 @@ interface Emitter {
    * @return string
    */
   public function emitParagraph($paragraph, $definitions);
+
+  /**
+   * Emits a blockquote
+   *
+   * @param  net.daringfireball.markdown.BlockQuote $blockquote
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitBlockQuote($blockquote, $definitions);
+
+  /**
+   * Emits a ruler
+   *
+   * @param  net.daringfireball.markdown.Ruler $ruler
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitRuler($ruler, $definitions);
 
   /**
    * Emits strike-through text
@@ -118,6 +145,15 @@ interface Emitter {
    * @return string
    */
   public function emitEmail($email, $definitions);
+
+  /**
+   * Emits an entity
+   *
+   * @param  net.daringfireball.markdown.Entity $entity
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitEntity($entity, $definitions);
 
   /**
    * Emits an inline code fragment

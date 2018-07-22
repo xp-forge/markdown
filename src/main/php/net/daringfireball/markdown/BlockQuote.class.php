@@ -10,6 +10,6 @@ class BlockQuote extends NodeList {
    * @return string
    */
   public function emit($emitter, $definitions= []) {
-    return '<blockquote>'.parent::emit($emitter, $definitions).'</blockquote>';
+    return $emitter->emitBlockQuote($this, $definitions);
   }
 }

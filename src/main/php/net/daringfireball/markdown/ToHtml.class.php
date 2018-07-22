@@ -45,6 +45,17 @@ class ToHtml implements Emitter {
   }
 
   /**
+   * Emits a header
+   *
+   * @param  net.daringfireball.markdown.Header $paragraph
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitHeader($header, $definitions) {
+    return '<h'.$header->level.'>'.$this->emitAll($header->all(), $definitions).'</h'.$header->level.'>';
+  }
+
+  /**
    * Emits a paragraph
    *
    * @param  net.daringfireball.markdown.Paragraph $paragraph
@@ -53,6 +64,28 @@ class ToHtml implements Emitter {
    */
   public function emitParagraph($paragraph, $definitions) {
     return '<p>'.$this->emitAll($paragraph->all(), $definitions).'</p>';
+  }
+
+  /**
+   * Emits a blockquote
+   *
+   * @param  net.daringfireball.markdown.BlockQuote $blockquote
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitBlockQuote($blockquote, $definitions) {
+    return '<blockquote>'.$this->emitAll($blockquote->all(), $definitions).'</blockquote>';
+  }
+
+  /**
+   * Emits a ruler
+   *
+   * @param  net.daringfireball.markdown.Ruler $ruler
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitRuler($ruler, $definitions) {
+    return '<hr/>';
   }
 
   /**
@@ -195,6 +228,17 @@ class ToHtml implements Emitter {
 
     // An encoded "mailto:" (with "i" and ":" in plain)
     return '<a href="&#x6D;&#x61;i&#x6C;&#x74;&#x6F;:'.$encoded.'">'.$encoded.'</a>';
+  }
+
+  /**
+   * Emits an entity
+   *
+   * @param  net.daringfireball.markdown.Entity $entity
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitEntity($entity, $definitions) {
+    return $entity->value;
   }
 
   /**
