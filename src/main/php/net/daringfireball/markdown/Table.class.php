@@ -30,7 +30,7 @@ class Table extends NodeList {
   public function toString() {
     $s= nameof($this)."@{\n";
     foreach ($this->nodes as $row) {
-      $s.= '  '.$row->toString()."\n";
+      $s.= '  '.str_replace("\n", "\n  ", $row->toString())."\n";
     }
     return $s.'}';
   }

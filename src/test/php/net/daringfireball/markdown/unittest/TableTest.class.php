@@ -1,6 +1,38 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
+use net\daringfireball\markdown\Cell;
+use net\daringfireball\markdown\Row;
+use net\daringfireball\markdown\Table;
+use net\daringfireball\markdown\Text;
+
 class TableTest extends MarkdownTest {
+
+  #[@test]
+  public function string_representation_of_table() {
+    $this->assertEquals(
+      "net.daringfireball.markdown.Table@{\n".
+      "  net.daringfireball.markdown.Row@{\n".
+      "    net.daringfireball.markdown.Cell(type= th, alignment= )@[net.daringfireball.markdown.Text<Header>]\n".
+      "  }\n".
+      "}",
+      (new Table([new Row([new Cell('th', null, [new Text('Header')])])]))->toString()
+    );
+  }
+
+  #[@test]
+  public function rows_of_table() {
+    $rows= [
+      new Row([new Cell('th', null), new Cell('th', null)]),
+      new Row([new Cell('td', null, [new Text('Key')]), new Cell('td', null, [new Text('Value')])])
+    ];
+    $this->assertEquals($rows, (new Table($rows))->rows());
+  }
+
+  #[@test]
+  public function cells_of_row() {
+    $cells= [new Cell('th', null), new Cell('th', null)];
+    $this->assertEquals($cells, (new Row($cells))->cells());
+  }
 
   #[@test]
   public function simple_layout() {

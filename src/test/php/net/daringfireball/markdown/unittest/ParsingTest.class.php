@@ -1,14 +1,15 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\ParseTree;
-use net\daringfireball\markdown\Paragraph;
-use net\daringfireball\markdown\Text;
-use net\daringfireball\markdown\Table;
-use net\daringfireball\markdown\Row;
 use net\daringfireball\markdown\Cell;
+use net\daringfireball\markdown\CodeBlock;
 use net\daringfireball\markdown\Image;
 use net\daringfireball\markdown\Link;
 use net\daringfireball\markdown\NodeList;
+use net\daringfireball\markdown\Paragraph;
+use net\daringfireball\markdown\ParseTree;
+use net\daringfireball\markdown\Row;
+use net\daringfireball\markdown\Table;
+use net\daringfireball\markdown\Text;
 
 class ParsingTest extends MarkdownTest {
 
@@ -65,5 +66,22 @@ class ParsingTest extends MarkdownTest {
       ]),
       $this->fixture->parse("A table:\n| | |\n| - | - |\n| Key | Value |\nThat's it")
     );
+  }
+
+  #[@test]
+  public function code_block_without_language() {
+    $block= new CodeBlock();
+    $block->add(new Text('Code'));
+
+    $this->assertEquals(new ParseTree([$block]), $this->fixture->parse("```\nCode\n```"));
+  }
+
+  #[@test]
+  public function code_block_with_language() {
+    $block= new CodeBlock('bash');
+    $block->add(new Text('#!/bin/sh'));
+    $block->add(new Text('echo \'Hello\''));
+
+    $this->assertEquals(new ParseTree([$block]), $this->fixture->parse("```bash\n#!/bin/sh\necho 'Hello'\n```"));
   }
 }

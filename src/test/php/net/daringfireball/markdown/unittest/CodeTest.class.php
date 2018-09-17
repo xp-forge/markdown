@@ -1,8 +1,19 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\Code;
+use net\daringfireball\markdown\CodeBlock;
+use net\daringfireball\markdown\Text;
 
 class CodeTest extends MarkdownTest {
+
+  #[@test]
+  public function code_of_codeblock() {
+    $block= new CodeBlock('bash');
+    $block->add(new Text('#!/bin/sh'));
+    $block->add(new Text('echo \'Hello\''));
+
+    $this->assertEquals("#!/bin/sh\necho 'Hello'", $block->code());
+  }
 
   #[@test]
   public function single_backtick() {
