@@ -238,4 +238,13 @@ class LinksTest extends MarkdownTest {
       (new Link('http://example.com', null, 'Test'))->toString()
     );
   }
+
+  #[@test, @values([
+  #  '[comment]: <> (his is a comment, it will not be included)',
+  #  '[//]: <> This is also a comment.)',
+  #  '[//]: # (This may be the most platform independent comment)',
+  #])]
+  public function using_link_labels_as_comments($input) {
+    $this->assertTransformed('<p></p>', $input);
+  }
 }
