@@ -1,5 +1,6 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
+use net\daringfireball\markdown\Dereferrer;
 use net\daringfireball\markdown\Image;
 use net\daringfireball\markdown\Link;
 use net\daringfireball\markdown\URLs;
@@ -37,11 +38,23 @@ class URLsTest extends TestCase {
   #[@test, @values([
   #  'http://example.org/',
   #  'https://example.org/',
+  #  '//example.org/',
   #])]
-  public function dereferrer($uri) {
+  public function derefer_absolute($uri) {
     $this->assertEquals(
       new Link('/deref?'.urlencode($uri)),
-      (new URLs())->derefer('/deref?{0}')->resolve(new Link($uri), [])
+      (new URLs())->rewriting(new Dereferrer('/deref?{0}'))->resolve(new Link($uri), [])
+    );
+  }
+
+  #[@test, @values([
+  #  '/image.png',
+  #  'static/image.png',
+  #])]
+  public function no_dereferring_of($uri) {
+    $this->assertEquals(
+      new Link($uri),
+      (new URLs())->rewriting(new Dereferrer('/deref?{0}'))->resolve(new Link($uri), [])
     );
   }
 }

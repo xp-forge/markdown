@@ -1,10 +1,16 @@
 <?php namespace net\daringfireball\markdown;
 
 class URLs {
-  private $rewrite= [];
+  private $rewriting= [];
 
-  public function derefer($uri) {
-    $this->rewrite[Link::class]= $uri;
+  /**
+   * Rewrites links
+   *
+   * @param  net.daringfireball.markdown.Rewriting
+   * @return self
+   */
+  public function rewriting($rewrite) {
+    $this->rewriting[Link::class]= $rewrite;
     return $this;
   }
 
@@ -23,11 +29,10 @@ class URLs {
     }
 
     $kind= get_class($url);
-    if (!isset($this->rewrite[$kind])) return $target;
+    if (!isset($this->rewriting[$kind])) return $target;
 
-    // Pass links through dereferrer
-    $deref= clone $target;
-    $deref->url= str_replace('{0}', urlencode($target->url), $this->rewrite[$kind]);
-    return $deref;
+    $rewritten= clone $target;
+    $rewritten->url= $this->rewriting[$kind]->rewrite($target->url);
+    return $rewritten;
   }
 }
