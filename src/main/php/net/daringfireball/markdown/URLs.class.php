@@ -1,6 +1,12 @@
 <?php namespace net\daringfireball\markdown;
 
 class URLs {
+  private $rewrite= [];
+
+  public function derefer($uri) {
+    $this->rewrite[Link::class]= $uri;
+    return $this;
+  }
 
   /**
    * Resolve a URL
@@ -11,9 +17,17 @@ class URLs {
    */
   public function resolve(URL $url, array $definitions) {
     if (($ref= $url->reference()) && isset($definitions[$ref])) {
-      return $definitions[$ref];
+      $target= $definitions[$ref];
     } else {
-      return $url;
+      $target= $url;
     }
+
+    $kind= get_class($url);
+    if (!isset($this->rewrite[$kind])) return $target;
+
+    // Pass links through dereferrer
+    $deref= clone $target;
+    $deref->url= str_replace('{0}', urlencode($target->url), $this->rewrite[$kind]);
+    return $deref;
   }
 }

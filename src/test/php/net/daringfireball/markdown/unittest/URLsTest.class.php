@@ -33,4 +33,15 @@ class URLsTest extends TestCase {
     $link= new Link('@example');
     $this->assertEquals($link, (new URLs())->resolve($link, []));
   }
+
+  #[@test, @values([
+  #  'http://example.org/',
+  #  'https://example.org/',
+  #])]
+  public function dereferrer($uri) {
+    $this->assertEquals(
+      new Link('/deref?'.urlencode($uri)),
+      (new URLs())->derefer('/deref?{0}')->resolve(new Link($uri), [])
+    );
+  }
 }
