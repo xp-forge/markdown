@@ -3,7 +3,7 @@
 use net\daringfireball\markdown\Link;
 use net\daringfireball\markdown\Text;
 
-class LinksTest extends MarkdownTest {
+class LinkTest extends MarkdownTest {
 
   #[@test]
   public function link_with_title() {
