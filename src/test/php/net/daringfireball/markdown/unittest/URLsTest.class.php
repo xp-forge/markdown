@@ -23,6 +23,12 @@ class URLsTest extends TestCase {
   }
 
   #[@test]
+  public function resolve_reference_image() {
+    $link= new Link('http://example.org/image.png');
+    $this->assertEquals($link, (new URLs())->resolve(new Image('@example'), ['example' => $link]));
+  }
+
+  #[@test]
   public function resolve_non_existant_reference() {
     $link= new Link('@example');
     $this->assertEquals($link, (new URLs())->resolve($link, []));
