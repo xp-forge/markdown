@@ -36,7 +36,7 @@ abstract class URL extends Node {
 
   /** @return string */
   public function hashCode() {
-    return static::class[0].Objects::hashOf([$this->url, $this->text, $this->title]);
+    return Objects::hashOf([static::class, $this->url, $this->text, $this->title]);
   }
 
   /**
