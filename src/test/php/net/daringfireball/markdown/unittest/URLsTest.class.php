@@ -1,8 +1,8 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\Dereferrer;
 use net\daringfireball\markdown\Image;
 use net\daringfireball\markdown\Link;
+use net\daringfireball\markdown\Rewriting;
 use net\daringfireball\markdown\URLs;
 use unittest\TestCase;
 
@@ -35,26 +35,15 @@ class URLsTest extends TestCase {
     $this->assertEquals($link, (new URLs())->resolve($link, []));
   }
 
-  #[@test, @values([
-  #  'http://example.org/',
-  #  'https://example.org/',
-  #  '//example.org/',
-  #])]
-  public function derefer_absolute($uri) {
-    $this->assertEquals(
-      new Link('/deref?'.urlencode($uri)),
-      (new URLs())->rewriting(new Dereferrer('/deref?{0}'))->resolve(new Link($uri), [])
-    );
-  }
+  #[@test]
+  public function rewriting() {
+    $tracking= newinstance(Rewriting::class, [], [
+      'rewrite' => function($uri) { return '/tracking?url='.urlencode($uri); }
+    ]);
 
-  #[@test, @values([
-  #  '/image.png',
-  #  'static/image.png',
-  #])]
-  public function no_dereferring_of($uri) {
     $this->assertEquals(
-      new Link($uri),
-      (new URLs())->rewriting(new Dereferrer('/deref?{0}'))->resolve(new Link($uri), [])
+      new Link('/tracking?url=https%3A%2F%2Fexample.org%2F'),
+      (new URLs())->rewriting($tracking)->resolve(new Link('https://example.org/'), [])
     );
   }
 }
