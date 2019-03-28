@@ -22,4 +22,26 @@ class DereferrerTest extends TestCase {
   public function no_dereferring_of_relative($uri) {
     $this->assertEquals($uri, (new Dereferrer('/deref?{0}'))->rewrite($uri));
   }
+
+  #[@test, @values([
+  #  'http://localhost/',
+  #  'http://LOCALHOST/',
+  #  '//localhost/',
+  #  'https://test.localhost/',
+  #  '//another.test.localhost/',
+  #])]
+  public function no_dereferring_of_excluded($uri) {
+    $this->assertEquals($uri, (new Dereferrer('/deref?{0}', ['localhost', '*.localhost']))->rewrite($uri));
+  }
+
+  #[@test, @values([
+  #  'https://evillocalhost/',
+  #  'https://evil-localhost/',
+  #  'http://localhosts/',
+  #  'http://localhost.evil/',
+  #  '//localhost.evil/',
+  #])]
+  public function excluded_must_strictly_match_host($uri) {
+    $this->assertEquals('/deref?'.urlencode($uri), (new Dereferrer('/deref?{0}', ['localhost', '*.localhost']))->rewrite($uri));
+  }
 }
