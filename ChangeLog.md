@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Added PHP 7.3 support - @thekid
+
 ## 5.0.0 / 2018-07-22
 
 * Changed emitter to also emit headers, blockquotes, rulers and entities
