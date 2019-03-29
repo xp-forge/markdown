@@ -15,6 +15,17 @@ class URLs {
   }
 
   /**
+   * Passes images
+   *
+   * @param  net.daringfireball.markdown.Rewriting
+   * @return self
+   */
+  public function passing($rewrite) {
+    $this->rewriting[Image::class]= $rewrite;
+    return $this;
+  }
+
+  /**
    * Resolve a URL
    *
    * @param  net.daringfireball.markdown.URL $url

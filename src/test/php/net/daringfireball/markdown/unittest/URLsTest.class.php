@@ -46,4 +46,16 @@ class URLsTest extends TestCase {
       (new URLs())->rewriting($tracking)->resolve(new Link('https://example.org/'), [])
     );
   }
+
+  #[@test]
+  public function passing() {
+    $proxy= newinstance(Rewriting::class, [], [
+      'rewrite' => function($uri) { return '/proxy?url='.urlencode($uri); }
+    ]);
+
+    $this->assertEquals(
+      new Image('/proxy?url=https%3A%2F%2Fexample.org%2F'),
+      (new URLs())->passing($proxy)->resolve(new Image('https://example.org/'), [])
+    );
+  }
 }
