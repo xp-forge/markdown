@@ -6,22 +6,12 @@ class URLs {
   /**
    * Rewrites links
    *
-   * @param  net.daringfireball.markdown.Rewriting
+   * @param  string|lang.XPClass $type
+   * @param  net.daringfireball.markdown.Rewriting $rewrite
    * @return self
    */
-  public function rewriting($rewrite) {
-    $this->rewriting[Link::class]= $rewrite;
-    return $this;
-  }
-
-  /**
-   * Passes images
-   *
-   * @param  net.daringfireball.markdown.Rewriting
-   * @return self
-   */
-  public function passing($rewrite) {
-    $this->rewriting[Image::class]= $rewrite;
+  public function rewriting($type, $rewrite) {
+    $this->rewriting[$type instanceof XPClass ? $type->literal() : $type]= $rewrite;
     return $this;
   }
 
@@ -39,11 +29,13 @@ class URLs {
       $target= $url;
     }
 
-    $kind= get_class($url);
-    if (!isset($this->rewriting[$kind])) return $target;
-
-    $rewritten= clone $target;
-    $rewritten->url= $this->rewriting[$kind]->rewrite($target->url);
-    return $rewritten;
+    foreach ($this->rewriting as $type => $rewrite) {
+      if ($url instanceof $type) {
+        $rewritten= clone $target;
+        $rewritten->url= $rewrite->rewrite($target->url);
+        return $rewritten;
+      }
+    }
+    return $target;
   }
 }

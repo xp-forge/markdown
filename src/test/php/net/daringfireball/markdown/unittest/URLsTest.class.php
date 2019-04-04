@@ -36,26 +36,26 @@ class URLsTest extends TestCase {
   }
 
   #[@test]
-  public function rewriting() {
+  public function rewriting_links() {
     $tracking= newinstance(Rewriting::class, [], [
       'rewrite' => function($uri) { return '/tracking?url='.urlencode($uri); }
     ]);
 
     $this->assertEquals(
       new Link('/tracking?url=https%3A%2F%2Fexample.org%2F'),
-      (new URLs())->rewriting($tracking)->resolve(new Link('https://example.org/'), [])
+      (new URLs())->rewriting(Link::class, $tracking)->resolve(new Link('https://example.org/'), [])
     );
   }
 
   #[@test]
-  public function passing() {
+  public function rewriting_images() {
     $proxy= newinstance(Rewriting::class, [], [
       'rewrite' => function($uri) { return '/proxy?url='.urlencode($uri); }
     ]);
 
     $this->assertEquals(
       new Image('/proxy?url=https%3A%2F%2Fexample.org%2F'),
-      (new URLs())->passing($proxy)->resolve(new Image('https://example.org/'), [])
+      (new URLs())->rewriting(Image::class, $proxy)->resolve(new Image('https://example.org/'), [])
     );
   }
 }
