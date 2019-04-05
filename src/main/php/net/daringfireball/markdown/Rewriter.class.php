@@ -1,12 +1,17 @@
 <?php namespace net\daringfireball\markdown;
 
-class Dereferrer implements Rewriting {
+/**
+ * URL rewriter
+ *
+ * @test  xp://net.daringfireball.markdown.unittest.RewriterTest
+ */
+class Rewriter {
   private $uri, $exclude;
 
   /**
    * Creates a new dereferrer
    *
-   * @param  string $uri URI of dereferrer, including `{0}` placeholder
+   * @param  string $uri URI of dereferrer, including `%s` placeholder
    * @param  string[] $exclude Excluded host patterns, may use `*`
    */
   public function __construct($uri, array $exclude= []) {
@@ -22,10 +27,16 @@ class Dereferrer implements Rewriting {
     }
   }
 
+  /**
+   * Rewrites the URI
+   *
+   * @param  string $uri
+   * @return string
+   */
   public function rewrite($uri) {
     if (strstr($uri, '://') || 0 === strncmp($uri, '//', 2)) {
       if (null === $this->exclude || !preg_match($this->exclude, parse_url($uri)['host'])) {
-        return str_replace('{0}', urlencode($uri), $this->uri);
+        return sprintf($this->uri, urlencode($uri));
       }
     }
     return $uri;

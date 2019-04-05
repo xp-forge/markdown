@@ -2,7 +2,7 @@
 
 use net\daringfireball\markdown\Image;
 use net\daringfireball\markdown\Link;
-use net\daringfireball\markdown\Rewriting;
+use net\daringfireball\markdown\Rewriter;
 use net\daringfireball\markdown\URLs;
 use unittest\TestCase;
 
@@ -37,10 +37,7 @@ class URLsTest extends TestCase {
 
   #[@test]
   public function rewriting_links() {
-    $tracking= newinstance(Rewriting::class, [], [
-      'rewrite' => function($uri) { return '/tracking?url='.urlencode($uri); }
-    ]);
-
+    $tracking= new Rewriter('/tracking?url=%s');
     $this->assertEquals(
       new Link('/tracking?url=https%3A%2F%2Fexample.org%2F'),
       (new URLs())->rewriting(Link::class, $tracking)->resolve(new Link('https://example.org/'), [])
@@ -49,10 +46,7 @@ class URLsTest extends TestCase {
 
   #[@test]
   public function rewriting_images() {
-    $proxy= newinstance(Rewriting::class, [], [
-      'rewrite' => function($uri) { return '/proxy?url='.urlencode($uri); }
-    ]);
-
+    $proxy= new Rewriter('/proxy?url=%s');
     $this->assertEquals(
       new Image('/proxy?url=https%3A%2F%2Fexample.org%2F'),
       (new URLs())->rewriting(Image::class, $proxy)->resolve(new Image('https://example.org/'), [])

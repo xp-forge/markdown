@@ -1,9 +1,9 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\Dereferrer;
+use net\daringfireball\markdown\Rewriter;
 use unittest\TestCase;
 
-class DereferrerTest extends TestCase {
+class RewriterTest extends TestCase {
 
   #[@test, @values([
   #  'http://example.org/',
@@ -11,7 +11,7 @@ class DereferrerTest extends TestCase {
   #  '//example.org/',
   #])]
   public function dereferring_for_absolute($uri) {
-    $this->assertEquals('/deref?'.urlencode($uri), (new Dereferrer('/deref?{0}'))->rewrite($uri));
+    $this->assertEquals('/deref?'.urlencode($uri), (new Rewriter('/deref?%s'))->rewrite($uri));
   }
 
   #[@test, @values([
@@ -20,7 +20,7 @@ class DereferrerTest extends TestCase {
   #  'static//image.png',
   #])]
   public function no_dereferring_of_relative($uri) {
-    $this->assertEquals($uri, (new Dereferrer('/deref?{0}'))->rewrite($uri));
+    $this->assertEquals($uri, (new Rewriter('/deref?%s'))->rewrite($uri));
   }
 
   #[@test, @values([
@@ -31,7 +31,7 @@ class DereferrerTest extends TestCase {
   #  '//another.test.localhost/',
   #])]
   public function no_dereferring_of_excluded($uri) {
-    $this->assertEquals($uri, (new Dereferrer('/deref?{0}', ['localhost', '*.localhost']))->rewrite($uri));
+    $this->assertEquals($uri, (new Rewriter('/deref?%s', ['localhost', '*.localhost']))->rewrite($uri));
   }
 
   #[@test, @values([
@@ -42,6 +42,6 @@ class DereferrerTest extends TestCase {
   #  '//localhost.evil/',
   #])]
   public function excluded_must_strictly_match_host($uri) {
-    $this->assertEquals('/deref?'.urlencode($uri), (new Dereferrer('/deref?{0}', ['localhost', '*.localhost']))->rewrite($uri));
+    $this->assertEquals('/deref?'.urlencode($uri), (new Rewriter('/deref?%s', ['localhost', '*.localhost']))->rewrite($uri));
   }
 }
