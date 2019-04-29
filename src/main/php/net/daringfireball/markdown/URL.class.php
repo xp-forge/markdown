@@ -23,6 +23,20 @@ abstract class URL extends Node {
     return '@' === $this->url{0} ? substr($this->url, 1) : null;
   }
 
+  /**
+   * Resolves this URL against given definitions if this URL starts with an `@`;
+   * returning this URL itself instead.
+   *
+   * @param  [:self] $definitions
+   * @return self
+   */
+  public function resolve($definitions) {
+    return '@' === $this->url{0} && isset($definitions[$ref= substr($this->url, 1)])
+      ? $definitions[$ref]
+      : $this
+    ;
+  }
+
   /** @return string */
   public function toString() {
     return sprintf(

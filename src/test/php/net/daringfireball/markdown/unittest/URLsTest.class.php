@@ -2,54 +2,24 @@
 
 use net\daringfireball\markdown\Image;
 use net\daringfireball\markdown\Link;
-use net\daringfireball\markdown\Rewriter;
 use net\daringfireball\markdown\URLs;
 use unittest\TestCase;
 
 class URLsTest extends TestCase {
 
   #[@test, @values([
-  #  new Link('http://example.org/'),
-  #  new Link('https://example.org/'),
-  #  new Image('http://example.org/image.png'),
+  #  'http://example.org/',
+  #  'https://example.org/',
   #])]
-  public function resolve_absolute($link) {
-    $this->assertEquals($link, (new URLs())->resolve($link, []));
+  public function href_of_link($url) {
+    $this->assertEquals($url, (new URLs())->href(new Link($url)));
   }
 
-  #[@test]
-  public function resolve_reference_link() {
-    $link= new Link('http://example.org/');
-    $this->assertEquals($link, (new URLs())->resolve(new Link('@example'), ['example' => $link]));
-  }
-
-  #[@test]
-  public function resolve_reference_image() {
-    $link= new Link('http://example.org/image.png');
-    $this->assertEquals($link, (new URLs())->resolve(new Image('@example'), ['example' => $link]));
-  }
-
-  #[@test]
-  public function resolve_non_existant_reference() {
-    $link= new Link('@example');
-    $this->assertEquals($link, (new URLs())->resolve($link, []));
-  }
-
-  #[@test]
-  public function rewriting_links() {
-    $tracking= new Rewriter('/tracking?url=%s');
-    $this->assertEquals(
-      new Link('/tracking?url=https%3A%2F%2Fexample.org%2F'),
-      (new URLs())->rewriting(Link::class, $tracking)->resolve(new Link('https://example.org/'), [])
-    );
-  }
-
-  #[@test]
-  public function rewriting_images() {
-    $proxy= new Rewriter('/proxy?url=%s');
-    $this->assertEquals(
-      new Image('/proxy?url=https%3A%2F%2Fexample.org%2F'),
-      (new URLs())->rewriting(Image::class, $proxy)->resolve(new Image('https://example.org/'), [])
-    );
+  #[@test, @values([
+  #  'http://example.org/blank.gif',
+  #  'https://example.org/blank.gif',
+  #])]
+  public function src_of_image($url) {
+    $this->assertEquals($url, (new URLs())->src(new Image($url)));
   }
 }

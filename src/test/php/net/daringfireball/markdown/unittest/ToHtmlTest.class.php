@@ -1,10 +1,13 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\ToHtml;
-use net\daringfireball\markdown\ParseTree;
-use net\daringfireball\markdown\Paragraph;
-use net\daringfireball\markdown\Text;
 use net\daringfireball\markdown\Email;
+use net\daringfireball\markdown\Image;
+use net\daringfireball\markdown\Link;
+use net\daringfireball\markdown\Paragraph;
+use net\daringfireball\markdown\ParseTree;
+use net\daringfireball\markdown\Text;
+use net\daringfireball\markdown\ToHtml;
+use net\daringfireball\markdown\URLs;
 
 class ToHtmlTest extends \unittest\TestCase {
 
@@ -40,6 +43,30 @@ class ToHtmlTest extends \unittest\TestCase {
     $this->assertEquals(
       '<a href="&#x6D;&#x61;i&#x6C;&#x74;&#x6F;:'.$encoded.'">'.$encoded.'</a>',
       (new Email('timm@example.com'))->emit(new ToHtml())
+    );
+  }
+
+  #[@test]
+  public function derefer_links() {
+    $tree= new ParseTree([new Paragraph([new Link('https://example.com/', new Text('External link'))])]);
+
+    $this->assertEquals(
+      '<p><a href="/deref?url=https%3A%2F%2Fexample.com%2F">External link</a></p>',
+      $tree->emit(new ToHtml(newinstance(URLs::class, [], [
+        'href' => function($link) { return '/deref?url='.urlencode($link->url); }
+      ])))
+    );
+  }
+
+  #[@test]
+  public function proxy_images() {
+    $tree= new ParseTree([new Paragraph([new Image('https://example.com/test.png', new Text('External image'))])]);
+
+    $this->assertEquals(
+      '<p><img src="/proxy?url=https%3A%2F%2Fexample.com%2Ftest.png" alt="External image"/></p>',
+      $tree->emit(new ToHtml(newinstance(URLs::class, [], [
+        'src' => function($image) { return '/proxy?url='.urlencode($image->url); }
+      ])))
     );
   }
 }
