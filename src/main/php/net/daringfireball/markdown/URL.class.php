@@ -18,11 +18,6 @@ abstract class URL extends Node {
     $this->title= $title;
   }
 
-  /** @return ?string */
-  public function reference() {
-    return '@' === $this->url{0} ? substr($this->url, 1) : null;
-  }
-
   /**
    * Resolves this URL against given definitions if this URL starts with an `@`;
    * returning this URL itself instead.
