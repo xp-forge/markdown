@@ -194,11 +194,9 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitLink($link, $definitions) {
-    $target= $link->resolve($definitions);
-
-    $attr= $target->title ? ' title="'.htmlspecialchars($target->title).'"' : '';
-    $text= $link->text ? $link->text->emit($this, $definitions) : $target->url;
-    return '<a href="'.htmlspecialchars($this->urls->href($target)).'"'.$attr.'>'.$text.'</a>';
+    $attr= $link->title ? ' title="'.htmlspecialchars($link->title).'"' : '';
+    $text= $link->text ? $link->text->emit($this, $definitions) : $link->url;
+    return '<a href="'.htmlspecialchars($this->urls->href($link)).'"'.$attr.'>'.$text.'</a>';
   }
 
   /**
@@ -209,12 +207,10 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitImage($image, $definitions) {
-    $target= $image->resolve($definitions);
-
     $attr= '';
     $image->text && $attr.= ' alt="'.$image->text->emit($this, $definitions).'"';
-    $target->title && $attr.= ' title="'.htmlspecialchars($target->title).'"';
-    return '<img src="'.htmlspecialchars($this->urls->src($target)).'"'.$attr.'/>';
+    $image->title && $attr.= ' title="'.htmlspecialchars($image->title).'"';
+    return '<img src="'.htmlspecialchars($this->urls->src($image)).'"'.$attr.'/>';
   }
 
   /**

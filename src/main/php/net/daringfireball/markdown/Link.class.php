@@ -10,6 +10,6 @@ class Link extends URL {
    * @return string
    */
   public function emit($emitter, $definitions= []) {
-    return $emitter->emitLink($this, $definitions);
+    return $emitter->emitLink($this->resolve($definitions), $definitions);
   }
 }

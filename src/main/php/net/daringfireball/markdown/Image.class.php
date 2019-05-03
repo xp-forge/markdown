@@ -10,6 +10,6 @@ class Image extends URL {
    * @return string
    */
   public function emit($emitter, $definitions= []) {
-    return $emitter->emitImage($this, $definitions);
+    return $emitter->emitImage($this->resolve($definitions), $definitions);
   }
 }
