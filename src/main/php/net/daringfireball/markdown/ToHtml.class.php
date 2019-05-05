@@ -6,7 +6,7 @@
  * @test xp://net.daringfireball.markdown.unittest.ToHtmlTest
  */
 class ToHtml implements Emitter {
-  private $urls;
+  protected $urls;
 
   /**
    * Creates a new emitter
