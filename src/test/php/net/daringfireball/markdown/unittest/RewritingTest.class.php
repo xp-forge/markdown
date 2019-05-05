@@ -33,7 +33,7 @@ class RewritingTest extends TestCase {
   #  '//another.test.localhost/',
   #])]
   public function no_dereferring_of_excluded($uri) {
-    $fixture= Rewriting::absolute()->links('/deref?url=%s')->exclude(['localhost', '*.localhost']);
+    $fixture= Rewriting::absolute()->links('/deref?url=%s')->excluding(['localhost', '*.localhost']);
     $this->assertEquals($uri, $fixture->href($uri));
   }
 
@@ -45,7 +45,7 @@ class RewritingTest extends TestCase {
   #  '//localhost.evil/',
   #])]
   public function excluded_must_strictly_match_host($uri) {
-    $fixture= Rewriting::absolute()->links('/deref?url=%s')->exclude(['localhost', '*.localhost']);
+    $fixture= Rewriting::absolute()->links('/deref?url=%s')->excluding(['localhost', '*.localhost']);
     $this->assertEquals('/deref?url='.urlencode($uri), $fixture->href($uri));
   }
 

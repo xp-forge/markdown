@@ -70,7 +70,7 @@ class Rewriting {
    * @param  string[] $hosts
    * @return self
    */
-  public function exclude(array $hosts) {
+  public function excluding(array $hosts) {
     if (empty($hosts)) {
       $this->exclude= null;
     } else {
