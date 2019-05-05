@@ -8,9 +8,8 @@
 class URLs {
   private $rewrite;
 
-  /** @param net.daringfireball.markdown.Rewriting[] $rewrite */
+  /** @param net.daringfireball.markdown.Rewriting... $rewrite */
   public function __construct(... $rewrite) { $this->rewrite= $rewrite; }
-
 
   /**
    * Create `href` attribute for links
