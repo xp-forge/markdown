@@ -30,7 +30,7 @@ class Rewriting {
    * @return self
    */
   public static function relative() {
-    return new self('~^!(//|[a-z0-9+-.]+://)~i');
+    return new self('~^(?!//|[a-z0-9+-.]+://).*~i');
   }
 
   /**
@@ -106,7 +106,7 @@ class Rewriting {
    * @return string
    */
   public function href($url) {
-    return $this->links ? $this->rewrite($this->links, $url) : $url;
+    return null === $this->links ? $url : $this->rewrite($this->links, $url);
   }
 
   /**
@@ -116,6 +116,6 @@ class Rewriting {
    * @return string
    */
   public function src($url) {
-    return $this->images ? $this->rewrite($this->images, $url) : $url;
+    return null === $this->images ? $url : $this->rewrite($this->images, $url);
   }
 }

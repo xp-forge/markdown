@@ -48,4 +48,24 @@ class RewritingTest extends TestCase {
     $fixture= Rewriting::absolute()->links('/deref?url=%s')->exclude(['localhost', '*.localhost']);
     $this->assertEquals('/deref?url='.urlencode($uri), $fixture->href($uri));
   }
+
+  #[@test, @values([
+  #  '/image.png',
+  #  'static/image.png',
+  #  'static//image.png',
+  #])]
+  public function caching_of_relative($uri) {
+    $fixture= Rewriting::relative()->links('/caching?url=%s');
+    $this->assertEquals('/caching?url='.urlencode($uri), $fixture->href($uri));
+  }
+
+  #[@test, @values([
+  #  'http://example.org/',
+  #  'https://example.org/',
+  #  '//example.org/',
+  #])]
+  public function no_caching_of_absolute($uri) {
+    $fixture= Rewriting::relative()->links('/caching?url=%s');
+    $this->assertEquals($uri, $fixture->href($uri));
+  }
 }
