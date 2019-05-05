@@ -4,6 +4,7 @@ class Rewriting {
   private $pattern;
   private $images= null, $links= null, $exclude= null;
 
+  /** @param string $pattern */
   public function __construct($pattern) {
     $this->pattern= $pattern;
   }
@@ -36,22 +37,40 @@ class Rewriting {
     return new self('~.*~');
   }
 
-  public function images($images) {
-    $this->images= $images;
+  /**
+   * Specify rewrite URL format string for images
+   *
+   * @param  string $format
+   * @return self
+   */
+  public function images($format) {
+    $this->images= $format;
     return $this;
   }
 
-  public function links($links) {
-    $this->links= $links;
+  /**
+   * Specify rewrite URL format string for links
+   *
+   * @param  string $format
+   * @return self
+   */
+  public function links($format) {
+    $this->links= $format;
     return $this;
   }
 
-  public function exclude($exclude) {
-    if (empty($exclude)) {
+  /**
+   * Specify hosts to exclude. May use `*` as glob character.
+   *
+   * @param  string[] $hosts
+   * @return self
+   */
+  public function exclude(array $hosts) {
+    if (empty($hosts)) {
       $this->exclude= null;
     } else {
       $pattern= '';
-      foreach ($exclude as $host) {
+      foreach ($hosts as $host) {
         $pattern.= '|'.strtr(preg_quote($host, '/'), ['\\*' => '.*']);
       }
       $this->exclude= '/^('.substr($pattern, 1).')$/i';
@@ -75,10 +94,22 @@ class Rewriting {
     return $uri;
   }
 
+  /**
+   * Rewrites a hrefs
+   *
+   * @param  string $url
+   * @return string
+   */
   public function href($url) {
     return $this->links ? $this->rewrite($this->links, $url) : $url;
   }
 
+  /**
+   * Rewrites img srcs
+   *
+   * @param  string $url
+   * @return string
+   */
   public function src($url) {
     return $this->images ? $this->rewrite($this->images, $url) : $url;
   }
