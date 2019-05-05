@@ -1,5 +1,11 @@
 <?php namespace net\daringfireball\markdown;
 
+/**
+ * Rewrites URLs 
+ *
+ * @see   https://tools.ietf.org/html/rfc3986#section-3.1
+ * @test  xp://net.daringfireball.markdown.unittest.RewritingTest
+ */
 class Rewriting {
   private $pattern;
   private $images= null, $links= null, $exclude= null;
@@ -12,7 +18,6 @@ class Rewriting {
   /**
    * Rewrites absolute URIs
    *
-   * @see    https://tools.ietf.org/html/rfc3986#section-3.1
    * @return self
    */
   public static function absolute() {
@@ -85,7 +90,7 @@ class Rewriting {
    * @param  string $uri
    * @return string
    */
-  public function rewrite($format, $uri) {
+  private function rewrite($format, $uri) {
     if (preg_match($this->pattern, $uri)) {
       if (null === $this->exclude || !preg_match($this->exclude, parse_url($uri)['host'])) {
         return sprintf($format, urlencode($uri));
