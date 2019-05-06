@@ -34,6 +34,24 @@ class ImagesTest extends MarkdownTest {
   }
 
   #[@test]
+  public function numeric_reference() {
+    $this->assertTransformed(
+      '<p><img src="https://secure.travis-ci.org/xp-framework/xp-framework.png" alt="Build Status"/></p>',
+      "![Build Status] [1]\n".
+      "[1]: https://secure.travis-ci.org/xp-framework/xp-framework.png"
+    );
+  }
+
+  #[@test]
+  public function named_reference() {
+    $this->assertTransformed(
+      '<p><img src="https://secure.travis-ci.org/xp-framework/xp-framework.png" alt="Build Status"/></p>',
+      "![Build Status] [badge]\n".
+      "[badge]: https://secure.travis-ci.org/xp-framework/xp-framework.png"
+    );
+  }
+
+  #[@test]
   public function standalone_exclamation_mark_not_recognized_as_image() {
     $this->assertTransformed(
       '<p>This is ! an image</p>',

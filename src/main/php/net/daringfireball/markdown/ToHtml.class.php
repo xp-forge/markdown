@@ -6,6 +6,16 @@
  * @test xp://net.daringfireball.markdown.unittest.ToHtmlTest
  */
 class ToHtml implements Emitter {
+  protected $urls;
+
+  /**
+   * Creates a new emitter
+   *
+   * @param  net.daringfireball.markdown.URLs $urls Optional urls resolver
+   */
+  public function __construct(URLs $urls= null) {
+    $this->urls= $urls ?: new URLs();
+  }
 
   /**
    * Emits a list of nodes
@@ -184,14 +194,9 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitLink($link, $definitions) {
-    if ('@' === $link->url{0}) {
-      $target= $definitions[substr($link->url, 1)];
-    } else {
-      $target= $link;
-    }
-    $attr= $target->title ? ' title="'.htmlspecialchars($target->title).'"' : '';
-    $text= $link->text ? $link->text->emit($this, $definitions) : $target->url;
-    return '<a href="'.htmlspecialchars($target->url).'"'.$attr.'>'.$text.'</a>';
+    $attr= $link->title ? ' title="'.htmlspecialchars($link->title).'"' : '';
+    $text= $link->text ? $link->text->emit($this, $definitions) : $link->url;
+    return '<a href="'.htmlspecialchars($this->urls->href($link)).'"'.$attr.'>'.$text.'</a>';
   }
 
   /**
@@ -202,15 +207,10 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitImage($image, $definitions) {
-    if ('@' === $image->url{0}) {
-      $target= $definitions[substr($image->url, 1)];
-    } else {
-      $target= $image;
-    }
     $attr= '';
     $image->text && $attr.= ' alt="'.$image->text->emit($this, $definitions).'"';
-    $target->title && $attr.= ' title="'.htmlspecialchars($target->title).'"';
-    return '<img src="'.htmlspecialchars($target->url).'"'.$attr.'/>';
+    $image->title && $attr.= ' title="'.htmlspecialchars($image->title).'"';
+    return '<img src="'.htmlspecialchars($this->urls->src($image)).'"'.$attr.'/>';
   }
 
   /**
