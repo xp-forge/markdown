@@ -31,9 +31,26 @@ use io\streams\TextReader;
 use io\File;
 
 $engine= new Markdown();
+
+$tree= $engine->parse($markdown);
 $tree= $engine->parse(new TextReader(new File('file.md')));
 
 // ...work with tree...
 
-$tree->emit(new ToHtml());
+$transformed= $tree->emit(new ToHtml());
+```
+
+You can control the URLs used in the `href` and `src` attributes of links and images, respectively, by using URL rewriting API:
+
+```php
+use net\daringfireball\markdown\{ToHtml, URLs, Rewriting};
+
+$emitter= new ToHtml(new URLs(Rewriting::absolute()
+  ->links('/deref?url=%s')
+  ->images('/proxy?url=&s')
+  ->excluding(['localhost'])
+));
+
+$transformed= $engine->transform($markdown, [], $emitter);
+$transformed= $engine->parse($markdown)->emit($emitter);
 ```
