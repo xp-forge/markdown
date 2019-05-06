@@ -3,6 +3,9 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 5.1.0 / 2019-05-06
+
+* Merged PR #13: URL rewriting - @thekid
 * Added PHP 7.3 support - @thekid
 
 ## 5.0.0 / 2018-07-22
