@@ -47,6 +47,14 @@ class ToHtmlTest extends \unittest\TestCase {
   }
 
   #[@test]
+  public function urls_member_accessible_to_subclasses() {
+    $fixture= newinstance(ToHtml::class, [], [
+      'link' => function() { return $this->urls->href(new Link('https://example.com/')); }
+    ]);
+    $this->assertEquals('https://example.com/', $fixture->link());
+  }
+
+  #[@test]
   public function derefer_links() {
     $tree= new ParseTree([new Paragraph([new Link('https://example.com/', new Text('External link'))])]);
 
