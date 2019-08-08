@@ -5,6 +5,7 @@ Markdown for XP Framework ChangeLog
 
 ## 5.2.0 / 2019-08-08
 
+* Added PHP 7.4 support - @thekid
 * Added support for block quotes inside block quotes - @thekid
 * Fixed formatting inside block quotes - @thekid
 

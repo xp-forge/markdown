@@ -63,7 +63,7 @@ abstract class Context implements \lang\Value {
       $t= '';
       $c= $line->chr();
       if ('\\' === $c) {
-        $t= $line{$line->pos() + 1};
+        $t= $line[$line->pos() + 1];
         $line->forward(2);          // Skip escape, don't tokenize next character
       } else if (isset($this->tokens[$c])) {
         if (!$this->tokens[$c]($line, $target, $this)) {

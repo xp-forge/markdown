@@ -162,7 +162,7 @@ class Markdown {
     $this->addHandler('/^(={3,}|-{3,})/', function($lines, $matches, $result, $ctx) {
       $paragraph= $result->last();
       if ($text= $paragraph->remove($paragraph->size() - 1)) {
-        $result->append(new Header('=' === $matches[1]{0} ? 1 : 2))->add($text);
+        $result->append(new Header('=' === $matches[1][0] ? 1 : 2))->add($text);
       } else {
         $paragraph->add(new Text($matches[0]));
       }

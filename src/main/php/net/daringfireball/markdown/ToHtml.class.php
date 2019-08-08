@@ -176,7 +176,7 @@ class ToHtml implements Emitter {
 
     // If the string ends with two or more spaces, we have a manual line break.
     $sp= 0;
-    for ($i= strlen($text->value)- 1; $i > 0 && ' ' === $text->value{$i}; $i--) {
+    for ($i= strlen($text->value)- 1; $i > 0 && ' ' === $text->value[$i]; $i--) {
       $sp++;
     }
     if ($sp >= 2) {
@@ -223,7 +223,7 @@ class ToHtml implements Emitter {
   public function emitEmail($email, $definitions) {
     $encoded= '';
     for ($i= 0, $s= strlen($email->address); $i < $s; $i++) {
-      $encoded.= '&#x'.dechex(ord($email->address{$i})).';';
+      $encoded.= '&#x'.dechex(ord($email->address[$i])).';';
     }
 
     // An encoded "mailto:" (with "i" and ":" in plain)

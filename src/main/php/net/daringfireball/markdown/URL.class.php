@@ -26,7 +26,7 @@ abstract class URL extends Node {
    * @return self
    */
   public function resolve($definitions) {
-    return '@' === $this->url{0} && isset($definitions[$ref= substr($this->url, 1)])
+    return '@' === $this->url[0] && isset($definitions[$ref= substr($this->url, 1)])
       ? new static($definitions[$ref]->url, $this->text, $definitions[$ref]->title)
       : $this
     ;

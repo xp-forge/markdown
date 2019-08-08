@@ -1,8 +1,10 @@
 <?php namespace net\daringfireball\markdown;
 
+use lang\IllegalStateException;
+use lang\Value;
 use util\Objects;
 
-class Line implements \lang\Value, \ArrayAccess {
+class Line implements Value, \ArrayAccess {
   protected $buffer;
   protected $pos;
   protected $length;
@@ -171,7 +173,7 @@ class Line implements \lang\Value, \ArrayAccess {
       $b && (($s+= $e) < $l);
       $s++, $e= strcspn($this->buffer, $braces, $s)
     ) {
-      if ($braces{0} === $this->buffer{$s}) $b++; else if ($braces{1} === $this->buffer{$s}) $b--;
+      if ($braces[0] === $this->buffer[$s]) $b++; else if ($braces[1] === $this->buffer[$s]) $b--;
     }
     $b= substr($this->buffer, $this->pos + 1, $s - $this->pos - 2);
     $this->pos= $s;
