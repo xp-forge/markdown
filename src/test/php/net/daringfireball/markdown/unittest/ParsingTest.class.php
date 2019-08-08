@@ -1,8 +1,11 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
+use net\daringfireball\markdown\BlockQuote;
 use net\daringfireball\markdown\Cell;
 use net\daringfireball\markdown\CodeBlock;
+use net\daringfireball\markdown\Header;
 use net\daringfireball\markdown\Image;
+use net\daringfireball\markdown\Italic;
 use net\daringfireball\markdown\Link;
 use net\daringfireball\markdown\NodeList;
 use net\daringfireball\markdown\Paragraph;
@@ -50,6 +53,55 @@ class ParsingTest extends MarkdownTest {
         new Paragraph([new Image('url', new NodeList([new Text('image')]))])
       ]),
       $this->fixture->parse('![image](url)')
+    );
+  }
+
+  #[@test]
+  public function blockquote() {
+    $this->assertEquals(
+      new ParseTree([
+        new BlockQuote([new Text('Quote')])
+      ]),
+      $this->fixture->parse('> Quote')
+    );
+  }
+
+  #[@test]
+  public function nested_blockquote() {
+    $this->assertEquals(
+      new ParseTree([
+        new BlockQuote([
+          new BlockQuote([new Text('Quote')])
+        ])
+      ]),
+      $this->fixture->parse('> > Quote')
+    );
+  }
+
+  #[@test]
+  public function nested_blockquotes() {
+    $this->assertEquals(
+      new ParseTree([
+        new BlockQuote([
+          new BlockQuote([new Text('Second')]),
+          new Text('First')
+        ])
+      ]),
+      $this->fixture->parse("> > Second\n> First\n")
+    );
+  }
+
+  #[@test]
+  public function blockquote_with_formatting() {
+    $this->assertEquals(
+      new ParseTree([
+        new BlockQuote([
+          new Header(1, [new Text('Quote')]),
+          new Text('Next '),
+          new Italic([new Text('line')])
+        ])
+      ]),
+      $this->fixture->parse("> # Quote\n> Next _line_\n")
     );
   }
 

@@ -3,6 +3,11 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 5.2.0 / 2019-08-08
+
+* Added support for block quotes inside block quotes - @thekid
+* Fixed formatting inside block quotes - @thekid
+
 ## 5.1.0 / 2019-05-06
 
 * Merged PR #13: URL rewriting - @thekid

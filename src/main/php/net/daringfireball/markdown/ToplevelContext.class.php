@@ -1,6 +1,7 @@
 <?php namespace net\daringfireball\markdown;
 
 class ToplevelContext extends Context {
+  public $handlers= [];
 
   /** @deprecated - Use withHandlers() instead! */
   public function setHandlers($handlers) { $this->withHandlers($handlers); }

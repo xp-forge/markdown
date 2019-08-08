@@ -1,13 +1,17 @@
 <?php namespace net\daringfireball\markdown;
 
-use util\Objects;
-
 class Header extends NodeList {
   public $level;
 
-  /** @param int $level */
-  public function __construct($level) {
+  /**
+   * Creates a new node level
+   *
+   * @param int $level
+   * @param  net.daringfireball.markdown.Node[] $nodes
+   */
+  public function __construct($level, $nodes= []) {
     $this->level= $level;
+    parent::__construct($nodes);
   }
 
   /** @return string */
