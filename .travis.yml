@@ -27,3 +27,5 @@ before_script:
 
 script:
   - sh xp-run xp.unittest.TestRunner src/test/php
+  - curl -sSL https://github.com/commonmark/commonmark-spec/raw/master/spec.txt > spec.txt
+  - sh xp-run xp.unittest.TestRunner net.daringfireball.markdown.unittest.CommonMarkSpecTest -a spec.txt || echo "Accepted"
