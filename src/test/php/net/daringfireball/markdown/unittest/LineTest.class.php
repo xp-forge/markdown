@@ -1,8 +1,10 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
+use lang\IllegalStateException;
 use net\daringfireball\markdown\Line;
+use unittest\TestCase;
 
-class LineTest extends \unittest\TestCase {
+class LineTest extends TestCase {
 
   #[@test, @values(['', 'Hello'])]
   public function length_equals_length_of_buffer_passed_to_constructor($buffer) {
@@ -264,17 +266,17 @@ class LineTest extends \unittest\TestCase {
     );
   }
 
-  #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched *')]
+  #[@test, @expect(['class' => IllegalStateException::class, 'withMessage' => 'Unmatched *'])]
   public function ending_single_delimiter_not_found() {
     (new Line('*Hello'))->ending('*');
   }
 
-  #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched **')]
+  #[@test, @expect(['class' => IllegalStateException::class, 'withMessage' => 'Unmatched **'])]
   public function ending_double_delimiter_not_found() {
     (new Line('**Hello'))->ending('**');
   }
 
-  #[@test, @expect(class= 'lang.IllegalStateException', withMessage= 'Unmatched **, *')]
+  #[@test, @expect(['class' => IllegalStateException::class, 'withMessage' => 'Unmatched **, *'])]
   public function none_of_ending_delimiters_not_found() {
     (new Line('*Hello'))->ending(['**', '*']);
   }
