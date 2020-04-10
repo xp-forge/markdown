@@ -1,14 +1,7 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use io\streams\MemoryInputStream;
-use io\streams\TextReader;
-use net\daringfireball\markdown\Link;
-use net\daringfireball\markdown\Markdown;
-use net\daringfireball\markdown\Paragraph;
-use net\daringfireball\markdown\ParseTree;
-use net\daringfireball\markdown\ReaderInput;
-use net\daringfireball\markdown\StringInput;
-use net\daringfireball\markdown\ToHtml;
+use io\streams\{MemoryInputStream, TextReader};
+use net\daringfireball\markdown\{Link, Markdown, Paragraph, ParseTree, ReaderInput, StringInput, ToHtml};
 
 class MarkdownClassTest extends MarkdownTest {
 

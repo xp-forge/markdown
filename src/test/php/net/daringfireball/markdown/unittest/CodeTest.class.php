@@ -1,8 +1,6 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\Code;
-use net\daringfireball\markdown\CodeBlock;
-use net\daringfireball\markdown\Text;
+use net\daringfireball\markdown\{Code, CodeBlock, Text};
 
 class CodeTest extends MarkdownTest {
 

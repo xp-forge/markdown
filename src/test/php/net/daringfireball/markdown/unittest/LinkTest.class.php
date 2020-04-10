@@ -1,7 +1,6 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\Link;
-use net\daringfireball\markdown\Text;
+use net\daringfireball\markdown\{Link, Text};
 
 class LinkTest extends MarkdownTest {
 

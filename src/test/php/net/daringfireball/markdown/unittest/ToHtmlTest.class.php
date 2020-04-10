@@ -1,13 +1,6 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\Email;
-use net\daringfireball\markdown\Image;
-use net\daringfireball\markdown\Link;
-use net\daringfireball\markdown\Paragraph;
-use net\daringfireball\markdown\ParseTree;
-use net\daringfireball\markdown\Text;
-use net\daringfireball\markdown\ToHtml;
-use net\daringfireball\markdown\URLs;
+use net\daringfireball\markdown\{Email, Image, Link, Paragraph, ParseTree, Text, ToHtml, URLs};
 
 class ToHtmlTest extends \unittest\TestCase {
 

@@ -1,18 +1,6 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\BlockQuote;
-use net\daringfireball\markdown\Cell;
-use net\daringfireball\markdown\CodeBlock;
-use net\daringfireball\markdown\Header;
-use net\daringfireball\markdown\Image;
-use net\daringfireball\markdown\Italic;
-use net\daringfireball\markdown\Link;
-use net\daringfireball\markdown\NodeList;
-use net\daringfireball\markdown\Paragraph;
-use net\daringfireball\markdown\ParseTree;
-use net\daringfireball\markdown\Row;
-use net\daringfireball\markdown\Table;
-use net\daringfireball\markdown\Text;
+use net\daringfireball\markdown\{BlockQuote, Cell, CodeBlock, Header, Image, Italic, Link, NodeList, Paragraph, ParseTree, Row, Table, Text};
 
 class ParsingTest extends MarkdownTest {
 

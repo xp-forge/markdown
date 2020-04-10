@@ -1,7 +1,6 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\Image;
-use net\daringfireball\markdown\Text;
+use net\daringfireball\markdown\{Image, Text};
 
 class ImagesTest extends MarkdownTest {
 

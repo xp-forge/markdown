@@ -1,7 +1,6 @@
 <?php namespace net\daringfireball\markdown;
 
-use lang\IllegalStateException;
-use lang\Value;
+use lang\{IllegalStateException, Value};
 use util\Objects;
 
 class Line implements Value, \ArrayAccess {

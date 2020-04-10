@@ -1,9 +1,6 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\Image;
-use net\daringfireball\markdown\Link;
-use net\daringfireball\markdown\Rewriting;
-use net\daringfireball\markdown\URLs;
+use net\daringfireball\markdown\{Image, Link, Rewriting, URLs};
 use unittest\TestCase;
 
 class URLsTest extends TestCase {

@@ -1,9 +1,6 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\Cell;
-use net\daringfireball\markdown\Row;
-use net\daringfireball\markdown\Table;
-use net\daringfireball\markdown\Text;
+use net\daringfireball\markdown\{Cell, Row, Table, Text};
 
 class TableTest extends MarkdownTest {
 

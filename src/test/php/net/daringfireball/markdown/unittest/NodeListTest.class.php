@@ -1,8 +1,7 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use lang\IndexOutOfBoundsException;
-use net\daringfireball\markdown\NodeList;
-use net\daringfireball\markdown\Text;
+use net\daringfireball\markdown\{NodeList, Text};
 
 class NodeListTest extends \unittest\TestCase {
 
