@@ -1,8 +1,9 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\{Email, Image, Link, Paragraph, ParseTree, Text, ToHtml, URLs};
+use unittest\TestCase;
 
-class ToHtmlTest extends \unittest\TestCase {
+class ToHtmlTest extends TestCase {
 
   #[@test]
   public function can_create() {
@@ -41,9 +42,9 @@ class ToHtmlTest extends \unittest\TestCase {
 
   #[@test]
   public function urls_member_accessible_to_subclasses() {
-    $fixture= newinstance(ToHtml::class, [], [
-      'link' => function() { return $this->urls->href(new Link('https://example.com/')); }
-    ]);
+    $fixture= new class() extends ToHtml {
+      public function link() { return $this->urls->href(new Link('https://example.com/')); }
+    };
     $this->assertEquals('https://example.com/', $fixture->link());
   }
 
@@ -53,9 +54,9 @@ class ToHtmlTest extends \unittest\TestCase {
 
     $this->assertEquals(
       '<p><a href="/deref?url=https%3A%2F%2Fexample.com%2F">External link</a></p>',
-      $tree->emit(new ToHtml(newinstance(URLs::class, [], [
-        'href' => function($link) { return '/deref?url='.urlencode($link->url); }
-      ])))
+      $tree->emit(new ToHtml(new class() extends URLs {
+        public function href($link) { return '/deref?url='.urlencode($link->url); }
+      }))
     );
   }
 
@@ -65,9 +66,9 @@ class ToHtmlTest extends \unittest\TestCase {
 
     $this->assertEquals(
       '<p><img src="/proxy?url=https%3A%2F%2Fexample.com%2Ftest.png" alt="External image"/></p>',
-      $tree->emit(new ToHtml(newinstance(URLs::class, [], [
-        'src' => function($image) { return '/proxy?url='.urlencode($image->url); }
-      ])))
+      $tree->emit(new ToHtml(new class() extends URLs {
+        public function src($image) { return '/proxy?url='.urlencode($image->url); }
+      }))
     );
   }
 }

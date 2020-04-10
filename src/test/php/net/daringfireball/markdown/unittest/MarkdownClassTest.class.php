@@ -57,11 +57,11 @@ class MarkdownClassTest extends MarkdownTest {
   public function transform_with_emitter() {
     $this->assertEquals(
       '<p><span>Test</span></p>',
-      (new Markdown())->transform('Test', [], newinstance(ToHtml::class, [], [
-        'emitText' => function($text, $definitions) {
+      (new Markdown())->transform('Test', [], new class() extends ToHtml {
+        public function emitText($text, $definitions) {
           return '<span>'.parent::emitText($text, $definitions).'</span>';
         }
-      ]))
+      })
     );
   }
 }
