@@ -1,20 +1,21 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\Entity;
+use unittest\Test;
 
 class EntityTest extends MarkdownTest {
 
-  #[@test]
+  #[Test]
   public function standalone_entity() {
     $this->assertTransformed('<p>&amp;</p>', '&amp;');
   }
 
-  #[@test]
+  #[Test]
   public function entity_between_letters() {
     $this->assertTransformed('<p>AT&amp;T</p>', 'AT&amp;T');
   }
 
-  #[@test]
+  #[Test]
   public function string_representation() {
     $this->assertEquals(
       'net.daringfireball.markdown.Entity<&amp;>',

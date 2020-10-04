@@ -1,10 +1,11 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\{Code, CodeBlock, Text};
+use unittest\{Test, Values};
 
 class CodeTest extends MarkdownTest {
 
-  #[@test]
+  #[Test]
   public function code_of_codeblock() {
     $block= new CodeBlock('bash');
     $block->add(new Text('#!/bin/sh'));
@@ -13,7 +14,7 @@ class CodeTest extends MarkdownTest {
     $this->assertEquals("#!/bin/sh\necho 'Hello'", $block->code());
   }
 
-  #[@test]
+  #[Test]
   public function single_backtick() {
     $this->assertTransformed(
       '<p>Use the <code>printf()</code> function</p>',
@@ -21,7 +22,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function literal_backtick_inside_code_with_multiple_backticks() {
     $this->assertTransformed(
       '<p><code>There is a literal backtick (`) here.</code></p>',
@@ -29,7 +30,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function single_backtick_in_a_code_span() {
     $this->assertTransformed(
       '<p><code>`</code></p>',
@@ -37,7 +38,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function backtick_delimited_string_in_a_code_span() {
     $this->assertTransformed(
       '<p><code>`foo`</code></p>',
@@ -45,7 +46,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function code_span_with_leading_space_and_no_trailing_space() {
     $this->assertTransformed(
       '<p><code>$files= [];</code></p>',
@@ -53,7 +54,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function code_span_with_leading_space_and_no_trailing_space_in_sentence() {
     $this->assertTransformed(
       '<p>This <code>$files= [];</code> will initialize &quot;files&quot; to an empty array</p>',
@@ -61,7 +62,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function html_inside_code_is_escaped() {
     $this->assertTransformed(
       '<p>Please don\'t use any <code>&lt;blink&gt;</code> tags</p>',
@@ -69,7 +70,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function two_code_blocks() {
     $this->assertTransformed(
       '<p><code>&amp;#8212;</code> is the decimal-encoded equivalent of <code>&amp;mdash;</code>.</p>',
@@ -77,7 +78,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function indented_with_four_spaces() {
     $this->assertTransformed(
       '<code>10 GOTO 10</code>',
@@ -85,7 +86,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function indented_with_one_tab() {
     $this->assertTransformed(
       '<code>10 GOTO 10</code>',
@@ -93,7 +94,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function two_lines_indented_with_four_spaces() {
     $this->assertTransformed(
       "<code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",
@@ -101,7 +102,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function github_style_fenced_block() {
     $this->assertTransformed(
       "<code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",
@@ -109,7 +110,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function github_style_fenced_block_with_language() {
     $this->assertTransformed(
       "<code lang=\"basic\">10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",
@@ -117,7 +118,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function code_nested_in_emphasized() {
     $this->assertTransformed(
       '<p><em><code>code</code></em></p>',
@@ -125,7 +126,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function code_nested_in_emphasized_and_strong() {
     $this->assertTransformed(
       '<p><strong><em><code>code</code></em></strong></p>',
@@ -133,16 +134,12 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[@test, @values([
-  #  'This is `not code',
-  #  'This is ``not code',
-  #  'This is `` not code'
-  #])]
+  #[Test, Values(['This is `not code', 'This is ``not code', 'This is `` not code'])]
   public function unmatched_backticks($input) {
     $this->assertTransformed('<p>'.$input.'</p>', $input);
   }
 
-  #[@test]
+  #[Test]
   public function string_representation() {
     $this->assertEquals(
       'net.daringfireball.markdown.Code<1 + 2>',

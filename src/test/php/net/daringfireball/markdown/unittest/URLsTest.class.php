@@ -1,7 +1,7 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\{Image, Link, Rewriting, URLs};
-use unittest\TestCase;
+use unittest\{Test, TestCase, Values};
 
 class URLsTest extends TestCase {
 
@@ -17,17 +17,17 @@ class URLsTest extends TestCase {
     ];
   }
 
-  #[@test, @values('uris')]
+  #[Test, Values('uris')]
   public function href_of_link($url) {
     $this->assertEquals($url, (new URLs())->href(new Link($url)));
   }
 
-  #[@test, @values('uris')]
+  #[Test, Values('uris')]
   public function src_of_image($url) {
     $this->assertEquals($url, (new URLs())->src(new Image($url)));
   }
 
-  #[@test, @values('uris')]
+  #[Test, Values('uris')]
   public function tracking_links($url) {
     $this->assertEquals(
       '/tracking?url='.urlencode($url),

@@ -1,15 +1,16 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\Ruler;
+use unittest\{Test, Values};
 
 class RulerTest extends MarkdownTest {
 
-  #[@test, @values(['* * *', '***', '*****'])]
+  #[Test, Values(['* * *', '***', '*****'])]
   public function with_asterisks($input) {
     $this->assertTransformed('<hr/>', $input);
   }
 
-  #[@test]
+  #[Test]
   public function string_representation() {
     $this->assertEquals(
       'net.daringfireball.markdown.Ruler',

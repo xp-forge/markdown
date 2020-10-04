@@ -1,10 +1,11 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\{BlockQuote, Cell, CodeBlock, Header, Image, Italic, Link, NodeList, Paragraph, ParseTree, Row, Table, Text};
+use unittest\Test;
 
 class ParsingTest extends MarkdownTest {
 
-  #[@test]
+  #[Test]
   public function empty_input() {
     $this->assertEquals(
       new ParseTree([
@@ -14,7 +15,7 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function single_paragraph() {
     $this->assertEquals(
       new ParseTree([
@@ -24,7 +25,7 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function link() {
     $this->assertEquals(
       new ParseTree([
@@ -34,7 +35,7 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function image() {
     $this->assertEquals(
       new ParseTree([
@@ -44,7 +45,7 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function blockquote() {
     $this->assertEquals(
       new ParseTree([
@@ -54,7 +55,7 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function nested_blockquote() {
     $this->assertEquals(
       new ParseTree([
@@ -66,7 +67,7 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function nested_blockquotes() {
     $this->assertEquals(
       new ParseTree([
@@ -79,7 +80,7 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function blockquote_with_formatting() {
     $this->assertEquals(
       new ParseTree([
@@ -93,7 +94,7 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function table_surrounded_by_text() {
     $this->assertEquals(
       new ParseTree([
@@ -108,7 +109,7 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function code_block_without_language() {
     $block= new CodeBlock();
     $block->add(new Text('Code'));
@@ -116,7 +117,7 @@ class ParsingTest extends MarkdownTest {
     $this->assertEquals(new ParseTree([$block]), $this->fixture->parse("```\nCode\n```"));
   }
 
-  #[@test]
+  #[Test]
   public function code_block_with_language() {
     $block= new CodeBlock('bash');
     $block->add(new Text('#!/bin/sh'));

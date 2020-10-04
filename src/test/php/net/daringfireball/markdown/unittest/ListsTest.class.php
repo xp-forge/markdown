@@ -1,8 +1,10 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
+use unittest\{Test, Values};
+
 class ListsTest extends MarkdownTest {
 
-  #[@test, @values(["* One\n* Two\n* Three", "- One\n- Two\n- Three", "+ One\n+ Two\n+ Three"])]
+  #[Test, Values(["* One\n* Two\n* Three", "- One\n- Two\n- Three", "+ One\n+ Two\n+ Three"])]
   public function unordered_list($value) {
     $this->assertTransformed(
       '<ul><li>One</li><li>Two</li><li>Three</li></ul>',
@@ -10,7 +12,7 @@ class ListsTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function ordered_list() {
     $this->assertTransformed(
       '<ol><li>One</li><li>Two</li><li>Three</li></ol>',
@@ -18,7 +20,7 @@ class ListsTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function actual_numbers_used_have_no_effect_on_ordered_list() {
     $this->assertTransformed(
       '<ol><li>One</li><li>Two</li><li>Three</li></ol>',
@@ -26,7 +28,7 @@ class ListsTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function ordered_list_triggered_by_accident() {
     $this->assertTransformed(
       '<ol><li>What a great season.</li></ol>',
@@ -34,7 +36,7 @@ class ListsTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function backslash_escaping_for_above_accident() {
     $this->assertTransformed(
       '<p>1986. What a great season.</p>',
@@ -42,7 +44,7 @@ class ListsTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function unordered_list_with_paragraphs() {
     $this->assertTransformed(
       "<ul><li><p>One</p></li><li><p>Two</p></li><li><p>Three</p></li></ul>",
@@ -50,7 +52,7 @@ class ListsTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function unordered_list_with_multiple_paragraphs() {
     $this->assertTransformed(
       "<ul><li><p>One</p><p>One and a half</p></li><li><p>Two</p></li></ul>",
@@ -58,7 +60,7 @@ class ListsTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function list_without_paragraphs_and_one_with() {
     $this->assertTransformed(
       "<ul><li>One</li><li>Two</li></ul>".
@@ -72,7 +74,7 @@ class ListsTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function list_with_paragraphs_and_one_without() {
     $this->assertTransformed(
       "<ul><li><p>A</p></li><li><p>B</p></li></ul>".
@@ -86,7 +88,7 @@ class ListsTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function sublist() {
     $this->assertTransformed(
       "<ul>".
@@ -104,7 +106,7 @@ class ListsTest extends MarkdownTest {
     );
   }
 
-  #[@test, @values(["", "\n", "\n\n"])]
+  #[Test, Values(["", "\n", "\n\n"])]
   public function list_followed_by_ruler($spacing) {
     $this->assertTransformed(
       "<ul>".

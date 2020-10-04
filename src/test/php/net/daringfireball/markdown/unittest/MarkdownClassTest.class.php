@@ -2,15 +2,16 @@
 
 use io\streams\{MemoryInputStream, TextReader};
 use net\daringfireball\markdown\{Link, Markdown, Paragraph, ParseTree, ReaderInput, StringInput, ToHtml};
+use unittest\Test;
 
 class MarkdownClassTest extends MarkdownTest {
 
-  #[@test]
+  #[Test]
   public function can_create() {
     new Markdown();
   }
 
-  #[@test]
+  #[Test]
   public function parse_string() {
     $this->assertEquals(
       new ParseTree([new Paragraph()], []),
@@ -18,31 +19,31 @@ class MarkdownClassTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function transform_string() {
     $this->assertEquals('<p></p>', (new Markdown())->transform(''));
   }
 
-  #[@test]
+  #[Test]
   public function transform_reader() {
     $this->assertEquals('<p></p>', (new Markdown())->transform(
       new TextReader(new MemoryInputStream(''))
     ));
   }
 
-  #[@test]
+  #[Test]
   public function transform_string_input() {
     $this->assertEquals('<p></p>', (new Markdown())->transform(new StringInput('')));
   }
 
-  #[@test]
+  #[Test]
   public function transform_reader_input() {
     $this->assertEquals('<p></p>', (new Markdown())->transform(new ReaderInput(
       new TextReader(new MemoryInputStream(''))
     )));
   }
 
-  #[@test]
+  #[Test]
   public function transform_given_urls() {
     $this->assertEquals(
       '<p><a href="http://example.com">Link</a> to <a href="http://xp-framework.net">XP</a></p>',
@@ -53,7 +54,7 @@ class MarkdownClassTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function transform_with_emitter() {
     $this->assertEquals(
       '<p><span>Test</span></p>',
