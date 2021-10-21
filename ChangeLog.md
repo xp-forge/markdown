@@ -3,6 +3,13 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 6.0.1 / 2020-10-21
+
+* Made compatible with PHP 8.1 using `#[ReturnTypeWillChange]` attributes,
+  preventing *null* values for `preg_match()` and using *ENT_COMPAT* for
+  `htmlspecialchars()` flags
+  (@thekid)
+
 ## 6.0.0 / 2020-04-10
 
 * Implemented xp-framework/rfc#334: Drop PHP 5.6:

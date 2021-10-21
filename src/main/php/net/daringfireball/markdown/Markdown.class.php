@@ -197,7 +197,7 @@ class Markdown {
     });
     $this->addHandler('/^\|.+\| *$/', function($lines, $matches, $result, $ctx) {
       $separator= $lines->nextLine();
-      if (preg_match('/^\|[ :|-]+\| *$/', $separator)) {
+      if (preg_match('/^\|[ :|-]+\| *$/', (string)$separator)) {
         $result->append($ctx->enter(new WrappedTableContext($matches[0], $separator))->parse($lines));
         return true;
       } else {
@@ -207,7 +207,7 @@ class Markdown {
     });
     $this->addHandler('/^(.+\|.+)+$/', function($lines, $matches, $result, $ctx) {
       $separator= $lines->nextLine();
-      if (preg_match('/^([ :|-]+\|[ :|-]+)+$/', $separator)) {
+      if (preg_match('/^([ :|-]+\|[ :|-]+)+$/', (string)$separator)) {
         $result->append($ctx->enter(new InlineTableContext($matches[0], $separator))->parse($lines));
         return true;
       } else {

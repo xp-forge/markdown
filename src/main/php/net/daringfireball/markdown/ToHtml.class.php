@@ -6,15 +6,17 @@
  * @test xp://net.daringfireball.markdown.unittest.ToHtmlTest
  */
 class ToHtml implements Emitter {
-  protected $urls;
+  protected $urls, $flags;
 
   /**
    * Creates a new emitter
    *
    * @param  net.daringfireball.markdown.URLs $urls Optional urls resolver
+   * @param  int $flags
    */
-  public function __construct(URLs $urls= null) {
+  public function __construct(URLs $urls= null, $flags= ENT_COMPAT) {
     $this->urls= $urls ?: new URLs();
+    $this->flags= $flags;
   }
 
   /**
@@ -180,9 +182,9 @@ class ToHtml implements Emitter {
       $sp++;
     }
     if ($sp >= 2) {
-      return htmlspecialchars(substr($text->value, 0, -$sp)).'<br/>';
+      return htmlspecialchars(substr($text->value, 0, -$sp), $this->flags).'<br/>';
     } else {
-      return htmlspecialchars($text->value);
+      return htmlspecialchars($text->value, $this->flags);
     }
   }
 
@@ -194,9 +196,9 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitLink($link, $definitions) {
-    $attr= $link->title ? ' title="'.htmlspecialchars($link->title).'"' : '';
+    $attr= $link->title ? ' title="'.htmlspecialchars($link->title, $this->flags).'"' : '';
     $text= $link->text ? $link->text->emit($this, $definitions) : $link->url;
-    return '<a href="'.htmlspecialchars($this->urls->href($link)).'"'.$attr.'>'.$text.'</a>';
+    return '<a href="'.htmlspecialchars($this->urls->href($link), $this->flags).'"'.$attr.'>'.$text.'</a>';
   }
 
   /**
@@ -209,8 +211,8 @@ class ToHtml implements Emitter {
   public function emitImage($image, $definitions) {
     $attr= '';
     $image->text && $attr.= ' alt="'.$image->text->emit($this, $definitions).'"';
-    $image->title && $attr.= ' title="'.htmlspecialchars($image->title).'"';
-    return '<img src="'.htmlspecialchars($this->urls->src($image)).'"'.$attr.'/>';
+    $image->title && $attr.= ' title="'.htmlspecialchars($image->title, $this->flags).'"';
+    return '<img src="'.htmlspecialchars($this->urls->src($image), $this->flags).'"'.$attr.'/>';
   }
 
   /**
@@ -249,7 +251,7 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitCode($code, $definitions) {
-    return '<code>'.htmlspecialchars($code->value).'</code>';
+    return '<code>'.htmlspecialchars($code->value, $this->flags).'</code>';
   }
 
   /**
@@ -267,7 +269,7 @@ class ToHtml implements Emitter {
       if ($i < $s) $r.= "\n";
     }
 
-    $attr= $block->language ? ' lang="'.htmlspecialchars($block->language).'"' : '';
+    $attr= $block->language ? ' lang="'.htmlspecialchars($block->language, $this->flags).'"' : '';
     return '<code'.$attr.'>'.$r.'</code>';
   }
 

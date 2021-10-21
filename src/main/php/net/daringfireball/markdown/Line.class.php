@@ -1,9 +1,10 @@
 <?php namespace net\daringfireball\markdown;
 
+use ArrayAccess, ReturnTypeWillChange;
 use lang\{IllegalStateException, Value};
 use util\Objects;
 
-class Line implements Value, \ArrayAccess {
+class Line implements Value, ArrayAccess {
   protected $buffer;
   protected $pos;
   protected $length;
@@ -226,6 +227,7 @@ class Line implements Value, \ArrayAccess {
    *
    * @return bool
    */
+  #[ReturnTypeWillChange]
   public function offsetExists($i) {
     return $i >= 0 && $i < strlen($this->buffer);
   }
@@ -236,6 +238,7 @@ class Line implements Value, \ArrayAccess {
    * @param  int i
    * @return string
    */
+  #[ReturnTypeWillChange]
   public function offsetGet($i) {
     return ($i >= 0 && $i < strlen($this->buffer)) ? $this->buffer[$i] : null;
   }
@@ -246,6 +249,7 @@ class Line implements Value, \ArrayAccess {
    * @param  int i
    * @param  string value
    */
+  #[ReturnTypeWillChange]
   public function offsetSet($i, $value) {
     throw new IllegalAccessException('Cannot write to line');
   }
@@ -255,6 +259,7 @@ class Line implements Value, \ArrayAccess {
    *
    * @param  int i
    */
+  #[ReturnTypeWillChange]
   public function offsetUnset($i) {
     throw new IllegalAccessException('Cannot write to line');
   }

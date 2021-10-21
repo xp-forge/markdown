@@ -11,12 +11,12 @@ class EscapingTest extends MarkdownTest {
 
   #[Test, Values(['<', '>', '&', '"', "'"])]
   public function special_characters_are_escaped($value) {
-    $this->assertTransformed('<p>'.htmlspecialchars($value).'</p>', $value);
+    $this->assertTransformed('<p>'.htmlspecialchars($value, ENT_COMPAT).'</p>', $value);
   }
 
   #[Test, Values(['4 < 5', '6 > 5'])]
   public function escaping_inside_sentence($value) {
-    $this->assertTransformed('<p>'.htmlspecialchars($value).'</p>', $value);
+    $this->assertTransformed('<p>'.htmlspecialchars($value, ENT_COMPAT).'</p>', $value);
   }
 
   #[Test, Values(['AT&amp;T', '&quot;', '&mdash;'])]
