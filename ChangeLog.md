@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 6.0.2 / 2022-02-26
+
+* Fixed "Creation of dynamic property" warnings in PHP 8.2 - @thekid
+
 ## 6.0.1 / 2020-10-21
 
 * Made compatible with PHP 8.1 using `#[ReturnTypeWillChange]` attributes,
