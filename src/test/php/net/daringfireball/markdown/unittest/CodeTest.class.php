@@ -1,7 +1,8 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\{Code, CodeBlock, Text};
-use unittest\{Test, Values};
+use test\Assert;
+use test\{Test, Values};
 
 class CodeTest extends MarkdownTest {
 
@@ -11,7 +12,7 @@ class CodeTest extends MarkdownTest {
     $block->add(new Text('#!/bin/sh'));
     $block->add(new Text('echo \'Hello\''));
 
-    $this->assertEquals("#!/bin/sh\necho 'Hello'", $block->code());
+    Assert::equals("#!/bin/sh\necho 'Hello'", $block->code());
   }
 
   #[Test]
@@ -141,7 +142,7 @@ class CodeTest extends MarkdownTest {
 
   #[Test]
   public function string_representation() {
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Code<1 + 2>',
       (new Code('1 + 2'))->toString()
     );

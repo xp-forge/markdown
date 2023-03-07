@@ -1,7 +1,8 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\{Image, Text};
-use unittest\Test;
+use test\Assert;
+use test\Test;
 
 class ImagesTest extends MarkdownTest {
 
@@ -61,7 +62,7 @@ class ImagesTest extends MarkdownTest {
 
   #[Test]
   public function string_representation() {
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Image(url= http://example.com/test.gif, text= null, title= null)',
       (new Image('http://example.com/test.gif'))->toString()
     );
@@ -70,7 +71,7 @@ class ImagesTest extends MarkdownTest {
   #[Test]
   public function string_representation_with_text() {
     $t= new Text('example');
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Image(url= http://example.com/test.gif, text= '.$t->toString().', title= null)',
       (new Image('http://example.com/test.gif', $t))->toString()
     );
@@ -78,7 +79,7 @@ class ImagesTest extends MarkdownTest {
 
   #[Test]
   public function string_representation_with_title() {
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Image(url= http://example.com/test.gif, text= null, title= "Test")',
       (new Image('http://example.com/test.gif', null, 'Test'))->toString()
     );

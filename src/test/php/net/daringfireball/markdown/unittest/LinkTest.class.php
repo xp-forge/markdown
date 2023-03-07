@@ -1,7 +1,8 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\{Link, Text};
-use unittest\{Test, Values};
+use test\Assert;
+use test\{Test, Values};
 
 class LinkTest extends MarkdownTest {
 
@@ -143,7 +144,7 @@ class LinkTest extends MarkdownTest {
    */
   public function delimiters() { return ['.', '?', ',', ';', '!']; }
 
-  #[Test, Values('delimiters')]
+  #[Test, Values(from: 'delimiters')]
   public function auto_link_in_sentence_at_end($delimiter) {
     $this->assertTransformed(
       '<p>This is a link to <a href="http://example.com">http://example.com</a>'.$delimiter.'</p>',
@@ -151,7 +152,7 @@ class LinkTest extends MarkdownTest {
     );
   }
 
-  #[Test, Values('delimiters')]
+  #[Test, Values(from: 'delimiters')]
   public function auto_link_in_sentence($delimiter) {
     $this->assertTransformed(
       '<p>This is a link to <a href="http://example.com">http://example.com</a>'.$delimiter.' It ...</p>',
@@ -159,7 +160,7 @@ class LinkTest extends MarkdownTest {
     );
   }
 
-  #[Test, Values('delimiters')]
+  #[Test, Values(from: 'delimiters')]
   public function auto_link_with_delimiters_in_sentence($delimiter) {
     $this->assertTransformed(
       '<p>This is a link to <a href="http://example.com/d;n=x/?a=b,c.d">http://example.com/d;n=x/?a=b,c.d</a>'.$delimiter.' It ...</p>',
@@ -212,7 +213,7 @@ class LinkTest extends MarkdownTest {
 
   #[Test]
   public function string_representation() {
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Link(url= http://example.com, text= null, title= null)',
       (new Link('http://example.com'))->toString()
     );
@@ -221,7 +222,7 @@ class LinkTest extends MarkdownTest {
   #[Test]
   public function string_representation_with_text() {
     $t= new Text('example');
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Link(url= http://example.com, text= '.$t->toString().', title= null)',
       (new Link('http://example.com', $t))->toString()
     );
@@ -229,7 +230,7 @@ class LinkTest extends MarkdownTest {
 
   #[Test]
   public function string_representation_with_title() {
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Link(url= http://example.com, text= null, title= "Test")',
       (new Link('http://example.com', null, 'Test'))->toString()
     );

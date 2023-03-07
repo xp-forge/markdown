@@ -1,6 +1,7 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use unittest\{Test, Values};
+use test\Assert;
+use test\{Test, Values};
 
 class StrikeThroughTest extends MarkdownTest {
 
