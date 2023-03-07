@@ -1,6 +1,7 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use unittest\{Ignore, Test};
+use test\Assert;
+use test\{Ignore, Test};
 
 class BlockQuoteTest extends MarkdownTest {
 

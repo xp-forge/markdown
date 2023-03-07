@@ -1,6 +1,7 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use unittest\Test;
+use test\Assert;
+use test\Test;
 
 class HeadersTest extends MarkdownTest {
 

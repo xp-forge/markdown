@@ -1,7 +1,8 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\Entity;
-use unittest\Test;
+use test\Assert;
+use test\Test;
 
 class EntityTest extends MarkdownTest {
 
@@ -17,7 +18,7 @@ class EntityTest extends MarkdownTest {
 
   #[Test]
   public function string_representation() {
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Entity<&amp;>',
       (new Entity('&amp;'))->toString()
     );

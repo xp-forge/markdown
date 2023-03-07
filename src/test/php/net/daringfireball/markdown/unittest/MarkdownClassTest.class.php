@@ -2,7 +2,8 @@
 
 use io\streams\{MemoryInputStream, TextReader};
 use net\daringfireball\markdown\{Link, Markdown, Paragraph, ParseTree, ReaderInput, StringInput, ToHtml};
-use unittest\Test;
+use test\Assert;
+use test\Test;
 
 class MarkdownClassTest extends MarkdownTest {
 
@@ -13,7 +14,7 @@ class MarkdownClassTest extends MarkdownTest {
 
   #[Test]
   public function parse_string() {
-    $this->assertEquals(
+    Assert::equals(
       new ParseTree([new Paragraph()], []),
       (new Markdown())->parse('')
     );
@@ -21,31 +22,31 @@ class MarkdownClassTest extends MarkdownTest {
 
   #[Test]
   public function transform_string() {
-    $this->assertEquals('<p></p>', (new Markdown())->transform(''));
+    Assert::equals('<p></p>', (new Markdown())->transform(''));
   }
 
   #[Test]
   public function transform_reader() {
-    $this->assertEquals('<p></p>', (new Markdown())->transform(
+    Assert::equals('<p></p>', (new Markdown())->transform(
       new TextReader(new MemoryInputStream(''))
     ));
   }
 
   #[Test]
   public function transform_string_input() {
-    $this->assertEquals('<p></p>', (new Markdown())->transform(new StringInput('')));
+    Assert::equals('<p></p>', (new Markdown())->transform(new StringInput('')));
   }
 
   #[Test]
   public function transform_reader_input() {
-    $this->assertEquals('<p></p>', (new Markdown())->transform(new ReaderInput(
+    Assert::equals('<p></p>', (new Markdown())->transform(new ReaderInput(
       new TextReader(new MemoryInputStream(''))
     )));
   }
 
   #[Test]
   public function transform_given_urls() {
-    $this->assertEquals(
+    Assert::equals(
       '<p><a href="http://example.com">Link</a> to <a href="http://xp-framework.net">XP</a></p>',
       (new Markdown())->transform('[Link][] to [XP][]', [
         'link' => new Link('http://example.com'),
@@ -56,7 +57,7 @@ class MarkdownClassTest extends MarkdownTest {
 
   #[Test]
   public function transform_with_emitter() {
-    $this->assertEquals(
+    Assert::equals(
       '<p><span>Test</span></p>',
       (new Markdown())->transform('Test', [], new class() extends ToHtml {
         public function emitText($text, $definitions) {

@@ -1,23 +1,24 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\Text;
-use unittest\{Test, Values};
+use test\Assert;
+use test\{Test, Values};
 
-class TextNodeTest extends \unittest\TestCase {
+class TextNodeTest {
 
   #[Test, Values(['', 'Test'])]
   public function value_passed_to_constructor($value) {
-    $this->assertEquals($value, (new Text($value))->value);
+    Assert::equals($value, (new Text($value))->value);
   }
 
   #[Test]
   public function default_for_value_is_empty_string() {
-    $this->assertEquals('', (new Text())->value);
+    Assert::equals('', (new Text())->value);
   }
 
   #[Test]
   public function string_representation() {
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Text<Test>',
       (new Text('Test'))->toString()
     );

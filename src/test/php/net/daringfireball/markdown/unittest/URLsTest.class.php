@@ -1,9 +1,10 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\{Image, Link, Rewriting, URLs};
-use unittest\{Test, TestCase, Values};
+use test\Assert;
+use test\{Test, TestCase, Values};
 
-class URLsTest extends TestCase {
+class URLsTest {
 
   /** @return string[][] */
   private function uris() {
@@ -17,19 +18,19 @@ class URLsTest extends TestCase {
     ];
   }
 
-  #[Test, Values('uris')]
+  #[Test, Values(from: 'uris')]
   public function href_of_link($url) {
-    $this->assertEquals($url, (new URLs())->href(new Link($url)));
+    Assert::equals($url, (new URLs())->href(new Link($url)));
   }
 
-  #[Test, Values('uris')]
+  #[Test, Values(from: 'uris')]
   public function src_of_image($url) {
-    $this->assertEquals($url, (new URLs())->src(new Image($url)));
+    Assert::equals($url, (new URLs())->src(new Image($url)));
   }
 
-  #[Test, Values('uris')]
+  #[Test, Values(from: 'uris')]
   public function tracking_links($url) {
-    $this->assertEquals(
+    Assert::equals(
       '/tracking?url='.urlencode($url),
       (new URLs(Rewriting::all()->links('/tracking?url=%s')))->href(new Link($url))
     );

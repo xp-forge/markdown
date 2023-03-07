@@ -1,7 +1,8 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\Ruler;
-use unittest\{Test, Values};
+use test\Assert;
+use test\{Test, Values};
 
 class RulerTest extends MarkdownTest {
 
@@ -12,7 +13,7 @@ class RulerTest extends MarkdownTest {
 
   #[Test]
   public function string_representation() {
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Ruler',
       (new Ruler())->toString()
     );
