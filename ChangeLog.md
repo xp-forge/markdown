@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Merged PR #15: Migrate to new testing library - @thekid
+
 ## 6.0.2 / 2022-02-26
 
 * Fixed "Creation of dynamic property" warnings in PHP 8.2 - @thekid
