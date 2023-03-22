@@ -270,7 +270,7 @@ class ToHtml implements Emitter {
     }
 
     $attr= $block->language ? ' lang="'.htmlspecialchars($block->language, $this->flags).'"' : '';
-    return '<code'.$attr.'>'.$r.'</code>';
+    return '<pre><code'.$attr.'>'.$r.'</code></pre>';
   }
 
   /**
