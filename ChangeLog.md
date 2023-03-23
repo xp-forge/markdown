@@ -5,6 +5,8 @@ Markdown for XP Framework ChangeLog
 
 ## 7.0.0 / ????-??-??
 
+* Merged PR #14: Spec compliance testing. Not run in the test suite yet!
+  (@thekid)
 * **Heads up:** No longer use the `lang` attribute on `<code>`. Instead,
   use `class="language-..."` in compliance with spec.
   (@thekid)
