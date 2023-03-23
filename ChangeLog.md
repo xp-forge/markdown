@@ -3,6 +3,12 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 7.0.0 / ????-??-??
+
+* Merged PR #17: Emit code blocks as `<code>` wrapped in `<pre>`. Solves
+  problem described in issue #16.
+  (@thekid)
+
 ## 6.1.0 / 2023-03-23
 
 * Merged PR #18: Add support for fenced code blocks enclosed with `~~~`
