@@ -102,7 +102,7 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[Test, Values(['```', '~~~'])]
+  #[Test, Values(['```', '~~~', '````', '~~~~'])]
   public function github_style_fenced_block($fence) {
     $this->assertTransformed(
       "<pre><code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code></pre>",
@@ -115,6 +115,14 @@ class CodeTest extends MarkdownTest {
     $this->assertTransformed(
       "<pre><code class=\"language-basic\">10 PRINT &quot;HI&quot;\n20 GOTO 10</code></pre>",
       "{$fence}basic\n10 PRINT \"HI\"\n20 GOTO 10\n{$fence}"
+    );
+  }
+
+  #[Test, Values(['basic', ' basic', ' .basic'])]
+  public function fenced_block_language_notation($language) {
+    $this->assertTransformed(
+      "<pre><code class=\"language-basic\">10 PRINT &quot;HI&quot;\n20 GOTO 10</code></pre>",
+      "```{$language}\n10 PRINT \"HI\"\n20 GOTO 10\n```"
     );
   }
 
