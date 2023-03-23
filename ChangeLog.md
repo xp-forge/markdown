@@ -5,6 +5,9 @@ Markdown for XP Framework ChangeLog
 
 ## 7.0.0 / ????-??-??
 
+* **Heads up:** No longer use the `lang` attribute on `<code>`. Instead,
+  use `class="language-..."` in compliance with spec.
+  (@thekid)
 * Merged PR #17: Emit code blocks as `<code>` wrapped in `<pre>`. Solves
   problem described in issue #16.
   (@thekid)
