@@ -1,8 +1,7 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use net\daringfireball\markdown\{Code, CodeBlock, Text};
-use test\Assert;
-use test\{Test, Values};
+use test\{Assert, Test, Values};
 
 class CodeTest extends MarkdownTest {
 
@@ -103,19 +102,19 @@ class CodeTest extends MarkdownTest {
     );
   }
 
-  #[Test]
-  public function github_style_fenced_block() {
+  #[Test, Values(['```', '~~~'])]
+  public function github_style_fenced_block($fence) {
     $this->assertTransformed(
       "<code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",
-      "```\n10 PRINT \"HI\"\n20 GOTO 10\n```"
+      "{$fence}\n10 PRINT \"HI\"\n20 GOTO 10\n{$fence}"
     );
   }
 
-  #[Test]
-  public function github_style_fenced_block_with_language() {
+  #[Test, Values(['```', '~~~'])]
+  public function github_style_fenced_block_with_language($fence) {
     $this->assertTransformed(
       "<code lang=\"basic\">10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",
-      "```basic\n10 PRINT \"HI\"\n20 GOTO 10\n```"
+      "{$fence}basic\n10 PRINT \"HI\"\n20 GOTO 10\n{$fence}"
     );
   }
 

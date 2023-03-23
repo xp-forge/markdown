@@ -25,7 +25,7 @@ class StrikeThroughTest extends MarkdownTest {
     $this->assertTransformed('<p>Strike<del>f</del>through</p>', 'Strike~~f~~through');
   }
 
-  #[Test, Values(['a~', 'b~~', 'c~~~', '~a', '~~b', '~~~c', '~not~'])]
+  #[Test, Values(['a~', 'b~~', 'c~~~', '~a', '~~b', '~not~'])]
   public function not_strikethrough($input) {
     $this->assertTransformed('<p>'.$input.'</p>', $input);
   }
