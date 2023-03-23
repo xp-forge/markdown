@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 6.1.0 / 2023-03-23
+
+* Merged PR #18: Add support for fenced code blocks enclosed with `~~~`
+  (@thekid)
 * Merged PR #15: Migrate to new testing library - @thekid
 
 ## 6.0.2 / 2022-02-26
