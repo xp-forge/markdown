@@ -39,13 +39,13 @@ class CommonMarkSpecTest {
 
   #[Test, Values(from: 'tests')]
   public function verify($input, $expected) {
-    $transformed= (new Markdown())->transform($input);
+    $transformed= (new Markdown())->transform(trim($input));
     if (trim($expected) !== trim($transformed)) {
       throw new AssertionFailed(sprintf(
         "the implementation is spec-conformant:\nInput       '%s'\nExpected    '%s'\nTransformed '%s'",
-        addcslashes($input, "\0..\17!\177..\377"),
-        addcslashes($expected, "\0..\17!\177..\377"),
-        addcslashes($transformed, "\0..\17!\177..\377")
+        addcslashes(trim($input), "\0..\17!\177..\377"),
+        addcslashes(trim($expected), "\0..\17!\177..\377"),
+        addcslashes(trim($transformed), "\0..\17!\177..\377")
       ));
     }
   }
