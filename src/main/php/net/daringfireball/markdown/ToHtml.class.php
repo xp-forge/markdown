@@ -263,10 +263,8 @@ class ToHtml implements Emitter {
    */
   public function emitCodeBlock($block, $definitions) {
     $r= '';
-    $s= $block->size() - 1;
     foreach ($block->all() as $i => $node) {
-      $r.= $node->emit($this, $definitions);
-      if ($i < $s) $r.= "\n";
+      $r.= $node->emit($this, $definitions)."\n";
     }
 
     $attr= $block->language ? ' class="language-'.htmlspecialchars($block->language, $this->flags).'"' : '';
