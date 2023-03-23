@@ -5,6 +5,8 @@ Markdown for XP Framework ChangeLog
 
 ## 7.0.0 / 2023-03-23
 
+* Implemented xp-framework/rfc#341: Drop support for XP 9 and lower
+  (@thekid)
 * Merged PR #14: Spec compliance testing. Not run in the test suite yet!
   (@thekid)
 * **Heads up:** No longer use the `lang` attribute on `<code>`. Instead,
