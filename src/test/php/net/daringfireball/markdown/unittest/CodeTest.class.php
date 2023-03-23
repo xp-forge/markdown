@@ -81,7 +81,7 @@ class CodeTest extends MarkdownTest {
   #[Test]
   public function indented_with_four_spaces() {
     $this->assertTransformed(
-      '<code>10 GOTO 10</code>',
+      '<pre><code>10 GOTO 10</code></pre>',
       '    10 GOTO 10'
     );
   }
@@ -89,7 +89,7 @@ class CodeTest extends MarkdownTest {
   #[Test]
   public function indented_with_one_tab() {
     $this->assertTransformed(
-      '<code>10 GOTO 10</code>',
+      '<pre><code>10 GOTO 10</code></pre>',
       "\t10 GOTO 10"
     );
   }
@@ -97,7 +97,7 @@ class CodeTest extends MarkdownTest {
   #[Test]
   public function two_lines_indented_with_four_spaces() {
     $this->assertTransformed(
-      "<code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",
+      "<pre><code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code></pre>",
       "    10 PRINT \"HI\"\n    20 GOTO 10"
     );
   }
@@ -105,7 +105,7 @@ class CodeTest extends MarkdownTest {
   #[Test, Values(['```', '~~~'])]
   public function github_style_fenced_block($fence) {
     $this->assertTransformed(
-      "<code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",
+      "<pre><code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code></pre>",
       "{$fence}\n10 PRINT \"HI\"\n20 GOTO 10\n{$fence}"
     );
   }
@@ -113,7 +113,7 @@ class CodeTest extends MarkdownTest {
   #[Test, Values(['```', '~~~'])]
   public function github_style_fenced_block_with_language($fence) {
     $this->assertTransformed(
-      "<code lang=\"basic\">10 PRINT &quot;HI&quot;\n20 GOTO 10</code>",
+      "<pre><code lang=\"basic\">10 PRINT &quot;HI&quot;\n20 GOTO 10</code></pre>",
       "{$fence}basic\n10 PRINT \"HI\"\n20 GOTO 10\n{$fence}"
     );
   }
