@@ -8,7 +8,7 @@ class RulerTest extends MarkdownTest {
 
   #[Test, Values(['* * *', '***', '*****'])]
   public function with_asterisks($input) {
-    $this->assertTransformed('<hr/>', $input);
+    $this->assertTransformed('<hr />', $input);
   }
 
   #[Test]

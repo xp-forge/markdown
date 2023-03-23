@@ -27,6 +27,6 @@ class ParagraphTest extends MarkdownTest {
 
   #[Test, Values(['  ', '   '])]
   public function manual_line_break_with_two_or_more_spaces($sp) {
-    $this->assertTransformed('<p>Hello<br/></p>', 'Hello'.$sp);
+    $this->assertTransformed('<p>Hello<br /></p>', 'Hello'.$sp);
   }
 }

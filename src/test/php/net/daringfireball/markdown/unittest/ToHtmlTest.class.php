@@ -29,7 +29,7 @@ class ToHtmlTest {
 
   #[Test, Values(['  ', '   '])]
   public function manual_line_break_with_two_or_more_spaces($spaces) {
-    Assert::equals('Test<br/>', (new Text('Test'.$spaces))->emit(new ToHtml()));
+    Assert::equals('Test<br />', (new Text('Test'.$spaces))->emit(new ToHtml()));
   }
 
   #[Test]
@@ -66,7 +66,7 @@ class ToHtmlTest {
     $tree= new ParseTree([new Paragraph([new Image('https://example.com/test.png', new Text('External image'))])]);
 
     Assert::equals(
-      '<p><img src="/proxy?url=https%3A%2F%2Fexample.com%2Ftest.png" alt="External image"/></p>',
+      '<p><img src="/proxy?url=https%3A%2F%2Fexample.com%2Ftest.png" alt="External image" /></p>',
       $tree->emit(new ToHtml(new class() extends URLs {
         public function src($image) { return '/proxy?url='.urlencode($image->url); }
       }))

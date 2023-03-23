@@ -81,7 +81,7 @@ class CodeTest extends MarkdownTest {
   #[Test]
   public function indented_with_four_spaces() {
     $this->assertTransformed(
-      '<pre><code>10 GOTO 10</code></pre>',
+      "<pre><code>10 GOTO 10\n</code></pre>",
       '    10 GOTO 10'
     );
   }
@@ -89,7 +89,7 @@ class CodeTest extends MarkdownTest {
   #[Test]
   public function indented_with_one_tab() {
     $this->assertTransformed(
-      '<pre><code>10 GOTO 10</code></pre>',
+      "<pre><code>10 GOTO 10\n</code></pre>",
       "\t10 GOTO 10"
     );
   }
@@ -97,7 +97,7 @@ class CodeTest extends MarkdownTest {
   #[Test]
   public function two_lines_indented_with_four_spaces() {
     $this->assertTransformed(
-      "<pre><code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code></pre>",
+      "<pre><code>10 PRINT &quot;HI&quot;\n20 GOTO 10\n</code></pre>",
       "    10 PRINT \"HI\"\n    20 GOTO 10"
     );
   }
@@ -105,7 +105,7 @@ class CodeTest extends MarkdownTest {
   #[Test, Values(['```', '~~~', '````', '~~~~'])]
   public function github_style_fenced_block($fence) {
     $this->assertTransformed(
-      "<pre><code>10 PRINT &quot;HI&quot;\n20 GOTO 10</code></pre>",
+      "<pre><code>10 PRINT &quot;HI&quot;\n20 GOTO 10\n</code></pre>",
       "{$fence}\n10 PRINT \"HI\"\n20 GOTO 10\n{$fence}"
     );
   }
@@ -113,7 +113,7 @@ class CodeTest extends MarkdownTest {
   #[Test, Values(['```', '~~~', '````', '~~~~'])]
   public function github_style_fenced_block_with_language($fence) {
     $this->assertTransformed(
-      "<pre><code class=\"language-basic\">10 PRINT &quot;HI&quot;\n20 GOTO 10</code></pre>",
+      "<pre><code class=\"language-basic\">10 PRINT &quot;HI&quot;\n20 GOTO 10\n</code></pre>",
       "{$fence}basic\n10 PRINT \"HI\"\n20 GOTO 10\n{$fence}"
     );
   }
@@ -121,7 +121,7 @@ class CodeTest extends MarkdownTest {
   #[Test, Values(['basic', ' basic', ' .basic'])]
   public function fenced_block_language_notation($language) {
     $this->assertTransformed(
-      "<pre><code class=\"language-basic\">10 PRINT &quot;HI&quot;\n20 GOTO 10</code></pre>",
+      "<pre><code class=\"language-basic\">10 PRINT &quot;HI&quot;\n20 GOTO 10\n</code></pre>",
       "```{$language}\n10 PRINT \"HI\"\n20 GOTO 10\n```"
     );
   }

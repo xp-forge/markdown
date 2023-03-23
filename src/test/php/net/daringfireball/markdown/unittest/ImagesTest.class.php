@@ -9,7 +9,7 @@ class ImagesTest extends MarkdownTest {
   #[Test]
   public function image_with_title() {
     $this->assertTransformed(
-      '<p><img src="http://example.net/image.jpg" alt="This image" title="Title"/> has a title.</p>',
+      '<p><img src="http://example.net/image.jpg" alt="This image" title="Title" /> has a title.</p>',
       '![This image](http://example.net/image.jpg "Title") has a title.'
     );
   }
@@ -17,7 +17,7 @@ class ImagesTest extends MarkdownTest {
   #[Test]
   public function image_without_title() {
     $this->assertTransformed(
-      '<p><img src="http://example.net/image.jpg" alt="This image"/> has no title attribute.</p>',
+      '<p><img src="http://example.net/image.jpg" alt="This image" /> has no title attribute.</p>',
       '![This image](http://example.net/image.jpg) has no title attribute.'
     );
   }
@@ -27,7 +27,7 @@ class ImagesTest extends MarkdownTest {
     $this->assertTransformed(
       '<p>'.
         '<a href="http://travis-ci.org/xp-framework/xp-framework">'.
-          '<img src="https://secure.travis-ci.org/xp-framework/xp-framework.png" alt="Build Status"/>'.
+          '<img src="https://secure.travis-ci.org/xp-framework/xp-framework.png" alt="Build Status" />'.
         '</a>'.
       '</p>',
       '[![Build Status](https://secure.travis-ci.org/xp-framework/xp-framework.png)](http://travis-ci.org/xp-framework/xp-framework)'
@@ -37,7 +37,7 @@ class ImagesTest extends MarkdownTest {
   #[Test]
   public function numeric_reference() {
     $this->assertTransformed(
-      '<p><img src="https://secure.travis-ci.org/xp-framework/xp-framework.png" alt="Build Status"/></p>',
+      '<p><img src="https://secure.travis-ci.org/xp-framework/xp-framework.png" alt="Build Status" /></p>',
       "![Build Status] [1]\n".
       "[1]: https://secure.travis-ci.org/xp-framework/xp-framework.png"
     );
@@ -46,7 +46,7 @@ class ImagesTest extends MarkdownTest {
   #[Test]
   public function named_reference() {
     $this->assertTransformed(
-      '<p><img src="https://secure.travis-ci.org/xp-framework/xp-framework.png" alt="Build Status"/></p>',
+      '<p><img src="https://secure.travis-ci.org/xp-framework/xp-framework.png" alt="Build Status" /></p>',
       "![Build Status] [badge]\n".
       "[badge]: https://secure.travis-ci.org/xp-framework/xp-framework.png"
     );
