@@ -97,7 +97,7 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitRuler($ruler, $definitions) {
-    return '<hr/>';
+    return '<hr />';
   }
 
   /**
@@ -182,7 +182,7 @@ class ToHtml implements Emitter {
       $sp++;
     }
     if ($sp >= 2) {
-      return htmlspecialchars(substr($text->value, 0, -$sp), $this->flags).'<br/>';
+      return htmlspecialchars(substr($text->value, 0, -$sp), $this->flags).'<br />';
     } else {
       return htmlspecialchars($text->value, $this->flags);
     }
@@ -212,7 +212,7 @@ class ToHtml implements Emitter {
     $attr= '';
     $image->text && $attr.= ' alt="'.$image->text->emit($this, $definitions).'"';
     $image->title && $attr.= ' title="'.htmlspecialchars($image->title, $this->flags).'"';
-    return '<img src="'.htmlspecialchars($this->urls->src($image), $this->flags).'"'.$attr.'/>';
+    return '<img src="'.htmlspecialchars($this->urls->src($image), $this->flags).'"'.$attr.' />';
   }
 
   /**
