@@ -1,11 +1,12 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\Image;
-use net\daringfireball\markdown\Text;
+use net\daringfireball\markdown\{Image, Text};
+use test\Assert;
+use test\Test;
 
 class ImagesTest extends MarkdownTest {
 
-  #[@test]
+  #[Test]
   public function image_with_title() {
     $this->assertTransformed(
       '<p><img src="http://example.net/image.jpg" alt="This image" title="Title"/> has a title.</p>',
@@ -13,7 +14,7 @@ class ImagesTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function image_without_title() {
     $this->assertTransformed(
       '<p><img src="http://example.net/image.jpg" alt="This image"/> has no title attribute.</p>',
@@ -21,7 +22,7 @@ class ImagesTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function image_inside_link() {
     $this->assertTransformed(
       '<p>'.
@@ -33,7 +34,7 @@ class ImagesTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function numeric_reference() {
     $this->assertTransformed(
       '<p><img src="https://secure.travis-ci.org/xp-framework/xp-framework.png" alt="Build Status"/></p>',
@@ -42,7 +43,7 @@ class ImagesTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function named_reference() {
     $this->assertTransformed(
       '<p><img src="https://secure.travis-ci.org/xp-framework/xp-framework.png" alt="Build Status"/></p>',
@@ -51,7 +52,7 @@ class ImagesTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function standalone_exclamation_mark_not_recognized_as_image() {
     $this->assertTransformed(
       '<p>This is ! an image</p>',
@@ -59,26 +60,26 @@ class ImagesTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function string_representation() {
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Image(url= http://example.com/test.gif, text= null, title= null)',
       (new Image('http://example.com/test.gif'))->toString()
     );
   }
 
-  #[@test]
+  #[Test]
   public function string_representation_with_text() {
     $t= new Text('example');
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Image(url= http://example.com/test.gif, text= '.$t->toString().', title= null)',
       (new Image('http://example.com/test.gif', $t))->toString()
     );
   }
 
-  #[@test]
+  #[Test]
   public function string_representation_with_title() {
-    $this->assertEquals(
+    Assert::equals(
       'net.daringfireball.markdown.Image(url= http://example.com/test.gif, text= null, title= "Test")',
       (new Image('http://example.com/test.gif', null, 'Test'))->toString()
     );

@@ -1,15 +1,14 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\Cell;
-use net\daringfireball\markdown\Row;
-use net\daringfireball\markdown\Table;
-use net\daringfireball\markdown\Text;
+use net\daringfireball\markdown\{Cell, Row, Table, Text};
+use test\Assert;
+use test\{Test, Values};
 
 class TableTest extends MarkdownTest {
 
-  #[@test]
+  #[Test]
   public function string_representation_of_table() {
-    $this->assertEquals(
+    Assert::equals(
       "net.daringfireball.markdown.Table@{\n".
       "  net.daringfireball.markdown.Row@{\n".
       "    net.daringfireball.markdown.Cell(type= th, alignment= )@[net.daringfireball.markdown.Text<Header>]\n".
@@ -19,22 +18,22 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function rows_of_table() {
     $rows= [
       new Row([new Cell('th', null), new Cell('th', null)]),
       new Row([new Cell('td', null, [new Text('Key')]), new Cell('td', null, [new Text('Value')])])
     ];
-    $this->assertEquals($rows, (new Table($rows))->rows());
+    Assert::equals($rows, (new Table($rows))->rows());
   }
 
-  #[@test]
+  #[Test]
   public function cells_of_row() {
     $cells= [new Cell('th', null), new Cell('th', null)];
-    $this->assertEquals($cells, (new Row($cells))->cells());
+    Assert::equals($cells, (new Row($cells))->cells());
   }
 
-  #[@test]
+  #[Test]
   public function simple_layout() {
     $this->assertTransformed(
       '<table>'.
@@ -49,7 +48,7 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function not_simple_layout() {
     $this->assertTransformed(
       "<p>Product | Price\nSecond Line</p>",
@@ -58,7 +57,7 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function wrapped_layout() {
     $this->assertTransformed(
       '<table>'.
@@ -73,7 +72,7 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function not_wrapped_layout() {
     $this->assertTransformed(
       "<p>| Product | Price |\nSecond Line</p>",
@@ -82,7 +81,7 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function compact_layout() {
     $this->assertTransformed(
       '<table>'.
@@ -97,7 +96,7 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function cells_may_contain_markup() {
     $this->assertTransformed(
       '<table>'.
@@ -110,7 +109,7 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function cells_may_be_empty() {
     $this->assertTransformed(
       '<table>'.
@@ -123,7 +122,7 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function empty_header_cells() {
     $this->assertTransformed(
       '<table>'.
@@ -136,7 +135,7 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function alignment() {
     $this->assertTransformed(
       '<table>'.
@@ -149,7 +148,7 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function line_after_table() {
     $this->assertTransformed(
       '<table>'.
@@ -165,7 +164,7 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function extra_column() {
     $this->assertTransformed(
       '<table>'.
@@ -181,12 +180,7 @@ class TableTest extends MarkdownTest {
     );
   }
 
-  #[@test, @values([
-  #  ['TLDR: docker (system|container|volume|image) prune'],
-  #  ['Bei Shell-Escape ; und | wegzulassen wäre aber auch gewagt'],
-  #  ['For instance, | did not work...'],
-  #  ['PDF | Powerpoint'],
-  #])]
+  #[Test, Values([['TLDR: docker (system|container|volume|image) prune'], ['Bei Shell-Escape ; und | wegzulassen wäre aber auch gewagt'], ['For instance, | did not work...'], ['PDF | Powerpoint'],])]
   public function issue_12($input) {
     $this->assertTransformed('<p>'.$input.'</p>', $input);
   }

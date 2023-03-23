@@ -1,5 +1,6 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
+use test\Assert;
 /**
  * Tests String input
  */

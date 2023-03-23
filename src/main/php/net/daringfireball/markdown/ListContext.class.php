@@ -1,7 +1,7 @@
 <?php namespace net\daringfireball\markdown;
 
 class ListContext extends Context {
-  protected $type= '';
+  protected $type, $level;
 
   /**
    * Creates a new list context

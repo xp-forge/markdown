@@ -34,6 +34,6 @@ class ReaderInput extends Input {
    * @return string
    */
   protected function sourceDescription() {
-    return $this->reader->getStream()->toString();
+    return $this->reader->stream()->toString();
   }
 }

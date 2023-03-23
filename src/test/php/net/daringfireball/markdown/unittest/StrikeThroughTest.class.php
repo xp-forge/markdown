@@ -1,32 +1,31 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
+use test\Assert;
+use test\{Test, Values};
+
 class StrikeThroughTest extends MarkdownTest {
 
-  #[@test]
+  #[Test]
   public function strikethrough() {
     $this->assertTransformed('<p><del>Hello</del></p>', '~~Hello~~');
   }
 
-  #[@test]
+  #[Test]
   public function first_word() {
     $this->assertTransformed('<p><del>Hello</del> World</p>', '~~Hello~~ World');
   }
 
-  #[@test]
+  #[Test]
   public function second_word() {
     $this->assertTransformed('<p>Hello <del>World</del></p>', 'Hello ~~World~~');
   }
 
-  #[@test]
+  #[Test]
   public function can_be_used_in_the_middle_of_a_word() {
     $this->assertTransformed('<p>Strike<del>f</del>through</p>', 'Strike~~f~~through');
   }
 
-  #[@test, @values([
-  #  'a~', 'b~~', 'c~~~',
-  #  '~a', '~~b', '~~~c',
-  #  '~not~'
-  #])]
+  #[Test, Values(['a~', 'b~~', 'c~~~', '~a', '~~b', '~not~'])]
   public function not_strikethrough($input) {
     $this->assertTransformed('<p>'.$input.'</p>', $input);
   }

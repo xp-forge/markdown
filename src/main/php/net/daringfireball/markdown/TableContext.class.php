@@ -44,8 +44,7 @@ abstract class TableContext extends Context {
 
     $row= new Row();
     foreach ($cells as $pos => $cell) {
-      $alignment= isset($this->alignment[$pos]) ? $this->alignment[$pos] : null;
-      $this->tokenize(new Line(trim($cell)), $row->add(new Cell($type, $alignment)));
+      $this->tokenize(new Line(trim($cell)), $row->add(new Cell($type, $this->alignment[$pos] ?? null)));
     }
     return $row;
   }

@@ -1,78 +1,79 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
 use lang\IndexOutOfBoundsException;
-use net\daringfireball\markdown\NodeList;
-use net\daringfireball\markdown\Text;
+use net\daringfireball\markdown\{NodeList, Text};
+use test\Assert;
+use test\{Expect, Test};
 
-class NodeListTest extends \unittest\TestCase {
+class NodeListTest {
 
-  #[@test]
+  #[Test]
   public function can_create() {
     new NodeList();
   }
 
-  #[@test]
+  #[Test]
   public function initially_empty() {
-    $this->assertEquals(0, (new NodeList())->size());
+    Assert::equals(0, (new NodeList())->size());
   }
 
-  #[@test]
+  #[Test]
   public function no_longer_empty_after_adding() {
     $fixture= new NodeList();
     $fixture->add(new Text('Test'));
-    $this->assertEquals(1, $fixture->size());
+    Assert::equals(1, $fixture->size());
   }
 
-  #[@test]
+  #[Test]
   public function add_returns_added_element() {
     $text= new Text('Test');
-    $this->assertEquals($text, (new NodeList())->add($text));
+    Assert::equals($text, (new NodeList())->add($text));
   }
 
-  #[@test]
+  #[Test]
   public function get_added_element() {
     $text= new Text('Test');
     $fixture= new NodeList();
     $fixture->add($text);
-    $this->assertEquals($text, $fixture->get(0));
+    Assert::equals($text, $fixture->get(0));
   }
 
-  #[@test, @expect(IndexOutOfBoundsException::class)]
+  #[Test, Expect(IndexOutOfBoundsException::class)]
   public function get_non_existant_element() {
     (new NodeList())->get(0);
   }
 
-  #[@test]
+  #[Test]
   public function last_returns_added_element() {
     $text= new Text('Test');
     $fixture= new NodeList();
     $fixture->add($text);
-    $this->assertEquals($text, $fixture->last());
+    Assert::equals($text, $fixture->last());
   }
 
-  #[@test]
+  #[Test]
   public function last_returns_null_when_list_is_empty() {
-    $this->assertNull((new NodeList())->last());
+    Assert::null((new NodeList())->last());
   }
 
-  #[@test]
+  #[Test]
   public function remove_returns_removed_element() {
     $text= new Text('Test');
     $fixture= new NodeList();
     $fixture->add($text);
-    $this->assertEquals($text, $fixture->remove(0));
+    Assert::equals($text, $fixture->remove(0));
   }
 
-  #[@test]
+  #[Test]
   public function remove_returns_null_when_list_is_empty() {
     $fixture= new NodeList();
-    $this->assertNull($fixture->remove(0));
+    Assert::null($fixture->remove(0));
   }
 
-  #[@test]
+  #[Test]
   public function remove_returns_null_when_element_does_not_exist() {
     $fixture= new NodeList();
     $fixture->add(new Text('Test'));
-    $this->assertNull($fixture->remove(1));
+    Assert::null($fixture->remove(1));
   }
 }

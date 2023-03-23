@@ -3,6 +3,41 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 6.1.0 / 2023-03-23
+
+* Merged PR #18: Add support for fenced code blocks enclosed with `~~~`
+  (@thekid)
+* Merged PR #15: Migrate to new testing library - @thekid
+
+## 6.0.2 / 2022-02-26
+
+* Fixed "Creation of dynamic property" warnings in PHP 8.2 - @thekid
+
+## 6.0.1 / 2020-10-21
+
+* Made compatible with PHP 8.1 using `#[ReturnTypeWillChange]` attributes,
+  preventing *null* values for `preg_match()` and using *ENT_COMPAT* for
+  `htmlspecialchars()` flags
+  (@thekid)
+
+## 6.0.0 / 2020-04-10
+
+* Implemented xp-framework/rfc#334: Drop PHP 5.6:
+  . **Heads up:** Minimum required PHP version now is PHP 7.0.0
+  . Rewrote code base, grouping use statements
+  . Converted `newinstance` to anonymous classes
+  . Rewrote `isset(X) ? X : default` to `X ?? default`
+  (@thekid)
+
+## 5.2.2 / 2020-04-05
+
+* Implemented RFC #335: Remove deprecated key/value pair annotation syntax
+  (@thekid)
+
+## 5.2.1 / 2019-12-01
+
+* Made compatible with XP 10 - @thekid
+
 ## 5.2.0 / 2019-08-09
 
 * Added PHP 7.4 support - @thekid

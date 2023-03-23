@@ -1,24 +1,14 @@
 <?php namespace net\daringfireball\markdown\unittest;
 
-use net\daringfireball\markdown\BlockQuote;
-use net\daringfireball\markdown\Cell;
-use net\daringfireball\markdown\CodeBlock;
-use net\daringfireball\markdown\Header;
-use net\daringfireball\markdown\Image;
-use net\daringfireball\markdown\Italic;
-use net\daringfireball\markdown\Link;
-use net\daringfireball\markdown\NodeList;
-use net\daringfireball\markdown\Paragraph;
-use net\daringfireball\markdown\ParseTree;
-use net\daringfireball\markdown\Row;
-use net\daringfireball\markdown\Table;
-use net\daringfireball\markdown\Text;
+use net\daringfireball\markdown\{BlockQuote, Cell, CodeBlock, Header, Image, Italic, Link, NodeList, Paragraph, ParseTree, Row, Table, Text};
+use test\Assert;
+use test\Test;
 
 class ParsingTest extends MarkdownTest {
 
-  #[@test]
+  #[Test]
   public function empty_input() {
-    $this->assertEquals(
+    Assert::equals(
       new ParseTree([
         new Paragraph()
       ]),
@@ -26,9 +16,9 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function single_paragraph() {
-    $this->assertEquals(
+    Assert::equals(
       new ParseTree([
         new Paragraph([new Text('Hello World')])
       ]),
@@ -36,9 +26,9 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function link() {
-    $this->assertEquals(
+    Assert::equals(
       new ParseTree([
         new Paragraph([new Link('url', new NodeList([new Text('link')]))])
       ]),
@@ -46,9 +36,9 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function image() {
-    $this->assertEquals(
+    Assert::equals(
       new ParseTree([
         new Paragraph([new Image('url', new NodeList([new Text('image')]))])
       ]),
@@ -56,9 +46,9 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function blockquote() {
-    $this->assertEquals(
+    Assert::equals(
       new ParseTree([
         new BlockQuote([new Text('Quote')])
       ]),
@@ -66,9 +56,9 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function nested_blockquote() {
-    $this->assertEquals(
+    Assert::equals(
       new ParseTree([
         new BlockQuote([
           new BlockQuote([new Text('Quote')])
@@ -78,9 +68,9 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function nested_blockquotes() {
-    $this->assertEquals(
+    Assert::equals(
       new ParseTree([
         new BlockQuote([
           new BlockQuote([new Text('Second')]),
@@ -91,9 +81,9 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function blockquote_with_formatting() {
-    $this->assertEquals(
+    Assert::equals(
       new ParseTree([
         new BlockQuote([
           new Header(1, [new Text('Quote')]),
@@ -105,9 +95,9 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function table_surrounded_by_text() {
-    $this->assertEquals(
+    Assert::equals(
       new ParseTree([
         new Paragraph([new Text('A table:')]),
         new Table([
@@ -120,20 +110,20 @@ class ParsingTest extends MarkdownTest {
     );
   }
 
-  #[@test]
+  #[Test]
   public function code_block_without_language() {
     $block= new CodeBlock();
     $block->add(new Text('Code'));
 
-    $this->assertEquals(new ParseTree([$block]), $this->fixture->parse("```\nCode\n```"));
+    Assert::equals(new ParseTree([$block]), $this->fixture->parse("```\nCode\n```"));
   }
 
-  #[@test]
+  #[Test]
   public function code_block_with_language() {
     $block= new CodeBlock('bash');
     $block->add(new Text('#!/bin/sh'));
     $block->add(new Text('echo \'Hello\''));
 
-    $this->assertEquals(new ParseTree([$block]), $this->fixture->parse("```bash\n#!/bin/sh\necho 'Hello'\n```"));
+    Assert::equals(new ParseTree([$block]), $this->fixture->parse("```bash\n#!/bin/sh\necho 'Hello'\n```"));
   }
 }

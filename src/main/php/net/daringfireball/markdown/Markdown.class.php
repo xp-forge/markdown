@@ -1,7 +1,6 @@
 <?php namespace net\daringfireball\markdown;
 
-use lang\FormatException;
-use lang\Throwable;
+use lang\{FormatException, Throwable};
 
 /**
  * Markdown
@@ -192,13 +191,13 @@ class Markdown {
       $result->append($ctx->enter(new CodeContext())->parse($lines));
       return true;
     });
-    $this->addHandler('/^```(.*)/', function($lines, $matches, $result, $ctx) { 
-      $result->append($ctx->enter(new FencedCodeContext($matches[1]))->parse($lines));
+    $this->addHandler('/^(```|~~~)(.*)/', function($lines, $matches, $result, $ctx) { 
+      $result->append($ctx->enter(new FencedCodeContext($matches[2], $matches[1]))->parse($lines));
       return true;
     });
     $this->addHandler('/^\|.+\| *$/', function($lines, $matches, $result, $ctx) {
       $separator= $lines->nextLine();
-      if (preg_match('/^\|[ :|-]+\| *$/', $separator)) {
+      if (preg_match('/^\|[ :|-]+\| *$/', (string)$separator)) {
         $result->append($ctx->enter(new WrappedTableContext($matches[0], $separator))->parse($lines));
         return true;
       } else {
@@ -208,7 +207,7 @@ class Markdown {
     });
     $this->addHandler('/^(.+\|.+)+$/', function($lines, $matches, $result, $ctx) {
       $separator= $lines->nextLine();
-      if (preg_match('/^([ :|-]+\|[ :|-]+)+$/', $separator)) {
+      if (preg_match('/^([ :|-]+\|[ :|-]+)+$/', (string)$separator)) {
         $result->append($ctx->enter(new InlineTableContext($matches[0], $separator))->parse($lines));
         return true;
       } else {
