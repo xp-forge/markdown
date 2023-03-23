@@ -191,8 +191,8 @@ class Markdown {
       $result->append($ctx->enter(new CodeContext())->parse($lines));
       return true;
     });
-    $this->addHandler('/^```(.*)/', function($lines, $matches, $result, $ctx) { 
-      $result->append($ctx->enter(new FencedCodeContext($matches[1]))->parse($lines));
+    $this->addHandler('/^(```|~~~)(.*)/', function($lines, $matches, $result, $ctx) { 
+      $result->append($ctx->enter(new FencedCodeContext($matches[2], $matches[1]))->parse($lines));
       return true;
     });
     $this->addHandler('/^\|.+\| *$/', function($lines, $matches, $result, $ctx) {
