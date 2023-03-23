@@ -3,21 +3,19 @@
 use io\File;
 use io\streams\LinesIn;
 use net\daringfireball\markdown\Markdown;
-use unittest\AssertionFailedError;
-use unittest\TestCase;
+use test\{Args, Assert, AssertionFailed, Test, Values};
 
-class CommonMarkSpecTest extends TestCase {
+#[Args('spec')]
+class CommonMarkSpecTest {
   private $spec;
 
   /**
    * Instantiate spec test
    *
-   * @param  string $name
    * @param  string $spec Path to specs.txt
    * @see    https://github.com/commonmark/commonmark-spec
    */
-  public function __construct($name, $spec) {
-    parent::__construct($name);
+  public function __construct($spec) {
     $this->spec= new File($spec);
   }
 
@@ -39,12 +37,12 @@ class CommonMarkSpecTest extends TestCase {
     }
   }
 
-  #[@test, @values('tests')]
+  #[Test, Values(from: 'tests')]
   public function verify($input, $expected) {
     $transformed= (new Markdown())->transform($input);
     if (trim($expected) !== trim($transformed)) {
-      throw new AssertionFailedError(sprintf(
-        "Not spec-conformant:\nInput       '%s'\nExpected    '%s'\nTransformed '%s'",
+      throw new AssertionFailed(sprintf(
+        "the implementation is spec-conformant:\nInput       '%s'\nExpected    '%s'\nTransformed '%s'",
         addcslashes($input, "\0..\17!\177..\377"),
         addcslashes($expected, "\0..\17!\177..\377"),
         addcslashes($transformed, "\0..\17!\177..\377")
