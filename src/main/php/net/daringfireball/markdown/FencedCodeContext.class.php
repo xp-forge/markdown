@@ -1,10 +1,11 @@
 <?php namespace net\daringfireball\markdown;
 
 class FencedCodeContext extends Context {
-  protected $language= '';
+  protected $language, $fence;
 
-  public function __construct($language) {
+  public function __construct($language, $fence= '```') {
     $this->language= $language;
+    $this->fence= $fence;
   }
 
   /**
@@ -18,7 +19,7 @@ class FencedCodeContext extends Context {
 
     while ($lines->hasMoreLines()) {
       $line= $lines->nextLine();
-      if (0 === strncmp($line, '```', 3)) {
+      if (0 === strncmp($line, $this->fence, 3)) {
         break;
       } else {
         $result->add(new Text($line));
