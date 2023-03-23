@@ -3,7 +3,7 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
-## 7.0.0 / ????-??-??
+## 7.0.0 / 2023-03-23
 
 * Merged PR #14: Spec compliance testing. Not run in the test suite yet!
   (@thekid)
