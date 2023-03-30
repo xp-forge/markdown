@@ -159,6 +159,17 @@ class CodeTest extends MarkdownTest {
   }
 
   #[Test]
+  public function as_part_of_blockquote() {
+    $this->assertTransformed(
+      "<blockquote>".
+        "PHP:".
+        "<pre><code>echo 'Hello';\n</code></pre>".
+      "</blockquote>",
+      "> PHP:\n> ```\n> echo 'Hello';\n> ```"
+    );
+  }
+
+  #[Test]
   public function as_part_of_list_paragraphs() {
     $this->assertTransformed(
       "<ol>".

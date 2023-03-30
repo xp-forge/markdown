@@ -30,14 +30,17 @@ class BlockquoteContext extends Context {
       }
 
       // Check handlers
+      $lines->indent(+$start);
       $quoted= new Line(substr($line, $start));
+      $handled= false;
       foreach ($this->handlers as $pattern => $handler) {
         if (preg_match($pattern, $quoted, $values)) {
-          if ($handled= $handler($lines, [$quoted] + $values, $target[0], $this)) continue 2;
+          if ($handled= $handler($lines, [$quoted] + $values, $target[0], $this)) break;
         }
       }
 
-      $this->tokenize($quoted, $target[0]);
+      $lines->indent(-$start);
+      $handled || $this->tokenize($quoted, $target[0]);
     }
 
     return array_pop($target);
