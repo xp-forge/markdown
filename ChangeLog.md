@@ -7,7 +7,7 @@ Markdown for XP Framework ChangeLog
 
 * Fixed code blocks inside a block quote - @thekid
 * Removed `setTokens()` and `setHandlers()` from contexts - @thekid
-* Merged PR #19: Fix formatting inide lists - @thekid
+* Merged PR #19: Fix formatting inside lists - @thekid
 
 ## 7.0.0 / 2023-03-23
 
