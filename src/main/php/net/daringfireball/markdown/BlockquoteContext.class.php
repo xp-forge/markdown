@@ -1,16 +1,6 @@
 <?php namespace net\daringfireball\markdown;
 
 class BlockquoteContext extends Context {
-  public $handlers;
-
-  /**
-   * Creates a new block quote context
-   *
-   * @param  [:var] $handlers
-   */
-  public function __construct($handlers) {
-    $this->handlers= $handlers;
-  }
 
   /**
    * Parse input into nodes

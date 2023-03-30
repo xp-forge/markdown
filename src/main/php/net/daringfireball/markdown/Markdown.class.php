@@ -183,7 +183,7 @@ class Markdown {
     });
     $this->addHandler('/^\> /', function($lines, $matches, $result, $ctx) {
       $lines->resetLine($matches[0]);
-      $result->append($ctx->enter(new BlockquoteContext($ctx->handlers))->parse($lines));
+      $result->append($ctx->enter(new BlockquoteContext())->parse($lines));
       return true;
     });
     $this->addHandler('/^(    |\t)/', function($lines, $matches, $result, $ctx) {

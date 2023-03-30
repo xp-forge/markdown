@@ -90,6 +90,16 @@ class NodeList extends Node {
   }
 
   /**
+   * Gets a slice of the node nodes
+   *
+   * @param  int $offset
+   * @return net.daringfireball.markdown.Node[]
+   */
+  public function slice($offset) {
+    return array_slice($this->nodes, $offset);
+  }
+
+  /**
    * Removes a node at a given position
    *
    * @param  int $pos
