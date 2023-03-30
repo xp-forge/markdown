@@ -56,11 +56,20 @@ class ListContext extends Context {
           $this->tokenize($line, $target);
         }
       } else if ('  ' === substr($line, 0, 2)) {
+        $target= $result->last();
+        $indented= new Line(substr($line, 2));
+        $handled= false;
+        $lines->indent(+2);
 
-        // Add paragraph to existing list item
-        $paragraph= $result->last()->add(new Paragraph());
-        $line->forward(2);
-        $this->tokenize($line, $paragraph);
+        // Check handlers
+        foreach ($this->handlers as $pattern => $handler) {
+          if (preg_match($pattern, $indented, $values)) {
+            if ($handled= $handler($lines, [$indented] + $values, $target, $this)) break;
+          }
+        }
+
+        $lines->indent(-2);
+        $handled || $this->tokenize($indented, $target->add(new Paragraph()));
       } else {
         $lines->resetLine($line);
         break;

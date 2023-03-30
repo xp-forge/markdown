@@ -1,9 +1,11 @@
 <?php namespace net\daringfireball\markdown;
 
 use util\Objects;
+use lang\Value;
 
-abstract class Context implements \lang\Value {
+abstract class Context implements Value {
   protected $tokens= [];
+  protected $handlers= [];
   protected $span= '';
 
   /**
@@ -14,23 +16,33 @@ abstract class Context implements \lang\Value {
    */
   public function enter(self $context) {
     $context->tokens= $this->tokens;
+    $context->handlers= $this->handlers;
     $context->span= $this->span;
     return $context;
   }
 
-  /** @deprecated - Use withTokens() instead! */
-  public function setTokens($tokens) { $this->withTokens($tokens); }
-
   /**
    * Sets token handlers
    * 
-   * @param  [:var] tokens
+   * @param  [:var] $tokens
    * @return self
-   * @see    xp://net.daringfireball.markdown.Markdown#addToken
+   * @see    net.daringfireball.markdown.Markdown::addToken
    */
   public function withTokens($tokens) {
     $this->tokens= $tokens;
     $this->span= '\\'.implode('', array_keys($tokens));
+    return $this;
+  }
+
+  /**
+   * Sets line handlers
+   *
+   * @param  [:var] $handlers
+   * @return self
+   * @see    net.daringfireball.markdown.Markdown::addHandler
+   */
+  public function withHandlers($handlers) {
+    $this->handlers= $handlers;
     return $this;
   }
 

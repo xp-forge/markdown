@@ -290,6 +290,14 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitListItem($item, $definitions) {
-    return '<li>'.$this->emitAll($item->list->paragraphs ? $item->all() : $item->get(0)->all(), $definitions).'</li>';
+    if ($item->list->paragraphs) return '<li>'.$this->emitAll($item->all(), $definitions).'</li>';  
+
+    // First element outside of paragraph, emit rest
+    return
+      '<li>'.
+      $this->emitAll($item->get(0)->all(), $definitions).
+      $this->emitAll($item->slice(1), $definitions).
+      '</li>'
+    ;
   }
 }

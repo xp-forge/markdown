@@ -123,4 +123,12 @@ class ListsTest extends MarkdownTest {
       "* * *"
     );
   }
+
+  #[Test]
+  public function header_in_list() {
+    $this->assertTransformed(
+      "<ul><li>PHP:<h2>New</h2></li></ul>",
+      "* PHP:\n  ## New\n"
+    );
+  }
 }

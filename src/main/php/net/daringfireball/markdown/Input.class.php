@@ -2,13 +2,13 @@
 
 use io\streams\TextReader;
 use util\Objects;
+use lang\Value;
 
-/**
- * Abstract base class for input
- */
-abstract class Input implements \lang\Value {
+/** Abstract base class for input */
+abstract class Input implements Value {
   protected $stack= [];
   protected $line= 1;
+  public $indent= 0;
 
   /**
    * Creates a new input from a given argument
@@ -33,6 +33,16 @@ abstract class Input implements \lang\Value {
    */
   public function currentLine() {
     return $this->line;
+  }
+
+  /**
+   * Sets indent
+   *
+   * @param  int $delta
+   * @return void
+   */
+  public function indent($delta) {
+    $this->indent+= $delta;
   }
 
   /**
@@ -74,7 +84,8 @@ abstract class Input implements \lang\Value {
       if (!$this->hasMoreLines()) return null;
     }
     $this->line++;
-    return array_pop($this->stack);
+    $line= array_pop($this->stack);
+    return $this->indent ? substr($line, $this->indent) : $line;
   }
 
   /**

@@ -148,6 +148,17 @@ class CodeTest extends MarkdownTest {
   }
 
   #[Test]
+  public function as_part_of_list() {
+    $this->assertTransformed(
+      "<ul>".
+        "<li>PHP:<pre><code>echo 'Hello';\n</code></pre></li>".
+        "<li>JS:<pre><code>console.log('Hello')\n</code></pre></li>".
+      "</ul>",
+      "* PHP:\n  ```\n  echo 'Hello';\n  ```\n* JS:\n  ```\n  console.log('Hello')\n  ```"
+    );
+  }
+
+  #[Test]
   public function string_representation() {
     Assert::equals(
       'net.daringfireball.markdown.Code<1 + 2>',
