@@ -3,6 +3,12 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 7.1.0 / 2023-03-30
+
+* Fixed code blocks inside a block quote - @thekid
+* Removed `setTokens()` and `setHandlers()` from contexts - @thekid
+* Merged PR #19: Fix formatting inide lists - @thekid
+
 ## 7.0.0 / 2023-03-23
 
 * Implemented xp-framework/rfc#341: Drop support for XP 9 and lower
