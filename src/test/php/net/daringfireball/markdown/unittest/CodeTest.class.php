@@ -159,6 +159,16 @@ class CodeTest extends MarkdownTest {
   }
 
   #[Test]
+  public function as_part_of_list_paragraphs() {
+    $this->assertTransformed(
+      "<ol>".
+        "<li>PHP:<pre><code>echo 'Hello';\n</code></pre><p>This will output Hello</p></li>".
+      "</ol>",
+      "1. PHP:\n\n   ```\n   echo 'Hello';\n   ```\n\n   This will output Hello\n"
+    );
+  }
+
+  #[Test]
   public function string_representation() {
     Assert::equals(
       'net.daringfireball.markdown.Code<1 + 2>',

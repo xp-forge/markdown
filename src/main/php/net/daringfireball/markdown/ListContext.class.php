@@ -55,11 +55,11 @@ class ListContext extends Context {
           $line->forward(strlen($m[0]));
           $this->tokenize($line, $target);
         }
-      } else if ('  ' === substr($line, 0, 2)) {
+      } else if ($space= strspn($line, ' ')) {
         $target= $result->last();
-        $indented= new Line(substr($line, 2));
+        $indented= new Line(substr($line, $space));
         $handled= false;
-        $lines->indent(+2);
+        $lines->indent(+$space);
 
         // Check handlers
         foreach ($this->handlers as $pattern => $handler) {
@@ -68,7 +68,7 @@ class ListContext extends Context {
           }
         }
 
-        $lines->indent(-2);
+        $lines->indent(-$space);
         $handled || $this->tokenize($indented, $target->add(new Paragraph()));
       } else {
         $lines->resetLine($line);
