@@ -33,9 +33,8 @@ class ListContext extends Context {
         continue;
       }
 
-      // Indented elements form additional paragpraphs inside list items. If 
-      // the line doesn't start with a list bullet, this means the list is at
-      // its end.
+      // Indented elements form additional parapraphs inside list items. If the
+      // line doesn't start with a list bullet, this means the list is at its end.
       if (preg_match('/^(\s+)?([+*-]+|[0-9]+\.) /', $line, $m) && !preg_match('/^(\* ?){3,}$/', $line)) {
         $empty && $result->paragraphs= true;
         $empty= false;
@@ -47,33 +46,34 @@ class ListContext extends Context {
           $lines->resetLine($line);
           $target= $target ?: $result->add(new ListItem($result))->add(new Paragraph());
           $target->add($this->enter(new self($this->type, $level))->parse($lines));
+          continue;
         } else if ($level < $this->level) {
           $lines->resetLine($line);
           break;
-        } else {
-          $target= $result->add(new ListItem($result))->add(new Paragraph());
-          $line->forward(strlen($m[0]));
-          $this->tokenize($line, $target);
         }
+
+        $target= $result->add(new ListItem($result));
+        $space= strlen($m[0]);
       } else if ($space= strspn($line, ' ')) {
         $target= $result->last();
-        $indented= new Line(substr($line, $space));
-        $handled= false;
-        $lines->indent(+$space);
-
-        // Check handlers
-        foreach ($this->handlers as $pattern => $handler) {
-          if (preg_match($pattern, $indented, $values)) {
-            if ($handled= $handler($lines, [$indented] + $values, $target, $this)) break;
-          }
-        }
-
-        $lines->indent(-$space);
-        $handled || $this->tokenize($indented, $target->add(new Paragraph()));
       } else {
         $lines->resetLine($line);
         break;
       }
+
+      // Handle line, checking handlers, then passing it on to tokenization
+      $handled= false;
+      $indented= new Line(substr($line, $space));
+      $lines->indent(+$space);
+
+      foreach ($this->handlers as $pattern => $handler) {
+        if (preg_match($pattern, $indented, $values)) {
+          if ($handled= $handler($lines, [$indented] + $values, $target, $this)) break;
+        }
+      }
+
+      $lines->indent(-$space);
+      $handled || $this->tokenize($indented, $target->add(new Paragraph()));
     }
 
     return $result;

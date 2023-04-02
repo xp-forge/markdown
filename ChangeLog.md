@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 7.1.1 / 2023-04-02
+
+* Fixed auto-linking inside lists - @thekid
+
 ## 7.1.0 / 2023-03-30
 
 * Fixed code blocks inside a block quote - @thekid

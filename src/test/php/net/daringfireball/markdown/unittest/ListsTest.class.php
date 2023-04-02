@@ -131,4 +131,27 @@ class ListsTest extends MarkdownTest {
       "* PHP:\n  ## New\n"
     );
   }
+
+  #[Test]
+  public function with_formatting() {
+    $this->assertTransformed(
+      "<ul>".
+        "<li>Code: <code>i++</code></li>".
+        "<li>Link: <a href=\"https://github.com\">https://github.com</a></li>".
+        "<li>With: <strong>emphasis</strong>!</li>".
+      "</ul>",
+      "* Code: `i++`\n* Link: https://github.com\n* With: **emphasis**!"
+    );
+  }
+
+  #[Test, Values([['*', 'ul'], ['0.', 'ol']])]
+  public function list_of_links($marker, $list) {
+    $this->assertTransformed(
+      "<{$list}>".
+        "<li><a href=\"https://php.net\">https://php.net</a></li>".
+        "<li><a href=\"https://github.com\">https://github.com</a></li>".
+      "</{$list}>",
+      "{$marker} https://php.net\n{$marker} https://github.com"
+    );
+  }
 }
