@@ -177,6 +177,14 @@ class LinkTest extends MarkdownTest {
   }
 
   #[Test]
+  public function link_in_braces() {
+    $this->assertTransformed(
+      '<p>Example (<a href="http://example.com">http://example.com</a>)</p>',
+      'Example (http://example.com)'
+    );
+  }
+
+  #[Test]
   public function url_with_parenthesis() {
     $this->assertTransformed(
       '<p>There\'s an <a href="http://en.memory-alpha.org/wiki/Darmok_(episode)">episode</a> of Star Trek: The Next Generation</p>',

@@ -149,8 +149,8 @@ class Markdown {
       $result->urls[strtolower($matches[1])]= new Link($matches[2], null, $title);
       return true;
     });
-    $this->addHandler('#(^|[^\(\<])((ht|f)tps?://[^ ]+)#', function($lines, $matches, $result, $ctx) { 
-      $matches[0]->replace('#(^|[^\(\<])((ht|f)tps?://[^\s]+)($|\s|[.?,;!]\s|[.?,;!]$)#U', '$1<$2>$4');
+    $this->addHandler('#(^|[^\(\<]|[^\]]\()((ht|f)tps?://[^ ]+)#', function($lines, $matches, $result, $ctx) {
+      $matches[0]->replace('#(^|[^\(\<]|[^\]]\()((ht|f)tps?://[^\s]+)($|\s|[.?,;!)]\s|[.?,;!)]$)#U', '$1<$2>$4');
       return false;   // Further handlers may be applied
     });
     $this->addHandler('/^(#{1,6}) (.+)/', function($lines, $matches, $result, $ctx) {

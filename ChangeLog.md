@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Fixed auto-linking inside braces - @thekid
+
 ## 7.1.1 / 2023-04-02
 
 * Fixed auto-linking inside lists - @thekid
