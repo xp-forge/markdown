@@ -3,6 +3,16 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 8.0.0 / 2023-09-27
+
+* **Heads up:** This release refactors the `Emitter` interface to an
+  abstract base class with empty implementations. This will prevent
+  BC breaks in the future should new node kinds need to be added
+  (@thekid)
+* Merged PR #20: Add support for line breaks, via `<br>` and via two
+  (or more) spaces at the end of the line.
+  (@thekid)
+
 ## 7.1.2 / 2023-04-02
 
 * Fixed auto-linking inside braces - @thekid
