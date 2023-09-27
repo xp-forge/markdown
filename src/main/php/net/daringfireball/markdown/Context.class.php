@@ -91,7 +91,7 @@ abstract class Context implements Value {
 
     // If the string ends with two or more spaces, we have a manual line break.
     // https://markdown-guide.readthedocs.io/en/latest/basics.html#line-return
-    if (0 === substr_compare($line, '  ', -2, 2)) {
+    if ($l >= 2 && 0 === substr_compare($line, '  ', -2, 2)) {
       if (($last= $target->last()) instanceof Text) $last->value= rtrim($last->value, ' ');
       $target->add(new LineBreak());
     }
