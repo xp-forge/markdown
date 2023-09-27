@@ -3,9 +3,9 @@
 /**
  * Emits markdown as HTML
  *
- * @test xp://net.daringfireball.markdown.unittest.ToHtmlTest
+ * @test net.daringfireball.markdown.unittest.ToHtmlTest
  */
-class ToHtml implements Emitter {
+class ToHtml extends Emitter {
   protected $urls, $flags;
 
   /**
