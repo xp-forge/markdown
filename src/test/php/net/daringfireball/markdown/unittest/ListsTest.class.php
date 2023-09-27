@@ -115,7 +115,7 @@ class ListsTest extends MarkdownTest {
         "<li>Two</li>".
         "<li>Three</li>".
       "</ul>".
-      "<hr />",
+      "<hr>",
       "* One\n".
       "* Two\n".
       "* Three\n".

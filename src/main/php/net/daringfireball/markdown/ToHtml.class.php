@@ -97,7 +97,7 @@ class ToHtml extends Emitter {
    * @return string
    */
   public function emitRuler($ruler, $definitions) {
-    return '<hr />';
+    return '<hr>';
   }
 
   /**
