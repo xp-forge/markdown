@@ -184,4 +184,17 @@ class TableTest extends MarkdownTest {
   public function issue_12($input) {
     $this->assertTransformed('<p>'.$input.'</p>', $input);
   }
+
+  #[Test]
+  public function line_breaks_in_table() {
+    $this->assertTransformed(
+      '<table>'.
+      '<tr><th>PHP</th><th>JS</th></tr>'.
+      '<tr><td>Server</td><td>Client<br>Server</td></tr>'.
+      '</table>',
+      "PHP     | JS\n".
+      "------- | -----\n".
+      "Server  | Client<br>Server\n"
+    );
+  }
 }

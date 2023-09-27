@@ -156,6 +156,15 @@ interface Emitter {
   public function emitEntity($entity, $definitions);
 
   /**
+   * Emits a line break
+   *
+   * @param  net.daringfireball.markdown.LineBreak $br
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitLineBreak($br, $definitions);
+
+  /**
    * Emits an inline code fragment
    *
    * @param  net.daringfireball.markdown.Code $code

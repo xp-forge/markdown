@@ -244,6 +244,17 @@ class ToHtml implements Emitter {
   }
 
   /**
+   * Emits a line break
+   *
+   * @param  net.daringfireball.markdown.LineBreak $br
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitLineBreak($br, $definitions) {
+    return '<br>';
+  }
+
+  /**
    * Emits an inline code fragment
    *
    * @param  net.daringfireball.markdown.Code $code
