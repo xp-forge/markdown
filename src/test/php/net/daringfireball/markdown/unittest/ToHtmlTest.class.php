@@ -27,11 +27,6 @@ class ToHtmlTest {
     Assert::equals('Test ', (new Text('Test '))->emit(new ToHtml()));
   }
 
-  #[Test, Values(['  ', '   '])]
-  public function manual_line_break_with_two_or_more_spaces($spaces) {
-    Assert::equals('Test<br />', (new Text('Test'.$spaces))->emit(new ToHtml()));
-  }
-
   #[Test]
   public function emails_are_encoded() {
     $encoded= '&#x74;&#x69;&#x6d;&#x6d;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;';

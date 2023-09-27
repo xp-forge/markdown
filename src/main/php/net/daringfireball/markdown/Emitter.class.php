@@ -1,6 +1,6 @@
 <?php namespace net\daringfireball\markdown;
 
-interface Emitter {
+abstract class Emitter {
 
   /**
    * Emits a parse tree
@@ -9,7 +9,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitParseTree($tree, $definitions);
+  public function emitParseTree($tree, $definitions) { }
 
   /**
    * Emits a node list
@@ -18,7 +18,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitNodeList($list, $definitions);
+  public function emitNodeList($list, $definitions) { }
 
   /**
    * Emits a header
@@ -27,7 +27,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitHeader($header, $definitions);
+  public function emitHeader($header, $definitions) { }
 
   /**
    * Emits a paragraph
@@ -36,7 +36,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitParagraph($paragraph, $definitions);
+  public function emitParagraph($paragraph, $definitions) { }
 
   /**
    * Emits a blockquote
@@ -45,7 +45,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitBlockQuote($blockquote, $definitions);
+  public function emitBlockQuote($blockquote, $definitions) { }
 
   /**
    * Emits a ruler
@@ -54,7 +54,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitRuler($ruler, $definitions);
+  public function emitRuler($ruler, $definitions) { }
 
   /**
    * Emits strike-through text
@@ -63,7 +63,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitStrikeThrough($node, $definitions);
+  public function emitStrikeThrough($node, $definitions) { }
 
   /**
    * Emits italic text
@@ -72,7 +72,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitItalic($node, $definitions);
+  public function emitItalic($node, $definitions) { }
 
   /**
    * Emits bold text
@@ -81,7 +81,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitBold($node, $definitions);
+  public function emitBold($node, $definitions) { }
 
   /**
    * Emits a table
@@ -90,7 +90,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitTable($table, $definitions);
+  public function emitTable($table, $definitions) { }
 
   /**
    * Emits a table row
@@ -99,7 +99,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitRow($row, $definitions);
+  public function emitRow($row, $definitions) { }
 
   /**
    * Emits a table cell
@@ -108,7 +108,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitCell($cell, $definitions);
+  public function emitCell($cell, $definitions) { }
 
   /**
    * Emits a text fragment
@@ -117,7 +117,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitText($text, $definitions);
+  public function emitText($text, $definitions) { }
 
   /**
    * Emits a link
@@ -126,7 +126,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitLink($link, $definitions);
+  public function emitLink($link, $definitions) { }
 
   /**
    * Emits an image
@@ -135,7 +135,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitImage($image, $definitions);
+  public function emitImage($image, $definitions) { }
 
   /**
    * Emits an email address
@@ -144,7 +144,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitEmail($email, $definitions);
+  public function emitEmail($email, $definitions) { }
 
   /**
    * Emits an entity
@@ -153,7 +153,16 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitEntity($entity, $definitions);
+  public function emitEntity($entity, $definitions) { }
+
+  /**
+   * Emits a line break
+   *
+   * @param  net.daringfireball.markdown.LineBreak $br
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitLineBreak($br, $definitions) { }
 
   /**
    * Emits an inline code fragment
@@ -162,7 +171,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitCode($code, $definitions);
+  public function emitCode($code, $definitions) { }
 
   /**
    * Emits a code block
@@ -171,7 +180,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitCodeBlock($block, $definitions);
+  public function emitCodeBlock($block, $definitions) { }
 
   /**
    * Emits a listing (ordered or unordered)
@@ -180,7 +189,7 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitListing($listing, $definitions);
+  public function emitListing($listing, $definitions) { }
 
   /**
    * Emits a list item
@@ -189,5 +198,5 @@ interface Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  public function emitListItem($item, $definitions);
+  public function emitListItem($item, $definitions) { }
 }

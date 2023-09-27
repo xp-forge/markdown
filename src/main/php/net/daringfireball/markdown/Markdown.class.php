@@ -44,15 +44,20 @@ class Markdown {
       return true;
     });
     $this->addToken('<', function($line, $target, $ctx) {
-      if (preg_match('#<(([a-z]+://)[^ >]+)>#', $line, $m, 0, $line->pos())) {
+      if ($line->matches('<br>')) {
+        $target->add(new LineBreak());
+        $line->forward(+4);
+        return true;
+      } else if (preg_match('#<(([a-z]+://)[^ >]+)>#', $line, $m, 0, $line->pos())) {
         $target->add(new Link($m[1]));
+        $line->forward(strlen($m[0]));
+        return true;
       } else if (preg_match('#<(([^ @]+)@[^ >]+)>#', $line, $m, 0, $line->pos())) {
         $target->add(new Email($m[1]));
-      } else {
-        return false;
+        $line->forward(strlen($m[0]));
+        return true;
       }
-      $line->forward(strlen($m[0]));
-      return true;
+      return false;
     });
 
     // *Word* => Emphasis, **Word** => Strong emphasis. Can nest other elements!

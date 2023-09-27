@@ -3,9 +3,9 @@
 /**
  * Emits markdown as HTML
  *
- * @test xp://net.daringfireball.markdown.unittest.ToHtmlTest
+ * @test net.daringfireball.markdown.unittest.ToHtmlTest
  */
-class ToHtml implements Emitter {
+class ToHtml extends Emitter {
   protected $urls, $flags;
 
   /**
@@ -97,7 +97,7 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitRuler($ruler, $definitions) {
-    return '<hr />';
+    return '<hr>';
   }
 
   /**
@@ -175,17 +175,7 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitText($text, $definitions) {
-
-    // If the string ends with two or more spaces, we have a manual line break.
-    $sp= 0;
-    for ($i= strlen($text->value)- 1; $i > 0 && ' ' === $text->value[$i]; $i--) {
-      $sp++;
-    }
-    if ($sp >= 2) {
-      return htmlspecialchars(substr($text->value, 0, -$sp), $this->flags).'<br />';
-    } else {
-      return htmlspecialchars($text->value, $this->flags);
-    }
+    return htmlspecialchars($text->value, $this->flags);
   }
 
   /**
@@ -241,6 +231,17 @@ class ToHtml implements Emitter {
    */
   public function emitEntity($entity, $definitions) {
     return $entity->value;
+  }
+
+  /**
+   * Emits a line break
+   *
+   * @param  net.daringfireball.markdown.LineBreak $br
+   * @param  [:net.daringfireball.markdown.Link] $definitions
+   * @return string
+   */
+  public function emitLineBreak($br, $definitions) {
+    return '<br>';
   }
 
   /**
