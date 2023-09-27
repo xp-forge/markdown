@@ -175,17 +175,7 @@ class ToHtml implements Emitter {
    * @return string
    */
   public function emitText($text, $definitions) {
-
-    // If the string ends with two or more spaces, we have a manual line break.
-    $sp= 0;
-    for ($i= strlen($text->value)- 1; $i > 0 && ' ' === $text->value[$i]; $i--) {
-      $sp++;
-    }
-    if ($sp >= 2) {
-      return htmlspecialchars(substr($text->value, 0, -$sp), $this->flags).'<br />';
-    } else {
-      return htmlspecialchars($text->value, $this->flags);
-    }
+    return htmlspecialchars($text->value, $this->flags);
   }
 
   /**
