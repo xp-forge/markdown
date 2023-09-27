@@ -15,10 +15,7 @@ abstract class Context implements Value {
    * @return self
    */
   public function enter(self $context) {
-    $context->tokens= $this->tokens;
-    $context->handlers= $this->handlers;
-    $context->span= $this->span;
-    return $context;
+    return $context->withTokens($this->tokens)->withHandlers($this->handlers);
   }
 
   /**
