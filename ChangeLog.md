@@ -3,6 +3,7 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Added PHP 8.4 to the test matrix - @thekid
 * Fixed *Call to a member function length() on string* errors for lists
   with an item containing a `|` sign
   (@thekid)
