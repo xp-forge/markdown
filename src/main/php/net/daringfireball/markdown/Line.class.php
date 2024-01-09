@@ -202,7 +202,7 @@ class Line implements Value, ArrayAccess {
    * @return self
    */
   public function indented($level) {
-    return new self(substr($this->buffer, $level));
+    return new self((string)substr($this->buffer, $level));
   }
 
   /**
