@@ -196,6 +196,16 @@ class Line implements Value, ArrayAccess {
   }
 
   /**
+   * Returns an indented line
+   *
+   * @param  int $level
+   * @return self
+   */
+  public function indented($level) {
+    return new self(substr($this->buffer, $level));
+  }
+
+  /**
    * Replace all matches of a given pattern with the replacement
    *
    * @see    php://preg_replace

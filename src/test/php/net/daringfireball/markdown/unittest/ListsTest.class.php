@@ -154,4 +154,12 @@ class ListsTest extends MarkdownTest {
       "{$marker} https://php.net\n{$marker} https://github.com"
     );
   }
+
+  #[Test]
+  public function list_with_pipe() {
+    $this->assertTransformed(
+      '<ol><li>Culture | How to be a Great Coach (EXTERNAL)</li></ol>',
+      "2. Culture | How to be a Great Coach (EXTERNAL)\n\n"
+    );
+  }
 }
