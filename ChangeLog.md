@@ -3,6 +3,8 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+* Added PHP 8.4 to the test matrix - @thekid
+
 ## 8.0.0 / 2023-09-27
 
 * **Heads up:** This release refactors the `Emitter` interface to an
