@@ -5,6 +5,13 @@ Markdown for XP Framework ChangeLog
 
 * Added PHP 8.4 to the test matrix - @thekid
 
+## 8.0.1 / 2024-01-09
+
+* Added PHP 8.4 to the test matrix - @thekid
+* Fixed *Call to a member function length() on string* errors for lists
+  with an item containing a `|` sign
+  (@thekid)
+
 ## 8.0.0 / 2023-09-27
 
 * **Heads up:** This release refactors the `Emitter` interface to an

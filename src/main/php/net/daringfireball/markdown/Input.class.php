@@ -85,17 +85,17 @@ abstract class Input implements Value {
     }
     $this->line++;
     $line= array_pop($this->stack);
-    return $this->indent ? substr($line, $this->indent) : $line;
+    return $this->indent ? $line->indented($this->indent) : $line;
   }
 
   /**
    * Pushes back a line
    *
-   * @param  net.daringfireball.markdown.Line $line
+   * @param  ?string|net.daringfireball.markdown.Line $line
    */
   public function resetLine($line) {
     if (null === $line) return;
-    $this->stack[]= $line;
+    $this->stack[]= $line instanceof Line ? $line : new Line($line);
     $this->line--;
   }
 
