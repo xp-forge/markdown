@@ -283,11 +283,11 @@ class Markdown {
    *
    * @param  string|net.daringfireball.markdown.Input|io.streams.TextReader $in markdown
    * @param  [:net.daringfireball.markdown.Link] $urls
-   * @param  net.daringfireball.markdown.Emitter $emitter Defaults to HTML
+   * @param  ?net.daringfireball.markdown.Emitter $emitter Defaults to HTML
    * @return string markup
    * @throws lang.FormatException
    */
-  public function transform($in, $urls= [], Emitter $emitter= null) {
+  public function transform($in, $urls= [], $emitter= null) {
     return $this->parse($in)->emit($emitter ?: new ToHtml(), array_change_key_case($urls, CASE_LOWER));
   }
 }
