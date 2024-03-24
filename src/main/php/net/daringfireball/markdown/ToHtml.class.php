@@ -11,11 +11,11 @@ class ToHtml extends Emitter {
   /**
    * Creates a new emitter
    *
-   * @param  net.daringfireball.markdown.URLs $urls Optional urls resolver
+   * @param  ?net.daringfireball.markdown.URLs $urls Optional urls resolver
    * @param  int $flags
    */
-  public function __construct(URLs $urls= null, $flags= ENT_COMPAT) {
-    $this->urls= $urls ?: new URLs();
+  public function __construct($urls= null, $flags= ENT_COMPAT) {
+    $this->urls= $urls ?? new URLs();
     $this->flags= $flags;
   }
 

@@ -9,10 +9,10 @@ abstract class URL extends Node {
    * Creates a new image element
    *
    * @param  string $url
-   * @param  net.daringfireball.markdown.Node $text Optional text
+   * @param  ?net.daringfireball.markdown.Node $text Optional text
    * @param  string $title Optional title
    */
-  public function __construct($url, Node $text= null, $title= null) {
+  public function __construct($url, $text= null, $title= null) {
     $this->url= $url;
     $this->text= $text;
     $this->title= $title;
