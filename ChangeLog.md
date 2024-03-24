@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 8.1.0 / 2024-03-24
+
+* Made compatible with XP 12 - @thekid
+
 * Added PHP 8.4 to the test matrix - @thekid
 
 ## 8.0.1 / 2024-01-09
