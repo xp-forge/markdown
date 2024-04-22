@@ -6,6 +6,14 @@ use test\{Test, Values};
 
 class LinkTest extends MarkdownTest {
 
+  /**
+   * Returns sentence delimiters for use as parameters
+   *
+   * @return string[]
+   */
+  private function delimiters() { return ['.', '?', ',', ';', '!']; }
+
+
   #[Test]
   public function link_with_title() {
     $this->assertTransformed(
@@ -137,13 +145,6 @@ class LinkTest extends MarkdownTest {
     );
   }
 
-  /**
-   * Returns sentence delimiters for use as parameters
-   *
-   * @return string[]
-   */
-  public function delimiters() { return ['.', '?', ',', ';', '!']; }
-
   #[Test, Values(from: 'delimiters')]
   public function auto_link_in_sentence_at_end($delimiter) {
     $this->assertTransformed(
@@ -216,6 +217,14 @@ class LinkTest extends MarkdownTest {
     $this->assertTransformed(
       '<p>This is [not a link], man.</p>',
       'This is [not a link], man.'
+    );
+  }
+
+  #[Test]
+  public function link_in_square_braces() {
+    $this->assertTransformed(
+      '<p>This is [not a link]: [man].</p>',
+      'This is [not a link]: [man].'
     );
   }
 

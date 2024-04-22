@@ -143,7 +143,7 @@ class Markdown {
     // * "*", "+" or "-" -> ul/li
     // * ">" or "> >" -> block quoting
     // * [0-9]"." -> ol/li
-    $this->addHandler('/^\s{0,3}\[([^\]]+)\]:\s+([^ ]+)(.*)/', function($lines, $matches, $result, $ctx) { 
+    $this->addHandler('/^\s{0,3}\[([^\]]+)\]:\s+([^\[\] ]+)(.*)/', function($lines, $matches, $result, $ctx) {
       static $def= ['(' => '()', '"' => '"', "'" => "'"];
       $title= trim($matches[3]);
       if ('' !== $title && 0 === strcspn($title, '(\'"')) {
