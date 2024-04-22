@@ -3,6 +3,11 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 8.1.1 / 2024-04-22
+
+* Fixed `[not a link]: [man]` being detected as a reference-style link
+  (@thekid)
+
 ## 8.1.0 / 2024-03-24
 
 * Made compatible with XP 12 - @thekid
