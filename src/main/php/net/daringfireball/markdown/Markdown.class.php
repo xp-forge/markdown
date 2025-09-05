@@ -20,8 +20,9 @@ class Markdown {
 
     // Tokens
     $this->addToken('&', function($line, $target, $ctx) {
-      if (-1 === ($s= $line->next(';'))) return false;
-      $target->add(new Entity($line->slice($s)));
+      if (!preg_match('/&([a-z]+|\#x[0-9a-f]+|\#[0-9]+);/i', $line, $m, 0, $line->pos())) return false;
+
+      $target->add(new Entity($line->slice(strlen($m[0]))));
       return true;
     });
     $this->addToken('`', function($line, $target, $ctx) {

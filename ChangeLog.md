@@ -3,6 +3,12 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 8.1.2 / 2025-09-05
+
+* Fixed entity parsing by being more restrictive as to which input gets
+  accepted - `Hello & World;` definitely isn't one.
+  (@thekid)
+
 ## 8.1.1 / 2024-04-22
 
 * Fixed `[not a link]: [man]` being detected as a reference-style link
