@@ -46,6 +46,11 @@ class HeadersTest extends MarkdownTest {
   }
 
   #[Test]
+  public function first_level_header_with_tab() {
+    $this->assertTransformed('<h1>A First Level Header</h1>', "#\tA First Level Header");
+  }
+
+  #[Test]
   public function first_level_header_with_underline() {
     $this->assertTransformed(
       '<h1>A First Level Header</h1>', 

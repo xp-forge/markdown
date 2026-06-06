@@ -159,7 +159,7 @@ class Markdown {
       $matches[0]->replace('#(^|[^\(\<]|[^\]]\()((ht|f)tps?://[^\s]+)($|\s|[.?,;!)]\s|[.?,;!)]$)#U', '$1<$2>$4');
       return false;   // Further handlers may be applied
     });
-    $this->addHandler('/^(#{1,6}) (.+)/', function($lines, $matches, $result, $ctx) {
+    $this->addHandler('/^(#{1,6})\s(.+)/', function($lines, $matches, $result, $ctx) {
       $header= $result->append(new Header(substr_count($matches[1], '#')));
       $ctx->tokenize(new Line(rtrim($matches[2], ' #')), $header);
       return true;
