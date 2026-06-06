@@ -3,6 +3,10 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 9.0.0 / ????-??-??
+
+* Dropped support for PHP 7.0 - 7.3, see xp-framework/rfc#343 - @thekid
+
 ## 8.1.3 / 2026-06-06
 
 * Added PHP 8.6 to the test matrix - @thekid
