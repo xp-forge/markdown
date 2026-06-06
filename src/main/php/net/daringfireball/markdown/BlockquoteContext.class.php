@@ -17,7 +17,7 @@ class BlockquoteContext extends Context {
       // Handle nested quotes
       $str= $line->str();
       $start= strspn($str, '> ');
-      $level= substr_count($str, '>', 0, $start);
+      $level= $start ? substr_count($str, '>', 0, $start) : 0;
 
       if (0 === $level) {
         $line->forward(-$line->pos());
