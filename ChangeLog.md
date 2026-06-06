@@ -3,7 +3,7 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
-## 8.1.3 / 2026-06.06
+## 8.1.3 / 2026-06-06
 
 * Added PHP 8.6 to the test matrix - @thekid
 * Fixed ordered and unordered lists inside block quotes causing errors
