@@ -19,10 +19,10 @@ class FencedCodeContext extends Context {
 
     while ($lines->hasMoreLines()) {
       $line= $lines->nextLine();
-      if (0 === strncmp($line, $this->fence, 3)) {
+      if ($line->begins($this->fence)) {
         break;
       } else {
-        $result->add(new Text($line));
+        $result->add(new Text($line->str()));
       }
     }
 

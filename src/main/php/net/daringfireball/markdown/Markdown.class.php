@@ -20,16 +20,16 @@ class Markdown {
 
     // Tokens
     $this->addToken('&', function($line, $target, $ctx) {
-      if (!preg_match('/&([a-z]+|\#x[0-9a-f]+|\#[0-9]+);/i', $line, $m, 0, $line->pos())) return false;
+      if (!preg_match('/&([a-z]+|\#x[0-9a-f]+|\#[0-9]+);/i', $line->str(), $m)) return false;
 
       $target->add(new Entity($line->slice(strlen($m[0]))));
       return true;
     });
     $this->addToken('`', function($line, $target, $ctx) {
-      if ($line->matches('`` ')) {
+      if ($line->begins('`` ')) {
         $delimiters= [' ``', '``'];
         $offset= 3;
-      } else if ($line->matches('``')) {
+      } else if ($line->begins('``')) {
         $delimiters= '``';
         $offset= -1;
       } else {
@@ -45,15 +45,15 @@ class Markdown {
       return true;
     });
     $this->addToken('<', function($line, $target, $ctx) {
-      if ($line->matches('<br>')) {
+      if ($line->begins('<br>')) {
         $target->add(new LineBreak());
         $line->forward(+4);
         return true;
-      } else if (preg_match('#<(([a-z]+://)[^ >]+)>#', $line, $m, 0, $line->pos())) {
+      } else if (preg_match('#<(([a-z]+://)[^ >]+)>#', $line->str(), $m)) {
         $target->add(new Link($m[1]));
         $line->forward(strlen($m[0]));
         return true;
-      } else if (preg_match('#<(([^ @]+)@[^ >]+)>#', $line, $m, 0, $line->pos())) {
+      } else if (preg_match('#<(([^ @]+)@[^ >]+)>#', $line->str(), $m)) {
         $target->add(new Email($m[1]));
         $line->forward(strlen($m[0]));
         return true;
@@ -65,14 +65,14 @@ class Markdown {
     // "a * b" or "a ** b" => No, the star must not be followed by whitespace
     $emphasis= function($line, $target, $ctx) {
       $c= $line->chr();
-      if ($line->matches($c.$c.$c)) {
+      if ($line->begins($c.$c.$c)) {
         $n= $line->chr(+3);
         if (null === $n || false !== strpos("\r\n\t ", $n)) return false;
         if (null === ($delimited= $line->delimited($c.$c.$c))) return false;
         $node= new Bold();
         $node->add($ctx->tokenize(new Line($delimited), new Italic()));
         $target->add($node);
-      } else if ($line->matches($c.$c)) {
+      } else if ($line->begins($c.$c)) {
         $n= $line->chr(+2);
         if (null === $n || false !== strpos("\r\n\t ", $n)) return false;
         if (null === ($delimited= $line->delimited($c.$c))) return false;
@@ -89,7 +89,7 @@ class Markdown {
     $this->addToken('_', $emphasis);
 
     $this->addToken('~', function($line, $target, $ctx) {
-      if ($line->matches('~~')) {
+      if ($line->begins('~~')) {
         if (null === ($delimited= $line->delimited('~~'))) return false;
         $target->add($ctx->tokenize(new Line($delimited), new StrikeThrough()));
         return true;
@@ -105,10 +105,10 @@ class Markdown {
       $title= null;
       $text= $line->matching('[]');
       $w= false;
-      if ($line->matches('(')) {
+      if ($line->begins('(')) {
         sscanf($line->matching('()'), '%[^" ] "%[^")]"', $url, $title);
         $node= $ctx->tokenize(new Line($text), new NodeList());
-      } else if ($line->matches('[') || $w= $line->matches(' [')) {
+      } else if ($line->begins('[') || $w= $line->begins(' [')) {
         $line->forward((int)$w);
         $node= new Text($text);
         if ('' === ($ref= $line->ending(']'))) {
@@ -129,7 +129,7 @@ class Markdown {
       });
     });
     $this->addToken('!', function($line, $target, $ctx) use($parseLink) {
-      if (!$line->matches('![')) return false;
+      if (!$line->begins('![')) return false;
       $line->forward(1);
       return $parseLink($line, $target, $ctx, function($url, $text, $title) {
         return new Image($url, $text, $title);
@@ -169,7 +169,7 @@ class Markdown {
       if ($text= $paragraph->remove($paragraph->size() - 1)) {
         $result->append(new Header('=' === $matches[1][0] ? 1 : 2))->add($text);
       } else {
-        $paragraph->add(new Text($matches[0]));
+        $paragraph->add(new Text($matches[0]->str()));
       }
       return true;
     });
@@ -203,7 +203,9 @@ class Markdown {
     });
     $this->addHandler('/^\|.+\| *$/', function($lines, $matches, $result, $ctx) {
       $separator= $lines->nextLine();
-      if (preg_match('/^\|[ :|-]+\| *$/', (string)$separator)) {
+      if (null === $separator) {
+        return false;
+      } else if (preg_match('/^\|[ :|-]+\| *$/', $separator->str())) {
         $result->append($ctx->enter(new WrappedTableContext($matches[0], $separator))->parse($lines));
         return true;
       } else {
@@ -213,7 +215,9 @@ class Markdown {
     });
     $this->addHandler('/^(.+\|.+)+$/', function($lines, $matches, $result, $ctx) {
       $separator= $lines->nextLine();
-      if (preg_match('/^([ :|-]+\|[ :|-]+)+$/', (string)$separator)) {
+      if (null === $separator) {
+        return false;
+      } else if (preg_match('/^([ :|-]+\|[ :|-]+)+$/', $separator->str())) {
         $result->append($ctx->enter(new InlineTableContext($matches[0], $separator))->parse($lines));
         return true;
       } else {

@@ -35,7 +35,8 @@ class ListContext extends Context {
 
       // Indented elements form additional parapraphs inside list items. If the
       // line doesn't start with a list bullet, this means the list is at its end.
-      if (preg_match('/^(\s+)?([+*-]+|[0-9]+\.) /', $line, $m) && !preg_match('/^(\* ?){3,}$/', $line)) {
+      $str= $line->str();
+      if (preg_match('/^(\s+)?([+*-]+|[0-9]+\.) /', $str, $m) && !preg_match('/^(\* ?){3,}$/', $str)) {
         $empty && $result->paragraphs= true;
         $empty= false;
 
@@ -54,26 +55,27 @@ class ListContext extends Context {
 
         $target= $result->add(new ListItem($result));
         $space= strlen($m[0]);
-      } else if ($space= strspn($line, ' ')) {
+      } else if ($space= strspn($line->str(), ' ')) {
         $target= $result->last();
       } else {
+        $line->forward(-$line->pos());
         $lines->resetLine($line);
         break;
       }
 
       // Handle line, checking handlers, then passing it on to tokenization
       $handled= false;
-      $indented= new Line(substr($line, $space));
       $lines->indent(+$space);
+      $line->forward($space);
 
       foreach ($this->handlers as $pattern => $handler) {
-        if (preg_match($pattern, $indented, $values)) {
-          if ($handled= $handler($lines, [$indented] + $values, $target, $this)) break;
+        if (preg_match($pattern, $line->str(), $values)) {
+          if ($handled= $handler($lines, [$line] + $values, $target, $this)) break;
         }
       }
 
       $lines->indent(-$space);
-      $handled || $this->tokenize($indented, $target->add(new Paragraph()));
+      $handled || $this->tokenize($line, $target->add(new Paragraph()));
     }
 
     return $result;

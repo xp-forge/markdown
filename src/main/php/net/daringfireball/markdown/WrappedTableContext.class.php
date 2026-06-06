@@ -9,8 +9,8 @@ class WrappedTableContext extends TableContext {
    * @return string[]
    */
   protected function cellsIn($line) {
-    if ('|' === $line[0]) {
-      return explode('|', substr($line, 1, -1));
+    if ('|' === $line->chr()) {
+      return explode('|', $line->str(1, -1));
     } else {
       return null;
     }

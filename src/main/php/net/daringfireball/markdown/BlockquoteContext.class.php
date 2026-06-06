@@ -15,10 +15,15 @@ class BlockquoteContext extends Context {
       $line= $lines->nextLine();
 
       // Handle nested quotes
-      $start= strspn($line, '> ');
-      $level= substr_count($line, '>', 0, $start);
+      $str= $line->str();
+      $start= strspn($str, '> ');
+      $level= substr_count($str, '>', 0, $start);
 
-      if (0 === $level) break;
+      if (0 === $level) {
+        $line->forward(-$line->pos());
+        $lines->resetLine($line);
+        break;
+      }
 
       while ($level > $nesting) {
         array_unshift($target, $target[0]->add(new BlockQuote()));
@@ -30,17 +35,18 @@ class BlockquoteContext extends Context {
       }
 
       // Check handlers
-      $lines->indent(+$start);
-      $quoted= new Line(substr($line, $start));
       $handled= false;
+      $lines->indent(+$start);
+      $line->forward($start);
+
       foreach ($this->handlers as $pattern => $handler) {
-        if (preg_match($pattern, $quoted, $values)) {
-          if ($handled= $handler($lines, [$quoted] + $values, $target[0], $this)) break;
+        if (preg_match($pattern, $line->str(), $values)) {
+          if ($handled= $handler($lines, [$line] + $values, $target[0], $this)) break;
         }
       }
 
       $lines->indent(-$start);
-      $handled || $this->tokenize($quoted, $target[0]);
+      $handled || $this->tokenize($line, $target[0]);
     }
 
     return array_pop($target);

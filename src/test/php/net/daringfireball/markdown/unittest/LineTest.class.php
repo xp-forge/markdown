@@ -78,13 +78,13 @@ class LineTest {
   }
 
   #[Test, Values(['T', 'Te', 'Tes', 'Test'])]
-  public function matches($str) {
-    Assert::true((new Line('Test'))->matches($str));
+  public function begins($str) {
+    Assert::true((new Line('Test'))->begins($str));
   }
 
   #[Test, Values(['', 'e', 'es', 'does-not-occur', "\0"])]
-  public function does_not_match($str) {
-    Assert::false((new Line('Test'))->matches($str));
+  public function does_not_begin($str) {
+    Assert::false((new Line('Test'))->begins($str));
   }
 
   #[Test]
@@ -270,7 +270,7 @@ class LineTest {
   public function replace() {
     $l= new Line('Test');
     $l->replace('/[a-z]/', '.');
-    Assert::equals('T...', (string)$l);
+    Assert::equals('T...', $l->str());
   }
 
   #[Test]
@@ -296,7 +296,7 @@ class LineTest {
     } catch (\lang\FormatException $expected) {
       // OK
     }
-    Assert::equals('Test', (string)$l);
+    Assert::equals('Test', $l->str());
   }
 
   #[Test]

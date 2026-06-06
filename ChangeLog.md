@@ -3,6 +3,12 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
+## 8.1.3 / 2026-06.06
+
+* Fixed ordered and unordered lists inside block quotes causing errors
+  with *Call to a member function add() on null*
+  (@thekd)
+
 ## 8.1.2 / 2025-09-05
 
 * Fixed entity parsing by being more restrictive as to which input gets

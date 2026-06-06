@@ -62,12 +62,23 @@ class Line implements Value, ArrayAccess {
   }
 
   /**
+   * Returns the string from the current position + the given offset
+   *
+   * @param  int offset, defaults to 0
+   * @return string
+   */
+  public function str($offset= 0, $end= 0) {
+    $i= $this->pos + $offset;
+    return $i < 0 || $i >= $this->length ? '' : substr($this->buffer, $i, $this->length - $i + $end);
+  }
+
+  /**
    * Returns whether the Line begins with the given string at the current offset
    *
    * @param  string $str
    * @return bool
    */
-  public function matches($str) {
+  public function begins($str) {
     return '' === $str
       ? false
       : 0 === substr_compare($this->buffer, $str, $this->pos, strlen($str))
@@ -202,7 +213,8 @@ class Line implements Value, ArrayAccess {
    * @return self
    */
   public function indented($level) {
-    return new self((string)substr($this->buffer, $level));
+    $this->pos= $level;
+    return $this;
   }
 
   /**

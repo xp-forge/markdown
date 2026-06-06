@@ -14,9 +14,9 @@ class CodeContext extends Context {
     while ($lines->hasMoreLines()) {
       $line= $lines->nextLine();
       if ("\t" === $line->chr()) {
-        $result->add(new Text(substr($line, 1)));
-      } else if (0 === strncmp($line, '    ', 4)) {
-        $result->add(new Text(substr($line, 4)));
+        $result->add(new Text($line->str(+1)));
+      } else if ($line->begins('    ')) {
+        $result->add(new Text($line->str(+4)));
       } else {
         $lines->resetLine($line);
         break;

@@ -9,8 +9,9 @@ class InlineTableContext extends TableContext {
    * @return string[]
    */
   protected function cellsIn($line) {
-    if (preg_match('/^(.+\|.+)+$/', $line)) {
-      return explode('|', $line);
+    $str= $line->str();
+    if (preg_match('/^(.+\|.+)+$/', $str)) {
+      return explode('|', $str);
     } else {
       return null;
     }
