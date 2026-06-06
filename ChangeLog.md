@@ -8,7 +8,7 @@ Markdown for XP Framework ChangeLog
 * Added PHP 8.6 to the test matrix - @thekid
 * Fixed ordered and unordered lists inside block quotes causing errors
   with *Call to a member function add() on null*
-  (@thekd)
+  (@thekid)
 
 ## 8.1.2 / 2025-09-05
 
