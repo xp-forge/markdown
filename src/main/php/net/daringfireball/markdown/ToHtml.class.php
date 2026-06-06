@@ -26,7 +26,7 @@ class ToHtml extends Emitter {
    * @param  [:net.daringfireball.markdown.Link] $definitions
    * @return string
    */
-  private function emitAll($list, $definitions) {
+  protected function emitAll($list, $definitions) {
     $r= '';
     foreach ($list as $node) {
       $r.= $node->emit($this, $definitions);
