@@ -3,7 +3,7 @@ Markdown for XP Framework ChangeLog
 
 ## ?.?.? / ????-??-??
 
-## 9.0.0 / ????-??-??
+## 9.0.0 / 2026-06-07
 
 * Allowed any whitespace for rulers (`* * *`) and headlines (`# ...`),
   following the spec more closely.
