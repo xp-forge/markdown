@@ -173,7 +173,7 @@ class Markdown {
       }
       return true;
     });
-    $this->addHandler('/^(\* ?){3,}$/', function($lines, $matches, $result, $ctx) {
+    $this->addHandler('/^(\*\s?){3,}$/', function($lines, $matches, $result, $ctx) {
       $result->append(new Ruler());
       return true;
     });
