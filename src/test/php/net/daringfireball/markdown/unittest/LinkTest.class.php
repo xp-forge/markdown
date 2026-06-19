@@ -178,6 +178,14 @@ class LinkTest extends MarkdownTest {
   }
 
   #[Test]
+  public function url_escaping() {
+    $this->assertTransformed(
+      '<p><a href="http://example.com/?query&amp;hl=de">http://example.com/?query&amp;hl=de</a></p>',
+      '<http://example.com/?query&hl=de>'
+    );
+  }
+
+  #[Test]
   public function link_in_braces() {
     $this->assertTransformed(
       '<p>Example (<a href="http://example.com">http://example.com</a>)</p>',
